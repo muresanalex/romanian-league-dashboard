@@ -1,0 +1,27 @@
+.league-container {
+    float: left;
+    width: 100%;
+    padding: 20px;
+
+    .logo-wrapper {
+        float: left;
+    
+        .file-wrapper {
+            margin-top: 20px;
+        }
+    }
+    
+    .league-name {
+        float: left;
+        height: 40px;
+        width: 400px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .add-team {
+        height: 40px;
+        width: 60px;
+        margin-left: 10px;
+    }
+}

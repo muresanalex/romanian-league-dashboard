@@ -1,0 +1,21 @@
+.countries-container {
+    float: left;
+    width: 100%;
+    padding: 20px;
+
+    .flag-wrapper {
+        float: left;
+    
+        .file-wrapper {
+            margin-top: 20px;
+        }
+    }
+    
+    .country-name {
+        float: left;
+        height: 40px;
+        width: 400px;
+        padding-left: 10px;
+        margin-bottom: 10px;
+    }
+}

@@ -1,0 +1,50 @@
+.player-container{
+    float: left;
+    width: 100%;
+    padding: 20px;
+
+    .logo-wrapper {
+        float: left;
+    
+        .file-wrapper {
+            margin-top: 20px;
+        }
+    }
+
+    .input-group {
+        width: 400px;
+        margin-bottom: 10px;
+        
+        input {
+            height: 40px;
+            width: 195px;
+            padding-left: 10px;
+        }
+    }
+
+    .stats {
+        margin-top: 30px;
+    }
+
+    .stats-wrapper {
+        width: 100px;
+        margin: 10px 20px 0 0;
+        float: left;
+        font-family: sans-serif;
+        font-size: 13px;
+        color: cornflowerblue;
+
+        span {
+            display: block;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        input {
+            height: 40px;
+            width: 100px;
+            padding-left: 10px;
+            float: left;
+        }
+    }
+    
+}

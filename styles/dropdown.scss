@@ -1,0 +1,21 @@
+.dropdown-container {
+    float: left;
+    position: relative;
+    font-family: sans-serif;
+    
+    .dropdown-children {
+        position: absolute;
+        top: 10px;
+        left: -80px;
+        font-size: 13px;
+        color: cornflowerblue;
+    }
+    
+    select
+    {
+        width: 400px;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+    
+}
