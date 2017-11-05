@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import NavbarAccordion from "./navbarAccordion.react";
 
-// import { Link } from "react-router-dom";
-
 class Navbar extends Component {
     constructor() {
         super();

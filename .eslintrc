@@ -1,3 +1,6 @@
 {
-    "extends": "fortech"
+    "env": {
+        "browser": true // set this if you're running a browser app
+    },
+    "extends": "fortech-react"
 }

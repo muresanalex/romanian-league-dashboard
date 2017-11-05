@@ -25,13 +25,15 @@ class NavbarAccordion extends Component {
             <div
                 className={ `navitem ${ openClassName }` }
                 key={ label }
-                onClick={ this.handleClick }
                 role="menuitem"
                 tabIndex="-1"
             >
-                <div className="navitem-parent">
-                    <span>{ label }</span>
-                    <span>{ arrrow }</span>
+                <div
+                    className="navitem-parent"
+                    onClick={ this.handleClick }
+                >
+                    <span className="label">{ label }</span>
+                    <span className="arrow">{ arrrow }</span>
                 </div>
                 <div className="navitem-children">
                     {
