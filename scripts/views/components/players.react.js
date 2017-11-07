@@ -25,7 +25,12 @@ class Players extends Component {
                     <ImageUploader />
                     <input
                         type="text"
-                        placeholder="name"
+                        placeholder="last name"
+                        className="player-name"
+                    />
+                    <input
+                        type="text"
+                        placeholder="first name"
                         className="player-name"
                     />
                     <input
@@ -116,6 +121,7 @@ class Players extends Component {
                     </div>
                     <div className="stats-group">
                         <span className="title">Special</span>
+                        <StatsInput name="potential" />
                         <Dropdown elements={ Dictionary.stars } label="reputation" />
                         <Dropdown elements={ Dictionary.stars } label="skill moves" />
                     </div>

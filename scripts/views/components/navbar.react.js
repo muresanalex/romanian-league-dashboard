@@ -15,12 +15,12 @@ class Navbar extends Component {
                     label: "Players",
                     children: [
                         {
-                            label: "Players List",
-                            slug: "/players",
-                        },
-                        {
                             label: "Create Player",
                             slug: "/players/new-player",
+                        },
+                        {
+                            label: "Players List",
+                            slug: "/players",
                         },
                     ],
                 },
@@ -28,12 +28,12 @@ class Navbar extends Component {
                     label: "Teams",
                     children: [
                         {
-                            label: "Teams List",
-                            slug: "/teams",
-                        },
-                        {
                             label: "Create Team",
                             slug: "/teams/new-team",
+                        },
+                        {
+                            label: "Teams List",
+                            slug: "/teams",
                         },
                     ],
                 },
@@ -41,12 +41,12 @@ class Navbar extends Component {
                     label: "Leagues",
                     children: [
                         {
-                            label: "Leagues List",
-                            slug: "/leagues",
-                        },
-                        {
                             label: "Create League",
                             slug: "/leagues/new-league",
+                        },
+                        {
+                            label: "Leagues List",
+                            slug: "/leagues",
                         },
                     ],
                 },
@@ -54,12 +54,12 @@ class Navbar extends Component {
                     label: "Countries",
                     children: [
                         {
-                            label: "Countries List",
-                            slug: "/countries",
-                        },
-                        {
                             label: "Create Country",
                             slug: "/countries/new-country",
+                        },
+                        {
+                            label: "Countries List",
+                            slug: "/countries",
                         },
                     ],
                 },
