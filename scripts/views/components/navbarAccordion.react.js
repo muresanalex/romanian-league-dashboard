@@ -45,7 +45,7 @@ class NavbarAccordion extends Component {
                                 role="menuitem"
                                 tabIndex="-1"
                             >
-                                { item.label }
+                                &#x21B3; { item.label }
                             </div>
                         ) )
                     }

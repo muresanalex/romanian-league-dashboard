@@ -1,14 +1,14 @@
 import React from "react";
 
-const Dropdown = ( { elements, children } ) => { // eslint-disable-line
+const Dropdown = ( { elements, label } ) => { // eslint-disable-line
     const options = elements ? elements.map( createElements ) : "";
-    const childrenElements = children || "";
+    const style = label === "country" || label === "team" ? { width: "150px" } : {};
     return (
         <div className="dropdown-container">
-            { childrenElements }
-            <select>
+            <select style={ style }>
                 { options }
             </select>
+            <span>{ label || "" }</span>
         </div>
     );
 };

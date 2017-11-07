@@ -10,10 +10,11 @@ const Template = () => (
     <div className="template clearfix">
         <Navbar />
         <Switch>
-            <Route exact path="/countries" component={ Countries } />
-            <Route exact path="/leagues" component={ Leagues } />
-            <Route exact path="/teams" component={ Teams } />
-            <Route exact path="/players" component={ Players } />
+            <Route exact path="/" component={ Players } />
+            <Route exact path="/countries/new-country" component={ Countries } />
+            <Route exact path="/leagues/new-league" component={ Leagues } />
+            <Route exact path="/teams/new-team" component={ Teams } />
+            <Route exact path="/players/new-player" component={ Players } />
         </Switch>
     </div>
 );

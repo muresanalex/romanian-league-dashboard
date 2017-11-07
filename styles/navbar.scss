@@ -2,17 +2,19 @@
     background-color: rgb(65, 80, 105);
     float: left;
     height: 100%;
-    width: 200px;
+    width: 10%;
     color: white;
     font-family: sans-serif;
-    cursor: pointer;
+    float: left;
 
     .navitem-clickable {
         width: 100%;
-        height: 30px;
+        height: 40px;
         font-size: 13px;
-        line-height: 30px;
+        line-height: 40px;
         padding: 0 20px;
+        border-bottom: 1px solid rgb(80, 90, 107);
+        cursor: pointer;
 
         &:focus {
             outline: 0;
@@ -27,10 +29,11 @@
 
         .navitem-parent {
             width: 100%;
-            height: 30px;
+            height: 40px;
             font-size: 13px;
-            line-height: 30px;
+            line-height: 40px;
             padding: 0 20px;
+            border-bottom: 1px solid rgb(80, 90, 107);
 
             .label {
                 float: left;
@@ -50,6 +53,8 @@
 
         .navitem-children {
             display: none;
+            background-color: rgb(80, 90, 107);
+            cursor: pointer;
         }
 
         .navitem-child {
@@ -61,7 +66,7 @@
             color: white;
             
             &:hover {
-                background-color: rgb(69, 89, 121);
+                color: rgb(32, 189, 149);
             }
 
             &:focus {
@@ -95,4 +100,14 @@
             }
         }
     }
+}
+
+.dashboard-logo {
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+    background-color: rgb(32, 189, 149);
+    border-bottom: 1px solid rgb(80, 90, 107);
 }

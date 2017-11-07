@@ -20,7 +20,7 @@ class Navbar extends Component {
                         },
                         {
                             label: "Create Player",
-                            slug: "/create-player",
+                            slug: "/players/new-player",
                         },
                     ],
                 },
@@ -33,7 +33,7 @@ class Navbar extends Component {
                         },
                         {
                             label: "Create Team",
-                            slug: "/create-team",
+                            slug: "/teams/new-team",
                         },
                     ],
                 },
@@ -46,7 +46,7 @@ class Navbar extends Component {
                         },
                         {
                             label: "Create League",
-                            slug: "/create-leagues",
+                            slug: "/leagues/new-league",
                         },
                     ],
                 },
@@ -59,7 +59,7 @@ class Navbar extends Component {
                         },
                         {
                             label: "Create Country",
-                            slug: "/create-country",
+                            slug: "/countries/new-country",
                         },
                     ],
                 },
@@ -82,14 +82,15 @@ class Navbar extends Component {
         } );
         return (
             <div className="navbar-items">
-                { items }
+                <div className="dashboard-logo">Dashboard</div>
+                <div>{ items }</div>
             </div>
         );
     }
 
     buildItemsWithoutChildren( item ) {
         const { label, slug } = item;
-        const { history } = this.props;
+        const { history } = this.props; // eslint-disable-line
 
         return (
             <div
