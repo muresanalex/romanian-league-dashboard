@@ -1,19 +1,16 @@
 .player-container {
-    width: 90%;
+    width: 85%;
     height: 100%;
     float: left;
     font-family: sans-serif;
 
     .details {
-        width: 30%;
-        float: left;
-        padding: 10px;
 
         .player-name,
         .birth-date
         {
             width: 200px;
-            height: 34px;
+            height: 24px;
             margin: 10px;
             padding-left: 5px;
         }
@@ -22,7 +19,7 @@
         .player-weight
         {
             width: 70px;
-            height: 34px;
+            height: 24px;
             margin: 10px;
             padding-left: 5px;
         }
@@ -36,12 +33,10 @@
     }
 
     .stats {
-        width: 70%;
-        float: left;
 
         .stats-group {
-            width: 15%;
-            margin: 5%;
+            width: 20%;
+            margin: 2%;
             float: left;
 
             .title {

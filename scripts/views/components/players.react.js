@@ -20,8 +20,8 @@ class Players extends Component {
             return false;
         }
         return (
-            <div className="player-container">
-                <div className="details">
+            <div className="player-container grid-container">
+                <div className="details col-2">
                     <ImageUploader />
                     <input
                         type="text"
@@ -63,7 +63,7 @@ class Players extends Component {
                     </div>
                     <button className="save-button">Save</button>
                 </div>
-                <div className="stats">
+                <div className="stats col-4">
                     <div className="stats-group">
                         <span className="title">Attacking</span>
                         <StatsInput name="crossing" value={ currentPlayer.crossing } />
