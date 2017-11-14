@@ -10,7 +10,7 @@ const Template = () => (
     <div className="template clearfix">
         <Navbar />
         <Switch>
-            <Route exact path="/" component={ Players } />
+            <Route exact path="/" />
             <Route exact path="/countries/new-country" component={ Countries } />
             <Route exact path="/leagues/new-league" component={ Leagues } />
             <Route exact path="/teams/new-team" component={ Teams } />

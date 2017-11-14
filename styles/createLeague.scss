@@ -1,0 +1,27 @@
+.league-container {
+    width: 90%;
+    height: 100%;
+    float: left;
+    font-family: sans-serif;
+
+    .league-logo {
+        float: left;
+        margin: 10px;
+    }
+
+    .league-details {
+        float: left;
+        margin: 10px;
+
+        .league-name {
+            width: 200px;
+            height: 34px;
+            margin: 10px;
+            padding-left: 5px;
+        }
+
+        .dropdown-section{
+            margin: 10px;
+        }
+    }
+}

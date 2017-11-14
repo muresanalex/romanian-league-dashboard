@@ -1,0 +1,29 @@
+.team-container {
+    width: 90%;
+    height: 100%;
+    float: left;
+    font-family: sans-serif;
+
+    .team-logo {
+        float: left;
+        margin: 10px;
+    }
+
+    .team-details{
+        float: left;
+        margin: 10px;
+
+        .team-name,
+        .team-stadium {
+            width: 200px;
+            height: 34px;
+            margin: 10px;
+            padding-left: 5px;
+            display: block;
+        }
+
+        .dropdown-section {
+            margin-left: 10px;
+        }
+    }
+}
