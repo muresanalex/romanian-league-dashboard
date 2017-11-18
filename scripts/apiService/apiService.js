@@ -62,6 +62,12 @@ function createTeam ( payload ) {
     } );
 }
 
+function getTeams() {
+    return fetch( `${ baseUrl }/teams` )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data.teams );
+}
+
 export {
     createPlayer,
     createCountry,
@@ -70,4 +76,5 @@ export {
     createLeague,
     getLeagues,
     createTeam,
+    getTeams,
 };

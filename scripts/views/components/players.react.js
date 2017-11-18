@@ -3,7 +3,8 @@ import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import StatsInput from "./statsInput.react";
 import Dictionary from "../../helpers/dictionary";
-// import { createPlayer, getPlayers } from "../../apiService/apiService";
+import { getNames } from "../../helpers/helpers";
+import { getCountries, getTeams } from "../../apiService/apiService";
 
 class Players extends Component {
     constructor() {
@@ -16,7 +17,14 @@ class Players extends Component {
             mentalityStats: [ "aggression", "interceptions", "positioning", "vision", "penalties", "composure" ],
             defendingStats: [ "marking", "standing tackle", "sliding tackle" ],
             goalkeepingStats: [ "GK diving", "GK handling", "GK kicking", "GK positioning", "GK reflexes" ],
+            teams: [],
+            countries: [],
         };
+    }
+
+    componentDidMount() {
+        getTeams().then( ( teams ) => this.setState( { teams } ) );
+        getCountries().then( ( countries ) => this.setState( { countries } ) );
     }
 
     render() {
@@ -28,7 +36,13 @@ class Players extends Component {
             mentalityStats,
             defendingStats,
             goalkeepingStats,
+            teams,
+            countries,
         } = this.state;
+
+        const teamsNames = getNames( teams );
+        const countriesNames = getNames( countries );
+
         return (
             <div className="player-container grid-container">
                 <div className="details col-2">
@@ -71,8 +85,8 @@ class Players extends Component {
                     </div>
 
                     <div className="dropdown-section">
-                        <Dropdown elements={ [] } label="country" />
-                        <Dropdown elements={ [] } label="team" />
+                        <Dropdown elements={ countriesNames } label="country" />
+                        <Dropdown elements={ teamsNames } label="team" />
                         <input
                             type="number"
                             placeholder="nr"
