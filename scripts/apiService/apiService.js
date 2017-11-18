@@ -15,7 +15,19 @@ function getPlayers() {
         .then( ( data ) => data.players );
 }
 
+function createCountry ( payload ) {
+    return fetch( "http://localhost:4000/api/countries", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( payload ),
+    } );
+}
+
 export {
     createPlayer,
+    createCountry,
     getPlayers,
 };
