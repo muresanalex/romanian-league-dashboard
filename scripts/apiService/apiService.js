@@ -44,10 +44,29 @@ function createLeague ( payload ) {
     } );
 }
 
+function getLeagues() {
+    return fetch( `${ baseUrl }/leagues` )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data.leagues );
+}
+
+function createTeams ( payload ) {
+    return fetch( `${ baseUrl }/teams`, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( payload ),
+    } );
+}
+
 export {
     createPlayer,
     createCountry,
     getPlayers,
     getCountries,
     createLeague,
+    getLeagues,
+    createTeams,
 };

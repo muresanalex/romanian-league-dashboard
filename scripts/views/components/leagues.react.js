@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import { getCountries, createLeague } from "../../apiService/apiService";
+import { getId, getNames } from "../../helpers/helpers";
 
 class Leagues extends Component {
     constructor() {
@@ -33,10 +34,7 @@ class Leagues extends Component {
     handleClick() {
         const { leagueName, countries } = this.state;
         const id = getId( countries, this.country.getSelectedValue() );
-        console.log( {
-            name: leagueName,
-            countryId: id,
-        } );
+
         createLeague( {
             name: leagueName,
             countryId: id,
@@ -77,15 +75,6 @@ class Leagues extends Component {
             </div>
         );
     }
-}
-
-function getNames( array ) {
-    return array.map( ( item ) => item.name );
-}
-
-function getId( array, name ) {
-    const newArray = array.filter( ( item ) => item.name === name );
-    return newArray[ 0 ]._id;
 }
 
 export default Leagues;
