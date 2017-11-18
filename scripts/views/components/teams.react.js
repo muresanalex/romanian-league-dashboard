@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
-import { getLeagues, getCountries } from "../../apiService/apiService";
-import { getNames } from "../../helpers/helpers";
+import {
+    getLeagues,
+    getCountries,
+    createTeam,
+} from "../../apiService/apiService";
+import { getNames, getId } from "../../helpers/helpers";
 
 class Teams extends Component {
     constructor() {
@@ -10,12 +14,47 @@ class Teams extends Component {
         this.state = {
             countries: [],
             leagues: [],
+            teamName: "",
+            stadium: "",
         };
+        this.handleClick = this.handleClick.bind( this );
+        this.handleNameChange = this.handleNameChange.bind( this );
+        this.handleStadiumChange = this.handleStadiumChange.bind( this );
     }
 
     componentDidMount() {
         getLeagues().then( ( leagues ) => this.setState( { leagues } ) );
         getCountries().then( ( countries ) => this.setState( { countries } ) );
+    }
+
+    handleNameChange( evt ) {
+        this.setState( {
+            teamName: evt.target.value,
+        } );
+    }
+
+    handleStadiumChange( evt ) {
+        this.setState( {
+            stadium: evt.target.value,
+        } );
+    }
+
+    clearInputFields() {
+        this.name.value = "";
+        this.stadium.value = "";
+    }
+
+    handleClick() {
+        const { teamName, stadium, countries, leagues } = this.state;
+        const leagueId = getId( leagues, this.league.getSelectedValue() );
+        const countryId = getId( countries, this.country.getSelectedValue() );
+        createTeam( {
+            name: teamName,
+            stadium,
+            leagueId,
+            countryId,
+        } );
+        this.clearInputFields();
     }
 
     render() {
@@ -27,15 +66,40 @@ class Teams extends Component {
                 <div className="team-logo">
                     <div className="logo-wrapper">
                         <ImageUploader />
-                        <button className="button save-button">Save</button>
+                        <button
+                            className="button save-button"
+                            onClick={ this.handleClick }
+                        >
+                            Save
+                        </button>
                     </div>
                 </div>
                 <div className="team-details">
-                    <input type="text" placeholder="name" className="team-name" />
-                    <input type="text" placeholder="stadium" className="team-stadium" />
+                    <input
+                        type="text"
+                        placeholder="name"
+                        className="team-name"
+                        onChange={ this.handleNameChange }
+                        ref={ ( ref ) => { this.name = ref; } }
+                    />
+                    <input
+                        type="text"
+                        placeholder="stadium"
+                        className="team-stadium"
+                        onChange={ this.handleStadiumChange }
+                        ref={ ( ref ) => { this.stadium = ref; } }
+                    />
                     <div className="dropdown-section">
-                        <Dropdown elements={ countriesNames } label="country" />
-                        <Dropdown elements={ leaguesNames } label="league" />
+                        <Dropdown
+                            elements={ countriesNames }
+                            label="country"
+                            ref={ ( ref ) => { this.country = ref; } }
+                        />
+                        <Dropdown
+                            elements={ leaguesNames }
+                            label="league"
+                            ref={ ( ref ) => { this.league = ref; } }
+                        />
                     </div>
                 </div>
             </div>

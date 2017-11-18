@@ -1,4 +1,5 @@
 const baseUrl = "http://localhost:4000/api";
+
 function createPlayer( payload ) {
     return fetch( `${ baseUrl }/players`, {
         method: "POST",
@@ -50,7 +51,7 @@ function getLeagues() {
         .then( ( data ) => data.leagues );
 }
 
-function createTeams ( payload ) {
+function createTeam ( payload ) {
     return fetch( `${ baseUrl }/teams`, {
         method: "POST",
         headers: {
@@ -68,5 +69,5 @@ export {
     getCountries,
     createLeague,
     getLeagues,
-    createTeams,
+    createTeam,
 };
