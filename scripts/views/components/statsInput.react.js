@@ -6,6 +6,14 @@ class StatsInput extends Component { // eslint-disable-line
         this.state = {
             defaultValue: 50,
         };
+
+        this.getValue = this.getValue.bind( this );
+    }
+
+    getValue() {
+        const { changedValue, defaultValue } = this.state;
+        const { value } = this.props;
+        return changedValue || value || defaultValue;
     }
 
     render() {
@@ -14,7 +22,7 @@ class StatsInput extends Component { // eslint-disable-line
         const { value, name } = this.props;
         const { defaultValue } = this.state;
         const renderValue = this.state.changedValue || value || defaultValue;
-        
+
         if ( renderValue < 51 ) {
             backgroundColor = "#E9573E";
         } else if ( renderValue < 61 ) {
@@ -28,7 +36,7 @@ class StatsInput extends Component { // eslint-disable-line
         }
         const style = {
             backgroundColor,
-        }
+        };
         return (
             <div className="stats-wrapper clearfix">
                 <input

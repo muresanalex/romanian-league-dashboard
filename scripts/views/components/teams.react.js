@@ -53,7 +53,7 @@ class Teams extends Component {
             stadium,
             leagueId,
             countryId,
-        } );
+        } ).then( ( response ) => console.log( response.body ) );
         this.clearInputFields();
     }
 
