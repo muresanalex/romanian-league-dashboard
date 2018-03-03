@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Search from "./search.react";
-import { getCountries } from "../../apiService/apiService";
+import { getTeams } from "../../apiService/apiService";
 
-class CountriesList extends Component {
+class TeamsList extends Component {
     constructor( ) {
         super();
         this.state = {
@@ -14,11 +14,11 @@ class CountriesList extends Component {
         const { test } = this.state;
         return (
             <div>
-                <Search getResults={ getCountries } />
+                <Search getResults={ getTeams } />
                 <span>{ test }</span>
             </div>
         );
     }
 }
 
-export default CountriesList;
+export default TeamsList;

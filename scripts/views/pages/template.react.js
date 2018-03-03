@@ -5,6 +5,7 @@ import Countries from "../components/countries.react";
 import CountriesList from "../components/countriesList.react";
 import Leagues from "../components/leagues.react";
 import Teams from "../components/teams.react";
+import TeamsList from "../components/teamsList.react";
 import Players from "../components/players.react";
 
 const Template = () => (
@@ -17,6 +18,8 @@ const Template = () => (
             <Route exact path="/countries" component={ CountriesList } />
             <Route exact path="/leagues/new-league" component={ Leagues } />
             <Route exact path="/teams/new-team" component={ Teams } />
+            <Route exact path="/teams" component={ TeamsList } />
+            <Route exact path="/teams/:_id" component={ Teams } />
             <Route exact path="/players/new-player" component={ Players } />
         </Switch>
     </div>

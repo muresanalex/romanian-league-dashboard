@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { getCountries } from "../../apiService/apiService";
 
 const MIN_CHARACTERS = 3;
 
@@ -19,10 +18,11 @@ class Search extends Component {
 
     handleChange( evt ) {
         const { open } = this.state;
+        const { getResults } = this.props;
         const string = evt.target.value;
         const stringLength = string.length;
         if ( stringLength >= MIN_CHARACTERS ) {
-            getCountries( `?search=${ string }` ).then( ( results ) => this.setState( { results } ) );
+            getResults( `?search=${ string }` ).then( ( results ) => this.setState( { results } ) );
 
             if ( !open ) {
                 this.setState( {
@@ -55,11 +55,13 @@ class Search extends Component {
 
     buildItems( item ) {
         const { name, _id } = item;
+        const { pathname } = this.props.history.location;
+        console.log( this.props.history );
         return (
             <button
                 className="result-line"
                 key={ _id }
-                onClick={ () => this.props.history.push( `/countries/${ _id }` ) }
+                onClick={ () => this.props.history.push( `${ pathname }/${ _id }` ) }
             >
                 { name }
             </button>

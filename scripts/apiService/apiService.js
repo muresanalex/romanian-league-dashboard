@@ -50,8 +50,9 @@ function getPlayers() {
         .then( ( data ) => data.players );
 }
 
-function getTeams() {
-    return fetch( `${ baseUrl }/teams` )
+function getTeams( query ) {
+    const queryString = query || "";
+    return fetch( `${ baseUrl }/teams${ queryString }` )
         .then( ( response ) => response.json() )
         .then( ( data ) => data.teams );
 }
