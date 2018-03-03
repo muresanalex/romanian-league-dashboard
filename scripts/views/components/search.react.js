@@ -56,7 +56,6 @@ class Search extends Component {
     buildItems( item ) {
         const { name, _id } = item;
         const { pathname } = this.props.history.location;
-        console.log( this.props.history );
         return (
             <button
                 className="result-line"
