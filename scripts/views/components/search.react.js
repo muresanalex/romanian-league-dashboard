@@ -22,7 +22,7 @@ class Search extends Component {
         const string = evt.target.value;
         const stringLength = string.length;
         if ( stringLength >= MIN_CHARACTERS ) {
-            getResults( `?search=${ string }` ).then( ( results ) => this.setState( { results } ) );
+            getResults( `?search=${ string }` ).then( ( results ) => this.setState( { results: results.data } ) );
 
             if ( !open ) {
                 this.setState( {

@@ -22,13 +22,9 @@ class Teams extends Component {
         this.handleStadiumChange = this.handleStadiumChange.bind( this );
     }
 
-    componentWillMount() {
-        console.log( this.props.id );
-    }
-
     componentDidMount() {
-        getLeagues().then( ( leagues ) => this.setState( { leagues } ) );
-        getCountries().then( ( countries ) => this.setState( { countries } ) );
+        getLeagues().then( ( leagues ) => this.setState( { leagues: leagues.data } ) );
+        getCountries().then( ( countries ) => this.setState( { countries: countries.data } ) );
     }
 
     handleNameChange( evt ) {

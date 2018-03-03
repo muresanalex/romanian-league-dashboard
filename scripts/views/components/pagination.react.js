@@ -6,14 +6,18 @@ class Pagination extends Component {
         super();
         this.state = {
             result: [],
+            numberOfPages: 1,
+            currentPage: 1,
         };
         this.buildResults = this.buildResults.bind( this );
         this.buildItem = this.buildItem.bind( this );
+        this.buildNumberOfPages = this.buildNumberOfPages.bind( this );
     }
 
     componentWillMount() {
+        const { currentPage } = this.state;
         const { getResults } = this.props;
-        getResults().then( ( result ) => this.setState( { result } ) );
+        getResults( `?page=${ currentPage }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages } ) );
     }
 
     buildResults() {
@@ -55,10 +59,40 @@ class Pagination extends Component {
         );
     }
 
+    buildNumberOfPages() {
+        const { numberOfPages, currentPage } = this.state;
+        const buttons = [];
+        for ( let i = 0; i < numberOfPages; i += 1 ) {
+            const activeClass = i + 1 === currentPage ? "active" : "";
+            const button = (
+                <button
+                    className={ activeClass }
+                    key={ i }
+                    onClick={ this.handlePageClick( i ) }
+                >
+                    { i + 1 }
+                </button>
+            );
+            buttons.push( button );
+        }
+        return buttons.map( ( item ) => item );
+    }
+
+    handlePageClick( position ) {
+        return () => {
+            const { getResults } = this.props;
+            getResults( `?page=${ position + 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: position + 1 } ) );
+        };
+    }
+
     render() {
         const results = this.buildResults();
+        const numberOfPages = this.buildNumberOfPages();
         return (
-            <div className="pagination-container">{ results }</div>
+            <div>
+                <div className="pagination-container">{ results }</div>
+                <div className="number-of-pages">{ numberOfPages }</div>
+            </div>
         );
     }
 }

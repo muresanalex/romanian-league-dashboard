@@ -48,28 +48,28 @@ function getPlayers( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/players${ queryString }` )
         .then( ( response ) => response.json() )
-        .then( ( data ) => data.players );
+        .then( ( data ) => data );
 }
 
 function getTeams( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/teams${ queryString }` )
         .then( ( response ) => response.json() )
-        .then( ( data ) => data.teams );
+        .then( ( data ) => data );
 }
 
 function getLeagues( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/leagues${ queryString }` )
         .then( ( response ) => response.json() )
-        .then( ( data ) => data.leagues );
+        .then( ( data ) => data );
 }
 
 function getCountries( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/countries${ queryString }` )
         .then( ( response ) => response.json() )
-        .then( ( data ) => data.countries );
+        .then( ( data ) => data );
 }
 
 function getCountry( id ) {

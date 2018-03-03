@@ -17,7 +17,7 @@ class Leagues extends Component {
 
     componentDidMount() {
         getCountries()
-            .then( ( countries ) => this.setState( { countries } ) );
+            .then( ( countries ) => this.setState( { countries: countries.data } ) );
         this.clearInput();
     }
 
