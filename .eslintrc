@@ -1,6 +1,10 @@
 {
     "env": {
-        "browser": true // set this if you're running a browser app
+        "browser": true
     },
-    "extends": "fortech-react"
+    "extends": "fortech-react",
+    "rules": {
+        "react/prop-types": "off",
+        "no-underscore-dangle": "off"
+    }
 }

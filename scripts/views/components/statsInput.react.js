@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class StatsInput extends Component { // eslint-disable-line
+class StatsInput extends Component {
     constructor() {
         super();
         this.state = {
@@ -18,7 +18,7 @@ class StatsInput extends Component { // eslint-disable-line
     render() {
         let backgroundColor;
 
-        const { name } = this.props; // eslint-disable-line
+        const { name } = this.props;
         const { defaultValue } = this.state;
         const renderValue = this.state.changedValue || defaultValue;
 

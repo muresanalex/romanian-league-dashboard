@@ -13,7 +13,7 @@ class Dropdown extends Component {
     }
 
     render() {
-        const { elements, label } = this.props; // eslint-disable-line
+        const { elements, label } = this.props;
         const options = elements ? elements.map( createElements ) : "";
         const style = label === "country" || label === "team" || label === "league" ? { width: "150px" } : {};
         return (

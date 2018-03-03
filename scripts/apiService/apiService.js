@@ -44,8 +44,9 @@ function createCountry ( payload ) {
     } );
 }
 
-function getPlayers() {
-    return fetch( `${ baseUrl }/players` )
+function getPlayers( query ) {
+    const queryString = query || "";
+    return fetch( `${ baseUrl }/players${ queryString }` )
         .then( ( response ) => response.json() )
         .then( ( data ) => data.players );
 }
@@ -57,8 +58,9 @@ function getTeams( query ) {
         .then( ( data ) => data.teams );
 }
 
-function getLeagues() {
-    return fetch( `${ baseUrl }/leagues` )
+function getLeagues( query ) {
+    const queryString = query || "";
+    return fetch( `${ baseUrl }/leagues${ queryString }` )
         .then( ( response ) => response.json() )
         .then( ( data ) => data.leagues );
 }

@@ -54,13 +54,21 @@ class Search extends Component {
     }
 
     buildItems( item ) {
-        const { name, _id } = item;
+        const { _id } = item;
         const { pathname } = this.props.history.location;
+        const { push } = this.props.history;
+
+        let { name } = item;
+
+        if ( pathname.indexOf( "players" ) > -1 ) {
+            name = `${ item.firstName } ${ item.lastName }`;
+        }
+
         return (
             <button
                 className="result-line"
                 key={ _id }
-                onClick={ () => this.props.history.push( `${ pathname }/${ _id }` ) }
+                onClick={ () => push( `${ pathname }/${ _id }` ) }
             >
                 { name }
             </button>

@@ -90,7 +90,7 @@ class Navbar extends Component {
 
     buildItemsWithoutChildren( item ) {
         const { label, slug } = item;
-        const { history } = this.props; // eslint-disable-line
+        const { history } = this.props;
 
         return (
             <div

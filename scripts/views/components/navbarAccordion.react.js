@@ -17,7 +17,7 @@ class NavbarAccordion extends Component {
     }
 
     render() {
-        const { label, children, history } = this.props; // eslint-disable-line
+        const { label, children, history } = this.props;
         const { isOpen } = this.state;
         const openClassName = isOpen ? "open" : "";
         const arrrow = isOpen ? "∧" : "∨";
@@ -40,7 +40,7 @@ class NavbarAccordion extends Component {
                         children.map( ( item, index ) => (
                             <div
                                 className="navitem-child"
-                                key={ `${ item.slug } + ${ index }` } // eslint-disable-line
+                                key={ `${ item.slug } + ${ index }` }
                                 onClick={ () => history.push( item.slug ) }
                                 role="menuitem"
                                 tabIndex="-1"

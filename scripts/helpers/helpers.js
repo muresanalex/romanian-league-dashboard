@@ -4,7 +4,7 @@ function getNames( array ) {
 
 function getId( array, name ) {
     const newArray = array.filter( ( item ) => item.name === name );
-    return newArray[ 0 ]._id; // eslint-disable-line
+    return newArray[ 0 ]._id;
 }
 
 export {
