@@ -1,0 +1,38 @@
+.pagination-container {
+    width: 96%;
+    margin: 2%;
+
+    border: 1px solid grey;
+    padding: 10px;
+    color: dimgray;
+    height: 460px;
+
+    .no-result {
+        height: 44px;
+        line-height: 44px;         
+    }
+
+    .result-item {
+        height: 44px;
+        line-height: 44px;
+        width: 100%;
+        display: block;
+        text-align: left;
+        border: none;
+        color: dimgrey;
+        border-bottom: 1px solid lightgrey;
+        background-color: white;
+        cursor: pointer;
+        padding-left: 10px;
+
+        &:hover {
+            background-color: rgb(32, 189, 149);
+            color: white;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+}

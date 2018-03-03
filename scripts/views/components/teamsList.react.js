@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Search from "./search.react";
+import Pagination from "./pagination.react";
 import { getTeams } from "../../apiService/apiService";
 
 class TeamsList extends Component {
@@ -12,10 +13,11 @@ class TeamsList extends Component {
 
     render() {
         const { test } = this.state;
+        console.log( test );
         return (
             <div>
                 <Search getResults={ getTeams } />
-                <span>{ test }</span>
+                <Pagination getResults={ getTeams } />
             </div>
         );
     }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Search from "./search.react";
+import Pagination from "./pagination.react";
 import { getCountries } from "../../apiService/apiService";
 
 class CountriesList extends Component {
@@ -12,10 +13,11 @@ class CountriesList extends Component {
 
     render() {
         const { test } = this.state;
+        console.log( test );
         return (
             <div>
                 <Search getResults={ getCountries } />
-                <span>{ test }</span>
+                <Pagination getResults={ getCountries } />
             </div>
         );
     }
