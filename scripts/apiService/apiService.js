@@ -62,8 +62,9 @@ function getLeagues() {
         .then( ( data ) => data.leagues );
 }
 
-function getCountries() {
-    return fetch( `${ baseUrl }/countries` )
+function getCountries( query ) {
+    const queryString = query || "";
+    return fetch( `${ baseUrl }/countries${ queryString }` )
         .then( ( response ) => response.json() )
         .then( ( data ) => data.countries );
 }
