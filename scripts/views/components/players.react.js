@@ -3,8 +3,8 @@ import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import StatsInput from "./statsInput.react";
 import Dictionary from "../../helpers/dictionary";
-import { getNames } from "../../helpers/helpers";
-import { getCountries, getTeams } from "../../apiService/apiService";
+import { getNames, getId } from "../../helpers/helpers";
+import { getCountries, getTeams, createPlayer } from "../../apiService/apiService";
 
 class Players extends Component {
     constructor() {
@@ -17,17 +17,38 @@ class Players extends Component {
             mentalityStats: [ "aggression", "interceptions", "positioning", "vision", "penalties", "composure" ],
             defendingStats: [ "marking", "standingTackle", "slidingTackle" ],
             goalkeepingStats: [ "gkDiving", "gkHandling", "gkKicking", "gkPositioning", "gkReflexes" ],
+            otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves" ],
             teams: [],
             countries: [],
             playerDetails: {},
         };
 
         this.handleClick = this.handleClick.bind( this );
+        this.getValues = this.getValues.bind( this );
     }
 
     componentDidMount() {
         getTeams().then( ( teams ) => this.setState( { teams } ) );
         getCountries().then( ( countries ) => this.setState( { countries } ) );
+    }
+
+    getValues( statsArray ) {
+        const { teams, countries } = this.state;
+        const accumulator = {};
+        statsArray.forEach( ( item ) => {
+            if ( this[ item ] ) {
+                const value = this[ item ].getValue();
+
+                if ( item === "teamId" ) {
+                    accumulator[ item ] = getId( teams, value );
+                } else if ( item === "countryId" ) {
+                    accumulator[ item ] = getId( countries, value );
+                } else {
+                    accumulator[ item ] = value;
+                }
+            }
+        } );
+        return accumulator;
     }
 
     handleClick() {
@@ -39,60 +60,29 @@ class Players extends Component {
             mentalityStats,
             defendingStats,
             goalkeepingStats,
+            otherStats,
             playerDetails,
         } = this.state;
-        const stats = {};
-        attackingStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
 
-        skillStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
+        const attackingStatsValues = this.getValues( attackingStats );
+        const skillStatsValues = this.getValues( skillStats );
+        const movementStatsValues = this.getValues( movementStats );
+        const powerStatsValues = this.getValues( powerStats );
+        const mentalityStatsValues = this.getValues( mentalityStats );
+        const defendingStatsValues = this.getValues( defendingStats );
+        const goalkeepingStatsValues = this.getValues( goalkeepingStats );
+        const otherStatsValues = this.getValues( otherStats );
 
-        movementStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
+        const fullDetails = Object.assign( {}, playerDetails, attackingStatsValues, skillStatsValues, movementStatsValues, powerStatsValues, mentalityStatsValues, defendingStatsValues, goalkeepingStatsValues, otherStatsValues );
 
-        powerStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
-
-        mentalityStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
-
-        defendingStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
-
-        goalkeepingStats.forEach( ( item ) => {
-            if ( this[ item ] ) {
-                stats[ item ] = this[ item ].getValue();
-            }
-        } );
-
-        this.setState( {
-            playerDetails: Object.assign( {}, playerDetails, stats ),
-        } );
+        createPlayer( fullDetails );
     }
 
     handleInputChange( item ) {
         return ( evt ) => {
             const details = {};
-            details[ item ] = evt.target.value;
+            const { value } = evt.target;
+            details[ item ] = isNaN( value ) ? value : parseInt( value, 10 );
             this.setState( {
                 playerDetails: Object.assign( {}, this.state.playerDetails, details ),
             } );
@@ -114,7 +104,7 @@ class Players extends Component {
 
         const teamsNames = getNames( teams );
         const countriesNames = getNames( countries );
-        console.log( this.state.playerDetails );
+
         return (
             <div className="player-container grid-container">
                 <div className="details col-2">

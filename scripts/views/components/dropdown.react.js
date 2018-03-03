@@ -3,11 +3,13 @@ import React, { Component } from "react";
 class Dropdown extends Component {
     constructor() {
         super();
-        this.getSelectedValue = this.getSelectedValue.bind( this );
+        this.getValue = this.getValue.bind( this );
     }
 
-    getSelectedValue() {
-        return this.option.options[ this.option.selectedIndex ].text;
+    getValue() {
+        const value = this.option.options[ this.option.selectedIndex ].text;
+        const numericValue = parseInt( value, 10 );
+        return isNaN( numericValue ) ? value : numericValue;
     }
 
     render() {

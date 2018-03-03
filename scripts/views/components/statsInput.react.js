@@ -12,16 +12,15 @@ class StatsInput extends Component { // eslint-disable-line
 
     getValue() {
         const { changedValue, defaultValue } = this.state;
-        const { value } = this.props;
-        return changedValue || value || defaultValue;
+        return changedValue || defaultValue;
     }
 
     render() {
         let backgroundColor;
 
-        const { value, name } = this.props;
+        const { name } = this.props; // eslint-disable-line
         const { defaultValue } = this.state;
-        const renderValue = this.state.changedValue || value || defaultValue;
+        const renderValue = this.state.changedValue || defaultValue;
 
         if ( renderValue < 51 ) {
             backgroundColor = "#E9573E";
