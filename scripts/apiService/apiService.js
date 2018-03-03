@@ -72,6 +72,23 @@ function getCountries( query ) {
         .then( ( data ) => data.countries );
 }
 
+function getCountry( id ) {
+    return fetch( `${ baseUrl }/countries/${ id }` )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data.country );
+}
+
+function updateCountry( payload, id ) {
+    return fetch( `${ baseUrl }/countries/${ id }`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( payload ),
+    } );
+}
+
 export {
     createPlayer,
     createCountry,
@@ -81,4 +98,6 @@ export {
     getLeagues,
     createTeam,
     getTeams,
+    getCountry,
+    updateCountry,
 };

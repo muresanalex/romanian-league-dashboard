@@ -27,6 +27,10 @@ class Players extends Component {
         this.getValues = this.getValues.bind( this );
     }
 
+    componentWillMount() {
+        console.log( this.props.id );
+    }
+
     componentDidMount() {
         getTeams().then( ( teams ) => this.setState( { teams } ) );
         getCountries().then( ( countries ) => this.setState( { countries } ) );

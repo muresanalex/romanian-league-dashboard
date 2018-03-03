@@ -9,24 +9,25 @@ import Teams from "../components/teams.react";
 import TeamsList from "../components/teamsList.react";
 import Players from "../components/players.react";
 import PlayersList from "../components/playersList.react";
+import UpdateItem from "../components/updateItem.react";
 
 const Template = () => (
     <div className="template clearfix">
         <Navbar />
         <Switch>
-            <Route exact path="/" component={ CountriesList } />
+            <Route exact path="/" component={ LeaguesList } />
             <Route exact path="/countries" component={ CountriesList } />
             <Route exact path="/countries/new-country" component={ Countries } />
-            <Route exact path="/countries/:_id" component={ Countries } />
+            <Route exact path="/countries/:_id" component={ UpdateItem } />
             <Route exact path="/leagues" component={ LeaguesList } />
             <Route exact path="/leagues/new-league" component={ Leagues } />
-            <Route exact path="/leagues/:_id" component={ Leagues } />
+            <Route exact path="/leagues/:_id" component={ UpdateItem } />
             <Route exact path="/teams" component={ TeamsList } />
             <Route exact path="/teams/new-team" component={ Teams } />
-            <Route exact path="/teams/:_id" component={ Teams } />
+            <Route exact path="/teams/:_id" component={ UpdateItem } />
             <Route exact path="/players" component={ PlayersList } />
             <Route exact path="/players/new-player" component={ Players } />
-            <Route exact path="/players/:_id" component={ Players } />
+            <Route exact path="/players/:_id" component={ UpdateItem } />
         </Switch>
     </div>
 );

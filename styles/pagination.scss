@@ -1,11 +1,11 @@
 .pagination-container {
     width: 96%;
     margin: 2%;
-
     border: 1px solid grey;
     padding: 10px;
     color: dimgray;
     height: 460px;
+    overflow: scroll;
 
     .no-result {
         height: 44px;
