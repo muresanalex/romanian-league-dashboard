@@ -46,15 +46,14 @@ class Teams extends Component {
 
     handleClick() {
         const { teamName, stadium, countries, leagues } = this.state;
-        const leagueId = getId( leagues, this.league.getSelectedValue() );
-        const countryId = getId( countries, this.country.getSelectedValue() );
+        const leagueId = getId( leagues, this.league.getValue() );
+        const countryId = getId( countries, this.country.getValue() );
         createTeam( {
             name: teamName,
             stadium,
             leagueId,
             countryId,
-        } );
-        this.clearInputFields();
+        } ).then( ( ) => this.props.history.push( "/teams" ) );
     }
 
     render() {

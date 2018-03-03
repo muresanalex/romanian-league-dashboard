@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import { getCountries, createLeague } from "../../apiService/apiService";
@@ -33,13 +34,12 @@ class Leagues extends Component {
 
     handleClick() {
         const { leagueName, countries } = this.state;
-        const id = getId( countries, this.country.getSelectedValue() );
+        const id = getId( countries, this.country.getValue() );
 
         createLeague( {
             name: leagueName,
             countryId: id,
-        } );
-        this.clearInput();
+        } ).then( ( ) => this.props.history.push( "/leagues" ) );
     }
 
     render() {
@@ -77,4 +77,4 @@ class Leagues extends Component {
     }
 }
 
-export default Leagues;
+export default withRouter( Leagues );
