@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
-import { createCountry, getCountry, updateCountry } from "../../apiService/apiService";
+import { createCountry, getCountry, updateCountry, deleteCountry } from "../../apiService/apiService";
 
 class Countries extends Component {
     constructor() {
@@ -11,7 +11,8 @@ class Countries extends Component {
             updatePage: false,
         };
         this.handleChange = this.handleChange.bind( this );
-        this.handleClick = this.handleClick.bind( this );
+        this.handleSaveClick = this.handleSaveClick.bind( this );
+        this.handleDeleteClick = this.handleDeleteClick.bind( this );        
     }
 
     componentWillMount() {
@@ -33,7 +34,7 @@ class Countries extends Component {
         } );
     }
 
-    handleClick() {
+    handleSaveClick() {
         const { countryName, updatePage, country } = this.state;
 
         if ( updatePage ) {
@@ -43,18 +44,36 @@ class Countries extends Component {
         }
     }
 
+    handleDeleteClick() {
+        const { id } = this.props;
+        if ( id ) {
+            deleteCountry( id ).then( ( ) => this.props.history.push( "/countries" ) );
+        }
+        
+    }
+
     render() {
         const { countryName } = this.state;
+        const { id } = this.props;
+        const saveButtonText = id ? "update" : "save";
         return (
             <div className="country-container">
                 <div className="flag-wrapper">
                     <ImageUploader />
                     <button
                         className="button save-button"
-                        onClick={ this.handleClick }
+                        onClick={ this.handleSaveClick }
                     >
-                        Save
+                        { saveButtonText }
                     </button>
+                    {
+                        id && ( <button
+                        className="button delete-button"
+                        onClick={ this.handleDeleteClick }
+                    >
+                        delete
+                        </button> )
+                    }
                 </div>
                 <div className="country-details">
                     <input

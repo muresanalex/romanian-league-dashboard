@@ -14,6 +14,29 @@ class Search extends Component {
         this.buildResults = this.buildResults.bind( this );
         this.handleChange = this.handleChange.bind( this );
         this.buildItems = this.buildItems.bind( this );
+        this.handleClick = this.handleClick.bind( this );
+        this.handleBodyClick = this.handleBodyClick.bind( this );
+    }
+
+    componentDidMount() {
+        window.addEventListener( "click", this.handleBodyClick );
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener( "click", this.handleBodyClick );
+    }
+
+    handleBodyClick( evt ) {
+        const { open } = this.state;
+        if ( open && evt.target !== this.input ) {
+            this.setState( { open: false } );
+        }
+    }
+
+    handleClick( evt ) {
+        if ( evt.target.value.length >= MIN_CHARACTERS ) {
+            this.setState( { open: true } );
+        }
     }
 
     handleChange( evt ) {
@@ -81,7 +104,13 @@ class Search extends Component {
         const results = this.buildResults();
         return (
             <div className="search-container">
-                <input type="text" placeholder="Search" onChange={ this.handleChange } />
+                <input
+                    type="text"
+                    placeholder="Search"
+                    onChange={ this.handleChange }
+                    onClick={ this.handleClick }
+                    ref={ ( ref ) => this.input = ref }
+                />
                 <div className={ `search-results ${ openClass }` }>{ results }</div>
             </div>
         );

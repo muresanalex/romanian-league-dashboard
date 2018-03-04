@@ -52,11 +52,38 @@ class Pagination extends Component {
             <button
                 key={ _id }
                 className="result-item"
-                onClick={ () => push( `${ pathname }/${ _id }` ) }
+                onClick={ this.handleItemClick( _id ) }
             >
                 { name }
+                <span
+                    className="delete-item"
+                    onClick={ this.handleDeleteClick( _id ) }
+                    ref={ ( ref ) => this[ _id ] = ref }
+                >
+                    delete
+                </span>
             </button>
         );
+    }
+
+    handleItemClick( id ) {
+        return ( evt ) => {
+            const { pathname } = this.props.history.location;
+            const { push } = this.props.history;
+            if ( evt.target === this[ id ] ){
+                return;
+            }
+            return push( `${ pathname }/${ id }` );
+        }
+    }
+
+    handleDeleteClick( id ) {
+        return ( evt ) => {
+            const { deleteItem, getResults } = this.props;
+            deleteItem( id ).then( () => {
+                getResults( `?page=${ 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1 } ) );
+            } )
+        }
     }
 
     buildNumberOfPages() {

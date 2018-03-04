@@ -167,7 +167,7 @@ class Players extends Component {
                         <Dropdown ref={ ( ref ) => { this.preferredFoot = ref; } } elements={ Dictionary.preferredFoot } label="foot" />
                         <Dropdown ref={ ( ref ) => { this.weakFoot = ref; } } elements={ Dictionary.stars } label="weak foot" />
                     </div>
-                    <button className="save-button" onClick={ this.handleClick } >Save</button>
+                    <button className="button save-button" onClick={ this.handleClick } >Save</button>
                 </div>
                 <div className="stats col-4">
                     <div className="col-3">

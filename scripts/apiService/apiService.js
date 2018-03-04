@@ -72,10 +72,27 @@ function getCountries( query ) {
         .then( ( data ) => data );
 }
 
+function getLeague( id ) {
+    return fetch( `${ baseUrl }/leagues/${ id }` )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data.league );
+}
+
 function getCountry( id ) {
     return fetch( `${ baseUrl }/countries/${ id }` )
         .then( ( response ) => response.json() )
         .then( ( data ) => data.country );
+}
+
+function updateLeague( payload, id ) {
+    return fetch( `${ baseUrl }/leagues/${ id }`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( payload ),
+    } );
 }
 
 function updateCountry( payload, id ) {
@@ -89,6 +106,30 @@ function updateCountry( payload, id ) {
     } );
 }
 
+function deletePlayer( id ) {
+    return fetch( `${ baseUrl }/players/${ id }`, { method: "DELETE" } )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data );
+}
+
+function deleteTeam( id ) {
+    return fetch( `${ baseUrl }/teams/${ id }`, { method: "DELETE" } )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data );
+}
+
+function deleteLeague( id ) {
+    return fetch( `${ baseUrl }/leagues/${ id }`, { method: "DELETE" } )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data );
+}
+
+function deleteCountry( id ) {
+    return fetch( `${ baseUrl }/countries/${ id }`, { method: "DELETE" } )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data );
+}
+
 export {
     createPlayer,
     createCountry,
@@ -98,6 +139,12 @@ export {
     getLeagues,
     createTeam,
     getTeams,
+    getLeague,
     getCountry,
+    updateLeague,
     updateCountry,
+    deletePlayer,
+    deleteTeam,
+    deleteCountry,
+    deleteLeague,
 };

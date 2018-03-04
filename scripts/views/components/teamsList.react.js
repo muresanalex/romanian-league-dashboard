@@ -1,12 +1,12 @@
 import React from "react";
 import Search from "./search.react";
 import Pagination from "./pagination.react";
-import { getTeams } from "../../apiService/apiService";
+import { getTeams, deleteTeam } from "../../apiService/apiService";
 
 const TeamsList = () => (
     <div>
         <Search getResults={ getTeams } />
-        <Pagination getResults={ getTeams } />
+        <Pagination getResults={ getTeams } deleteItem={ deleteTeam } />
     </div>
 );
 
