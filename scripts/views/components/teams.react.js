@@ -41,7 +41,7 @@ class Teams extends Component {
                 stadium: team.stadium,
                 countryId: team.countryId,
                 leagueId: team.leagueId,
-            } ) )
+            } ) );
         }
 
         getLeagues().then( ( leagues ) => this.setState( { leagues: leagues.data } ) );

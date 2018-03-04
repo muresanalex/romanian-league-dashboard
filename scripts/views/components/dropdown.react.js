@@ -16,7 +16,9 @@ class Dropdown extends Component {
         const { value, elements } = nextProps;
 
         if ( value && !selectedValue ) {
-            const name = elements.filter( ( item ) => item._id === value ).map( ( item ) => item.name )[ 0 ];
+            const filteredById = elements.filter( ( item ) => item._id === value ).map( ( item ) => item.name )[ 0 ];
+            const filteredByValue = elements.filter( ( item ) => item === value )[ 0 ];
+            const name = typeof elements[ 0 ] === "object" ? filteredById : filteredByValue;
             this.setState( { selectedValue: name } );
         }
     }

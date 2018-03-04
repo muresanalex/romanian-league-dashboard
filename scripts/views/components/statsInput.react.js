@@ -5,9 +5,21 @@ class StatsInput extends Component {
         super();
         this.state = {
             defaultValue: 50,
+            changedValue: null,
         };
 
         this.getValue = this.getValue.bind( this );
+    }
+
+    componentWillReceiveProps( nextProps ) {
+        const { value, name } = nextProps;
+        const { changedValue } = this.state;
+
+        if ( value && !changedValue ) {
+            this.setState( {
+                changedValue: value[ name ],
+            } );
+        }
     }
 
     getValue() {
