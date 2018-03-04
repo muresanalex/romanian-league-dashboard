@@ -72,6 +72,18 @@ function getCountries( query ) {
         .then( ( data ) => data );
 }
 
+function getPlayer( id ) {
+    return fetch( `${ baseUrl }/players/${ id }` )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data.player );
+}
+
+function getTeam( id ) {
+    return fetch( `${ baseUrl }/teams/${ id }` )
+        .then( ( response ) => response.json() )
+        .then( ( data ) => data.team );
+}
+
 function getLeague( id ) {
     return fetch( `${ baseUrl }/leagues/${ id }` )
         .then( ( response ) => response.json() )
@@ -82,6 +94,28 @@ function getCountry( id ) {
     return fetch( `${ baseUrl }/countries/${ id }` )
         .then( ( response ) => response.json() )
         .then( ( data ) => data.country );
+}
+
+function updatePlayer( payload, id ) {
+    return fetch( `${ baseUrl }/players/${ id }`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( payload ),
+    } );
+}
+
+function updateTeam( payload, id ) {
+    return fetch( `${ baseUrl }/teams/${ id }`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify( payload ),
+    } );
 }
 
 function updateLeague( payload, id ) {
@@ -132,15 +166,19 @@ function deleteCountry( id ) {
 
 export {
     createPlayer,
-    createCountry,
-    getPlayers,
-    getCountries,
-    createLeague,
-    getLeagues,
     createTeam,
+    createCountry,
+    createLeague,
+    getPlayers,
     getTeams,
+    getLeagues,
+    getCountries,
+    getPlayer,
+    getTeam,
     getLeague,
     getCountry,
+    updatePlayers,
+    updateTeam,
     updateLeague,
     updateCountry,
     deletePlayer,
