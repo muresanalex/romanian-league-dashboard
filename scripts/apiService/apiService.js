@@ -177,7 +177,7 @@ export {
     getTeam,
     getLeague,
     getCountry,
-    updatePlayers,
+    updatePlayer,
     updateTeam,
     updateLeague,
     updateCountry,

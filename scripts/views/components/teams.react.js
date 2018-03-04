@@ -1,10 +1,14 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import {
     getLeagues,
     getCountries,
     createTeam,
+    getTeam,
+    deleteTeam,
+    updateTeam,
 } from "../../apiService/apiService";
 import { getNames, getId } from "../../helpers/helpers";
 
@@ -12,17 +16,34 @@ class Teams extends Component {
     constructor() {
         super();
         this.state = {
+            updatePage: false,
             countries: [],
             leagues: [],
             teamName: "",
             stadium: "",
+            countryId: "",
+            leagueId: "",
         };
-        this.handleClick = this.handleClick.bind( this );
+        this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleNameChange = this.handleNameChange.bind( this );
         this.handleStadiumChange = this.handleStadiumChange.bind( this );
+        this.handleDeleteClick = this.handleDeleteClick.bind( this );
     }
 
-    componentDidMount() {
+    componentWillMount() {
+        const { id } = this.props;
+
+        if ( id ) {
+            getTeam( id ).then( ( team ) => this.setState( {
+                id,
+                updatePage: true,
+                teamName: team.name,
+                stadium: team.stadium,
+                countryId: team.countryId,
+                leagueId: team.leagueId,
+            } ) )
+        }
+
         getLeagues().then( ( leagues ) => this.setState( { leagues: leagues.data } ) );
         getCountries().then( ( countries ) => this.setState( { countries: countries.data } ) );
     }
@@ -44,22 +65,37 @@ class Teams extends Component {
         this.stadium.value = "";
     }
 
-    handleClick() {
+    handleSaveClick() {
         const { teamName, stadium, countries, leagues } = this.state;
+        const { id } = this.props;
         const leagueId = getId( leagues, this.league.getValue() );
         const countryId = getId( countries, this.country.getValue() );
-        createTeam( {
+        const payload = {
             name: teamName,
             stadium,
             leagueId,
             countryId,
-        } ).then( ( ) => this.props.history.push( "/teams" ) );
+        };
+
+        if ( id ) {
+            updateTeam( payload, id ).then( ( ) => this.props.history.push( "/teams" ) );
+        } else {
+            createTeam( payload ).then( ( ) => this.props.history.push( "/teams" ) );            
+        } 
+        
+    }
+
+    handleDeleteClick() {
+        const { id } = this.props;
+
+        if ( id ) {
+            deleteTeam( id ).then( () => this.props.history.push( "/teams" ) );
+        }
     }
 
     render() {
-        const { countries, leagues } = this.state;
-        const countriesNames = getNames( countries );
-        const leaguesNames = getNames( leagues );
+        const { countries, leagues, stadium, teamName, leagueId, countryId, updatePage } = this.state;
+        const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="team-container">
                 <div className="team-logo">
@@ -67,10 +103,20 @@ class Teams extends Component {
                         <ImageUploader />
                         <button
                             className="button save-button"
-                            onClick={ this.handleClick }
+                            onClick={ this.handleSaveClick }
                         >
-                            Save
+                            { saveButtonText }
                         </button>
+                        {
+                            updatePage && (
+                                <button
+                                    className="button delete-button"
+                                    onClick={ this.handleDeleteClick }
+                                >
+                                    delete
+                                </button>
+                            )
+                        }
                     </div>
                 </div>
                 <div className="team-details">
@@ -80,6 +126,7 @@ class Teams extends Component {
                         className="team-name"
                         onChange={ this.handleNameChange }
                         ref={ ( ref ) => { this.name = ref; } }
+                        value={ teamName }
                     />
                     <input
                         type="text"
@@ -87,17 +134,20 @@ class Teams extends Component {
                         className="team-stadium"
                         onChange={ this.handleStadiumChange }
                         ref={ ( ref ) => { this.stadium = ref; } }
+                        value={ stadium }
                     />
                     <div className="dropdown-section">
                         <Dropdown
-                            elements={ countriesNames }
+                            elements={ countries }
                             label="country"
                             ref={ ( ref ) => { this.country = ref; } }
+                            value={ countryId }
                         />
                         <Dropdown
-                            elements={ leaguesNames }
+                            elements={ leagues }
                             label="league"
                             ref={ ( ref ) => { this.league = ref; } }
+                            value={ leagueId }
                         />
                     </div>
                 </div>
@@ -106,4 +156,4 @@ class Teams extends Component {
     }
 }
 
-export default Teams;
+export default withRouter( Teams );
