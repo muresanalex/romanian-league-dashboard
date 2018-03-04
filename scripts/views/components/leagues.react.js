@@ -18,6 +18,7 @@ class Leagues extends Component {
             leagueName: "",
             countries: [],
             updatePage: false,
+            countryId: "",
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
@@ -34,22 +35,15 @@ class Leagues extends Component {
                 countryId: league.countryId,
             } ) )
         }
-    }
 
-    componentDidMount() {
         getCountries()
             .then( ( countries ) => this.setState( { countries: countries.data } ) );
-        this.clearInput();
     }
 
     handleChange( evt ) {
         this.setState( {
             leagueName: evt.target.value,
         } );
-    }
-
-    clearInput() {
-        this.leagueName.value = "";
     }
 
     handleSaveClick() {
@@ -78,8 +72,7 @@ class Leagues extends Component {
     }
 
     render() {
-        const { countries, updatePage, leagueName } = this.state;
-        const countriesNames = getNames( countries );
+        const { countries, updatePage, leagueName, countryId } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="league-container">
@@ -113,9 +106,10 @@ class Leagues extends Component {
                     />
                     <div className="dropdown-section">
                         <Dropdown
-                            elements={ countriesNames }
+                            elements={ countries }
                             label="country"
                             ref={ ( ref ) => { this.country = ref; } }
+                            value={ countryId }
                         />
                     </div>
                 </div>
