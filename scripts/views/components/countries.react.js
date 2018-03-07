@@ -4,11 +4,12 @@ import ImageUploader from "./imageUploader.react";
 import { createCountry, getCountry, updateCountry, deleteCountry } from "../../apiService/apiService";
 
 class Countries extends Component {
-    constructor() {
-        super();
+    constructor( props ) {
+        super( props );
         this.state = {
             countryName: "",
             updatePage: false,
+            showSpinner: props.id ? true : false,
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
@@ -23,6 +24,7 @@ class Countries extends Component {
                     country,
                     updatePage: true,
                     countryName: country.name,
+                    showSpinner: false,
                 } );
             } );
         }
@@ -53,38 +55,43 @@ class Countries extends Component {
     }
 
     render() {
-        const { countryName } = this.state;
+        const { countryName, showSpinner } = this.state;
         const { id } = this.props;
         const saveButtonText = id ? "update" : "save";
         return (
             <div className="country-container">
-                <div className="flag-wrapper">
-                    <ImageUploader />
-                    <button
-                        className="button save-button"
-                        onClick={ this.handleSaveClick }
-                    >
-                        { saveButtonText }
-                    </button>
-                    {
-                        id && ( <button
-                        className="button delete-button"
-                        onClick={ this.handleDeleteClick }
-                    >
-                        delete
-                        </button> )
-                    }
-                </div>
-                <div className="country-details">
-                    <input
-                        ref={ ( name ) => { this.name = name; } }
-                        type="text"
-                        placeholder="name"
-                        className="country-name"
-                        onChange={ this.handleChange }
-                        value={ countryName }
-                    />
-                </div>
+                { showSpinner && <div className="lds-dual-ring" /> }
+                { !showSpinner && (
+                    <div>
+                        <div className="flag-wrapper">
+                            <ImageUploader />
+                            <button
+                                className="button save-button"
+                                onClick={ this.handleSaveClick }
+                            >
+                                { saveButtonText }
+                            </button>
+                            {
+                                id && ( <button
+                                className="button delete-button"
+                                onClick={ this.handleDeleteClick }
+                            >
+                                delete
+                                </button> )
+                            }
+                        </div>
+                        <div className="country-details">
+                            <input
+                                ref={ ( name ) => { this.name = name; } }
+                                type="text"
+                                placeholder="name"
+                                className="country-name"
+                                onChange={ this.handleChange }
+                                value={ countryName }
+                            />
+                        </div>
+                    </div>
+                ) }
             </div>
         );
     }

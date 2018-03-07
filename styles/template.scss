@@ -15,4 +15,12 @@
 {
     grid-column-start: 2;
     grid-column-end: 3;
+    position: relative;
+
+    .lds-dual-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -64px 0 0 -64px;
+    }
 }

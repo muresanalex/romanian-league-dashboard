@@ -63,7 +63,7 @@ class Search extends Component {
         const { results } = this.state;
         if ( results.length === 0 ) {
             return (
-                <div className="result-line no-result">No result!</div>
+                <div className="result-line no-result">No results!</div>
             );
         }
 

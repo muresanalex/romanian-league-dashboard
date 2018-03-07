@@ -8,6 +8,7 @@ class Pagination extends Component {
             result: [],
             numberOfPages: 1,
             currentPage: 1,
+            showSpinner: true,
         };
         this.buildResults = this.buildResults.bind( this );
         this.buildItem = this.buildItem.bind( this );
@@ -17,7 +18,7 @@ class Pagination extends Component {
     componentWillMount() {
         const { currentPage } = this.state;
         const { getResults } = this.props;
-        getResults( `?page=${ currentPage }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages } ) );
+        getResults( `?page=${ currentPage }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, showSpinner: false } ) );
     }
 
     buildResults() {
@@ -25,7 +26,7 @@ class Pagination extends Component {
 
         if ( result.length === 0 ) {
             return (
-                <div className="no-result">No result!</div>
+                <div className="no-result">No results!</div>
             );
         }
 
@@ -108,16 +109,27 @@ class Pagination extends Component {
     handlePageClick( position ) {
         return () => {
             const { getResults } = this.props;
-            getResults( `?page=${ position + 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: position + 1 } ) );
+            this.setState( { showSpinner: true } );
+            getResults( `?page=${ position + 1 }` ).then( ( result ) => this.setState( {
+                result: result.data,
+                numberOfPages: result.numberOfPages,
+                currentPage: position + 1,
+                showSpinner: false
+            } ) );
         };
     }
 
     render() {
+        const { showSpinner } = this.state;
         const results = this.buildResults();
         const numberOfPages = this.buildNumberOfPages();
+
         return (
             <div>
-                <div className="pagination-container">{ results }</div>
+                <div className="pagination-container">
+                    { showSpinner && <div className="lds-dual-ring" /> }
+                    { !showSpinner && results }
+                </div>
                 <div className="number-of-pages">{ numberOfPages }</div>
             </div>
         );

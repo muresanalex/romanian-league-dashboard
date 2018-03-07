@@ -12,13 +12,14 @@ import {
 import { getId, getNames } from "../../helpers/helpers";
 
 class Leagues extends Component {
-    constructor() {
-        super();
+    constructor( props ) {
+        super( props );
         this.state = {
             leagueName: "",
             countries: [],
             updatePage: false,
             countryId: "",
+            showSpinner: props.id ? true : false,            
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
@@ -27,17 +28,32 @@ class Leagues extends Component {
 
     componentWillMount() {
         const { id } = this.props;
+        const promises = [ getCountries() ];
+        
         if ( id ) {
-            getLeague( id ).then( ( league ) => this.setState( {
-                id,
-                updatePage: true,
-                leagueName: league.name,
-                countryId: league.countryId,
-            } ) )
+            promises.push( getLeague() );
         }
 
-        getCountries()
-            .then( ( countries ) => this.setState( { countries: countries.data } ) );
+        Promise.all( promises ).then( ( data ) => {
+            const [ countries, league ] = data;
+            let newState = {
+                countries: countries.data,
+                showSpinner: false,                
+            };
+
+            if ( league ) {
+                const leagueState = {
+                    id,
+                    updatePage: true,
+                    leagueName: league.name,
+                    countryId: league.countryId,
+                };
+                
+                newState = Object.assign( {}, newState, leagueState );
+            }
+
+            this.setState( newState );
+        } );
     }
 
     handleChange( evt ) {
@@ -72,47 +88,52 @@ class Leagues extends Component {
     }
 
     render() {
-        const { countries, updatePage, leagueName, countryId } = this.state;
+        const { countries, updatePage, leagueName, countryId, showSpinner } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="league-container">
-                <div className="league-logo">
-                    <ImageUploader />
-                    <button
-                        className="button save-button"
-                        onClick={ this.handleSaveClick }
-                    >
-                        { saveButtonText }
-                    </button>
-                    {
-                        updatePage && (
+                { showSpinner && <div className="lds-dual-ring" /> }
+                { !showSpinner && (
+                    <div>
+                        <div className="league-logo">
+                            <ImageUploader />
                             <button
-                                className="button delete-button"
-                                onClick={ this.handleDeleteClick }
+                                className="button save-button"
+                                onClick={ this.handleSaveClick }
                             >
-                                delete
+                                { saveButtonText }
                             </button>
-                        )
-                    }
-                </div>
-                <div className="league-details">
-                    <input
-                        type="text"
-                        placeholder="name"
-                        className="league-name"
-                        onChange={ this.handleChange }
-                        ref={ ( ref ) => { this.leagueName = ref; } }
-                        value={ leagueName }
-                    />
-                    <div className="dropdown-section">
-                        <Dropdown
-                            elements={ countries }
-                            label="country"
-                            ref={ ( ref ) => { this.country = ref; } }
-                            value={ countryId }
-                        />
+                            {
+                                updatePage && (
+                                    <button
+                                        className="button delete-button"
+                                        onClick={ this.handleDeleteClick }
+                                    >
+                                        delete
+                                    </button>
+                                )
+                            }
+                        </div>
+                        <div className="league-details">
+                            <input
+                                type="text"
+                                placeholder="name"
+                                className="league-name"
+                                onChange={ this.handleChange }
+                                ref={ ( ref ) => { this.leagueName = ref; } }
+                                value={ leagueName }
+                            />
+                            <div className="dropdown-section">
+                                <Dropdown
+                                    elements={ countries }
+                                    label="country"
+                                    ref={ ( ref ) => { this.country = ref; } }
+                                    value={ countryId }
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
+                ) }
             </div>
         );
     }

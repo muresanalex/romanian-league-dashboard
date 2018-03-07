@@ -8,8 +8,8 @@ import { getNames, getId } from "../../helpers/helpers";
 import { getCountries, getTeams, createPlayer, getPlayer, deletePlayer, updatePlayer } from "../../apiService/apiService";
 
 class Players extends Component {
-    constructor() {
-        super();
+    constructor( props ) {
+        super( props );
         this.state = {
             attackingStats: [ "crossing", "finishing", "headingAcc", "shortPassing", "volleys" ],
             skillStats: [ "dribbling", "curve", "fkAccuracy", "longPassing", "ballControl" ],
@@ -22,6 +22,7 @@ class Players extends Component {
             teams: [],
             countries: [],
             playerDetails: {},
+            showSpinner: props.id ? true : false,
         };
 
         this.handleSaveClick = this.handleSaveClick.bind( this );
@@ -31,16 +32,32 @@ class Players extends Component {
 
     componentWillMount() {
         const { id } = this.props;
-
+        const promises = [ getTeams(), getCountries() ];
+        
         if ( id ) {
-            getPlayer( id ).then( ( player ) => this.setState( {
-                id,
-                updatePage: true,
-                playerDetails: player,
-            } ) );
+            promises.push( getPlayer( id ) );
         }
-        getTeams().then( ( teams ) => this.setState( { teams: teams.data } ) );
-        getCountries().then( ( countries ) => this.setState( { countries: countries.data } ) );
+        
+        Promise.all( promises ).then( ( data ) => {
+            const [ teams, countries, player ] = data;
+            let newState = {
+                teams: teams.data,
+                countries: countries.data,
+                showSpinner: false,
+            };
+
+            if ( player ) {
+                const playerState = {
+                    id,
+                    updatePage: true,
+                    playerDetails: player,
+                }
+
+                newState = Object.assign( {}, newState, playerState );
+            }
+
+            this.setState( newState );
+        } )
     }
 
     getValues( statsArray ) {
@@ -123,127 +140,132 @@ class Players extends Component {
             countries,
             playerDetails,
             updatePage,
+            showSpinner,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         
         return (
             <div className="player-container grid-container">
-                <div className="details col-2">
-                    <ImageUploader />
-                    <input
-                        type="text"
-                        placeholder="first name"
-                        className="player-name"
-                        onChange={ this.handleInputChange( "firstName" ) }
-                        value={ playerDetails.firstName || "" }
-                    />
-                    <input
-                        type="text"
-                        placeholder="last name"
-                        className="player-name"
-                        onChange={ this.handleInputChange( "lastName" ) }
-                        value={ playerDetails.lastName || "" }
-                    />
-                    <input
-                        type="date"
-                        className="birth-date"
-                        onChange={ this.handleInputChange( "dateOfBirth" ) }
-                        value={ playerDetails.dateOfBirth || "" }
-                    />
-                    <div className="row">
-                        <div className="col-2">
+                { showSpinner && <div className="lds-dual-ring" /> }
+                { !showSpinner && (
+                    <div>
+                        <div className="details col-2">
+                            <ImageUploader />
                             <input
-                                type="number"
-                                placeholder="height"
-                                min="150"
-                                max="220"
-                                className="player-height"
-                                onChange={ this.handleInputChange( "height" ) }
-                                value={ playerDetails.height || "" }
+                                type="text"
+                                placeholder="first name"
+                                className="player-name"
+                                onChange={ this.handleInputChange( "firstName" ) }
+                                value={ playerDetails.firstName || "" }
                             />
-                            <span className="measure-unit">cm</span>
-                        </div>
-                        <div className="col-2">
                             <input
-                                type="number"
-                                placeholder="weight"
-                                min="50"
-                                max="130"
-                                className="player-weight"
-                                onChange={ this.handleInputChange( "weight" ) }
-                                value={ playerDetails.weight || "" }
-                             />
-                            <span className="measure-unit">kg</span>
-                        </div>
-                    </div>
+                                type="text"
+                                placeholder="last name"
+                                className="player-name"
+                                onChange={ this.handleInputChange( "lastName" ) }
+                                value={ playerDetails.lastName || "" }
+                            />
+                            <input
+                                type="date"
+                                className="birth-date"
+                                onChange={ this.handleInputChange( "dateOfBirth" ) }
+                                value={ playerDetails.dateOfBirth || "" }
+                            />
+                            <div className="row">
+                                <div className="col-2">
+                                    <input
+                                        type="number"
+                                        placeholder="height"
+                                        min="150"
+                                        max="220"
+                                        className="player-height"
+                                        onChange={ this.handleInputChange( "height" ) }
+                                        value={ playerDetails.height || "" }
+                                    />
+                                    <span className="measure-unit">cm</span>
+                                </div>
+                                <div className="col-2">
+                                    <input
+                                        type="number"
+                                        placeholder="weight"
+                                        min="50"
+                                        max="130"
+                                        className="player-weight"
+                                        onChange={ this.handleInputChange( "weight" ) }
+                                        value={ playerDetails.weight || "" }
+                                    />
+                                    <span className="measure-unit">kg</span>
+                                </div>
+                            </div>
 
-                    <div className="dropdown-section">
-                        <Dropdown value={ playerDetails.countryId } ref={ ( ref ) => { this.countryId = ref; } } elements={ countries } label="country" />
-                        <Dropdown value={ playerDetails.teamId } ref={ ( ref ) => { this.teamId = ref; } } elements={ teams } label="team" />
-                        <input
-                            type="number"
-                            placeholder="nr"
-                            min="1"
-                            max="99"
-                            className="shirt-number"
-                            onChange={ this.handleInputChange( "jerseyNumber" ) }
-                            value={ playerDetails.jerseyNumber || "" }
-                        />
-                        <span className="shirt-label">number</span>
-                        <Dropdown value={ playerDetails.position } ref={ ( ref ) => { this.position = ref; } } elements={ Dictionary.positions } label="position" />
-                        <Dropdown value={ playerDetails.preferredFoot } ref={ ( ref ) => { this.preferredFoot = ref; } } elements={ Dictionary.preferredFoot } label="foot" />
-                        <Dropdown value={ playerDetails.weakFoot } ref={ ( ref ) => { this.weakFoot = ref; } } elements={ Dictionary.stars } label="weak foot" />
+                            <div className="dropdown-section">
+                                <Dropdown value={ playerDetails.countryId } ref={ ( ref ) => { this.countryId = ref; } } elements={ countries } label="country" />
+                                <Dropdown value={ playerDetails.teamId } ref={ ( ref ) => { this.teamId = ref; } } elements={ teams } label="team" />
+                                <input
+                                    type="number"
+                                    placeholder="nr"
+                                    min="1"
+                                    max="99"
+                                    className="shirt-number"
+                                    onChange={ this.handleInputChange( "jerseyNumber" ) }
+                                    value={ playerDetails.jerseyNumber || "" }
+                                />
+                                <span className="shirt-label">number</span>
+                                <Dropdown value={ playerDetails.position } ref={ ( ref ) => { this.position = ref; } } elements={ Dictionary.positions } label="position" />
+                                <Dropdown value={ playerDetails.preferredFoot } ref={ ( ref ) => { this.preferredFoot = ref; } } elements={ Dictionary.preferredFoot } label="foot" />
+                                <Dropdown value={ playerDetails.weakFoot } ref={ ( ref ) => { this.weakFoot = ref; } } elements={ Dictionary.stars } label="weak foot" />
+                            </div>
+                            <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
+                            { updatePage && (
+                                <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>                        
+                            ) }
+                        </div>
+                        <div className="stats col-4">
+                            <div className="col-3">
+                                <div className="stats-group col-3">
+                                    <span className="title">Attacking</span>
+                                    { attackingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                                <div className="stats-group col-3">
+                                    <span className="title">Skill</span>
+                                    { skillStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                            </div>
+                            <div className="col-3">
+                                <div className="stats-group col-3">
+                                    <span className="title">Movement</span>
+                                    { movementStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                                <div className="stats-group col-3">
+                                    <span className="title">Power</span>
+                                    { powerStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                            </div>
+                            <div className="col-3">
+                                <div className="stats-group col-3">
+                                    <span className="title">Mentality</span>
+                                    { mentalityStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                                <div className="stats-group col-3">
+                                    <span className="title">Defending</span>
+                                    { defendingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                            </div>
+                            <div className="col-3">
+                                <div className="stats-group col-3">
+                                    <span className="title">Goalkeeping</span>
+                                    { goalkeepingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                </div>
+                                <div className="stats-group col-3">
+                                    <span className="title">Special</span>
+                                    <StatsInput value={ playerDetails } ref={ ( ref ) => { this.potential = ref; } } name="potential" />
+                                    <Dropdown value={ playerDetails.internationalReputation } ref={ ( ref ) => { this.internationalReputation = ref; } } elements={ Dictionary.stars } label="reputation" />
+                                    <Dropdown value={ playerDetails.skillMoves } ref={ ( ref ) => { this.skillMoves = ref; } } elements={ Dictionary.stars } label="skill moves" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
-                    { updatePage && (
-                        <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>                        
-                    ) }
-                </div>
-                <div className="stats col-4">
-                    <div className="col-3">
-                        <div className="stats-group col-3">
-                            <span className="title">Attacking</span>
-                            { attackingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                        <div className="stats-group col-3">
-                            <span className="title">Skill</span>
-                            { skillStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                    </div>
-                    <div className="col-3">
-                        <div className="stats-group col-3">
-                            <span className="title">Movement</span>
-                            { movementStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                        <div className="stats-group col-3">
-                            <span className="title">Power</span>
-                            { powerStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                    </div>
-                    <div className="col-3">
-                        <div className="stats-group col-3">
-                            <span className="title">Mentality</span>
-                            { mentalityStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                        <div className="stats-group col-3">
-                            <span className="title">Defending</span>
-                            { defendingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                    </div>
-                    <div className="col-3">
-                        <div className="stats-group col-3">
-                            <span className="title">Goalkeeping</span>
-                            { goalkeepingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
-                        </div>
-                        <div className="stats-group col-3">
-                            <span className="title">Special</span>
-                            <StatsInput value={ playerDetails } ref={ ( ref ) => { this.potential = ref; } } name="potential" />
-                            <Dropdown value={ playerDetails.internationalReputation } ref={ ( ref ) => { this.internationalReputation = ref; } } elements={ Dictionary.stars } label="reputation" />
-                            <Dropdown value={ playerDetails.skillMoves } ref={ ( ref ) => { this.skillMoves = ref; } } elements={ Dictionary.stars } label="skill moves" />
-                        </div>
-                    </div>
-                </div>
-
+                ) }
             </div>
         );
     }

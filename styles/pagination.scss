@@ -5,6 +5,7 @@
     padding: 10px;
     color: dimgray;
     height: 460px;
+    position: relative;
 
     .no-result {
         height: 44px;
@@ -38,6 +39,12 @@
         }
     }
 
+    .lds-dual-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -64px 0 0 -64px;
+    }
 }
 
 .number-of-pages {
