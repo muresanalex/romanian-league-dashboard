@@ -11,9 +11,9 @@ class Dropdown extends Component {
         this.handleChange = this.handleChange.bind( this );
     }
 
-    componentWillReceiveProps( nextProps ) {
+    componentWillMount( ) {
         const { selectedValue } = this.state;
-        const { value, elements } = nextProps;
+        const { value, elements } = this.props;
 
         if ( value && !selectedValue ) {
             const filteredById = elements.filter( ( item ) => item._id === value ).map( ( item ) => item.name )[ 0 ];

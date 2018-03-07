@@ -40,6 +40,7 @@ class Players extends Component {
         
         Promise.all( promises ).then( ( data ) => {
             const [ teams, countries, player ] = data;
+            console.log('data: ', data);
             let newState = {
                 teams: teams.data,
                 countries: countries.data,

@@ -31,7 +31,7 @@ class Leagues extends Component {
         const promises = [ getCountries() ];
         
         if ( id ) {
-            promises.push( getLeague() );
+            promises.push( getLeague( id ) );
         }
 
         Promise.all( promises ).then( ( data ) => {

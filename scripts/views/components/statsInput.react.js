@@ -11,8 +11,8 @@ class StatsInput extends Component {
         this.getValue = this.getValue.bind( this );
     }
 
-    componentWillReceiveProps( nextProps ) {
-        const { value, name } = nextProps;
+    componentWillMount( ) {
+        const { value, name } = this.props;
         const { changedValue } = this.state;
 
         if ( value && !changedValue ) {

@@ -41,6 +41,7 @@ class Teams extends Component {
 
         Promise.all( promises ).then( ( data ) => {
             const [ leagues, countries, team ] = data;
+            console.log('data: ', data);
             let newState = {
                 id,
                 leagues: leagues.data,
@@ -93,6 +94,7 @@ class Teams extends Component {
             leagueId,
             countryId,
         };
+        console.log('payload: ', payload);
 
         if ( id ) {
             updateTeam( payload, id ).then( ( ) => this.props.history.push( "/teams" ) );
