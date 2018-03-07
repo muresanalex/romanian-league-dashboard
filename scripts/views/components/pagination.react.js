@@ -81,8 +81,9 @@ class Pagination extends Component {
     handleDeleteClick( id ) {
         return ( evt ) => {
             const { deleteItem, getResults } = this.props;
+            this.setState( { showSpinner: true } );
             deleteItem( id ).then( () => {
-                getResults( `?page=${ 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1 } ) );
+                getResults( `?page=${ 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1, showSpinner: false } ) );
             } )
         }
     }
