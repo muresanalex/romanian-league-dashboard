@@ -13,7 +13,8 @@ class Countries extends Component {
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
-        this.handleDeleteClick = this.handleDeleteClick.bind( this );        
+        this.handleDeleteClick = this.handleDeleteClick.bind( this ); 
+        this.handleResponse = this.handleResponse.bind( this );       
     }
 
     componentWillMount() {
@@ -40,18 +41,32 @@ class Countries extends Component {
         const { countryName, updatePage, country } = this.state;
 
         if ( updatePage ) {
-            updateCountry( { name: countryName }, country._id ).then( () => this.props.history.push( "/countries" ) );
+            updateCountry( { name: countryName }, country._id )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         } else {
-            createCountry( { name: countryName } ).then( () => this.props.history.push( "/countries" ) );
+            createCountry( { name: countryName } )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         }
     }
 
     handleDeleteClick() {
         const { id } = this.props;
         if ( id ) {
-            deleteCountry( id ).then( ( ) => this.props.history.push( "/countries" ) );
+            deleteCountry( id )
+                .then( ( response ) => this.handleResponse( response ) );
         }
         
+    }
+
+    handleResponse( response ) {
+        const { status, message, error } = response;
+        if ( !error ) {
+            this.props.history.push( "/countries" );
+        } else {
+            console.log( error );
+        }
     }
 
     render() {

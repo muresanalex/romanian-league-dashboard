@@ -28,6 +28,7 @@ class Players extends Component {
         this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
         this.getValues = this.getValues.bind( this );
+        this.handleResponse = this.handleResponse.bind( this );       
     }
 
     componentWillMount() {
@@ -106,15 +107,20 @@ class Players extends Component {
         const fullDetails = Object.assign( {}, playerDetails, attackingStatsValues, skillStatsValues, movementStatsValues, powerStatsValues, mentalityStatsValues, defendingStatsValues, goalkeepingStatsValues, otherStatsValues );
         if ( id ) {
             delete fullDetails._id;
-            updatePlayer( fullDetails, id ).then( () => this.props.history.push( "/players" ) );
+            updatePlayer( fullDetails, id )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         } else {
-            createPlayer( fullDetails ).then( () => this.props.history.push( "/players" ) );
+            createPlayer( fullDetails )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         }
     }
 
     handleDeleteClick() {
         const { id } = this.props;
-        deletePlayer( id ).then( () => this.props.history.push( "/players" ) );
+        deletePlayer( id )
+            .then( ( response ) => this.handleResponse( response ) );
     }
 
     handleInputChange( item ) {
@@ -126,6 +132,15 @@ class Players extends Component {
                 playerDetails: Object.assign( {}, this.state.playerDetails, details ),
             } );
         };
+    }
+
+    handleResponse( response ) {
+        const { status, message, error } = response;
+        if ( !error ) {
+            this.props.history.push( "/players" );
+        } else {
+            console.log( error );
+        }
     }
 
     render() {

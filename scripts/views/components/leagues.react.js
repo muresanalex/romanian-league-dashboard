@@ -24,6 +24,7 @@ class Leagues extends Component {
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
+        this.handleResponse = this.handleResponse.bind( this );       
     }
 
     componentWillMount() {
@@ -72,9 +73,13 @@ class Leagues extends Component {
         };
 
         if ( updatePage ) {
-            updateLeague( payload, id ).then( ( ) => this.props.history.push( "/leagues" ) );
+            updateLeague( payload, id )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         } else {
-            createLeague( payload ).then( ( ) => this.props.history.push( "/leagues" ) );
+            createLeague( payload )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         }
 
     }
@@ -82,9 +87,19 @@ class Leagues extends Component {
     handleDeleteClick() {
         const { id } = this.props;
         if ( id ) {
-            deleteLeague( id ).then( ( ) => this.props.history.push( "/leagues" ) );
+            deleteLeague( id )
+                .then( ( response ) => this.handleResponse( response ) );
         }
         
+    }
+
+    handleResponse( response ) {
+        const { status, message, error } = response;
+        if ( !error ) {
+            this.props.history.push( "/leagues" );
+        } else {
+            console.log( error );
+        }
     }
 
     render() {

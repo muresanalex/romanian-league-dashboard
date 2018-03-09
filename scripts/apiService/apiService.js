@@ -1,7 +1,7 @@
 const baseUrl = "http://localhost:4000/api";
 const corsHeaders = {
-    Accept: "text/plain",
-    "Content-Type": "text/plain",
+    Accept: "application/json",
+    "Content-Type": "application/json",
 };
 
 function createPlayer( payload ) {

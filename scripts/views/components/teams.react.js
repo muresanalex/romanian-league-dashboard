@@ -29,6 +29,7 @@ class Teams extends Component {
         this.handleNameChange = this.handleNameChange.bind( this );
         this.handleStadiumChange = this.handleStadiumChange.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
+        this.handleResponse = this.handleResponse.bind( this );       
     }
 
     componentWillMount() {
@@ -97,9 +98,13 @@ class Teams extends Component {
         console.log('payload: ', payload);
 
         if ( id ) {
-            updateTeam( payload, id ).then( ( ) => this.props.history.push( "/teams" ) );
+            updateTeam( payload, id )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         } else {
-            createTeam( payload ).then( ( ) => this.props.history.push( "/teams" ) );            
+            createTeam( payload )
+                .then( ( res ) => res.json() )
+                .then( ( response ) => this.handleResponse( response ) );
         } 
         
     }
@@ -108,7 +113,17 @@ class Teams extends Component {
         const { id } = this.props;
 
         if ( id ) {
-            deleteTeam( id ).then( () => this.props.history.push( "/teams" ) );
+            deleteTeam( id )
+                .then( ( response ) => this.handleResponse( response ) );
+        }
+    }
+
+    handleResponse( response ) {
+        const { status, message, error } = response;
+        if ( !error ) {
+            this.props.history.push( "/teams" );
+        } else {
+            console.log( error );
         }
     }
 
