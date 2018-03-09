@@ -1,12 +1,13 @@
 const baseUrl = "http://localhost:4000/api";
+const corsHeaders = {
+    Accept: "text/plain",
+    "Content-Type": "text/plain",
+};
 
 function createPlayer( payload ) {
     return fetch( `${ baseUrl }/players`, {
         method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -14,10 +15,7 @@ function createPlayer( payload ) {
 function createTeam ( payload ) {
     return fetch( `${ baseUrl }/teams`, {
         method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -25,10 +23,7 @@ function createTeam ( payload ) {
 function createLeague ( payload ) {
     return fetch( `${ baseUrl }/leagues`, {
         method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -36,10 +31,7 @@ function createLeague ( payload ) {
 function createCountry ( payload ) {
     return fetch( `${ baseUrl }/countries`, {
         method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -99,10 +91,7 @@ function getCountry( id ) {
 function updatePlayer( payload, id ) {
     return fetch( `${ baseUrl }/players/${ id }`, {
         method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -110,10 +99,7 @@ function updatePlayer( payload, id ) {
 function updateTeam( payload, id ) {
     return fetch( `${ baseUrl }/teams/${ id }`, {
         method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -121,10 +107,7 @@ function updateTeam( payload, id ) {
 function updateLeague( payload, id ) {
     return fetch( `${ baseUrl }/leagues/${ id }`, {
         method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -132,10 +115,7 @@ function updateLeague( payload, id ) {
 function updateCountry( payload, id ) {
     return fetch( `${ baseUrl }/countries/${ id }`, {
         method: "PUT",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
+        headers: corsHeaders,
         body: JSON.stringify( payload ),
     } );
 }
@@ -155,7 +135,6 @@ function deleteTeam( id ) {
 function deleteLeague( id ) {
     return fetch( `${ baseUrl }/leagues/${ id }`, { method: "DELETE" } )
         .then( ( response ) => response.json() )
-        .then( ( data ) => data );
 }
 
 function deleteCountry( id ) {
