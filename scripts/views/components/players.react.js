@@ -3,8 +3,9 @@ import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import StatsInput from "./statsInput.react";
+import NotificationCenter from "./notificationCenter.react";
 import Dictionary from "../../helpers/dictionary";
-import { getNames, getId } from "../../helpers/helpers";
+import { getId } from "../../helpers/helpers";
 import { getCountries, getTeams, createPlayer, getPlayer, deletePlayer, updatePlayer } from "../../apiService/apiService";
 
 class Players extends Component {
@@ -22,26 +23,25 @@ class Players extends Component {
             teams: [],
             countries: [],
             playerDetails: {},
-            showSpinner: props.id ? true : false,
+            showSpinner: !!props.id,
         };
 
         this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
         this.getValues = this.getValues.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );       
+        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
         const { id } = this.props;
         const promises = [ getTeams(), getCountries() ];
-        
+
         if ( id ) {
             promises.push( getPlayer( id ) );
         }
-        
+
         Promise.all( promises ).then( ( data ) => {
             const [ teams, countries, player ] = data;
-            console.log('data: ', data);
             let newState = {
                 teams: teams.data,
                 countries: countries.data,
@@ -53,13 +53,13 @@ class Players extends Component {
                     id,
                     updatePage: true,
                     playerDetails: player,
-                }
+                };
 
                 newState = Object.assign( {}, newState, playerState );
             }
 
             this.setState( newState );
-        } )
+        } );
     }
 
     getValues( statsArray ) {
@@ -135,11 +135,11 @@ class Players extends Component {
     }
 
     handleResponse( response ) {
-        const { status, message, error } = response;
+        const { error } = response;
         if ( !error ) {
             this.props.history.push( "/players" );
         } else {
-            console.log( error );
+            this.notification.showMessage( error );
         }
     }
 
@@ -159,9 +159,13 @@ class Players extends Component {
             showSpinner,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
-        
+
         return (
             <div className="player-container grid-container">
+                <NotificationCenter ref={ ( ref ) => {
+                    this.notification = ref;
+                } }
+                />
                 { showSpinner && <div className="lds-dual-ring" /> }
                 { !showSpinner && (
                     <div>
@@ -215,8 +219,22 @@ class Players extends Component {
                             </div>
 
                             <div className="dropdown-section">
-                                <Dropdown value={ playerDetails.countryId } ref={ ( ref ) => { this.countryId = ref; } } elements={ countries } label="country" />
-                                <Dropdown value={ playerDetails.teamId } ref={ ( ref ) => { this.teamId = ref; } } elements={ teams } label="team" />
+                                <Dropdown
+                                    value={ playerDetails.countryId }
+                                    ref={ ( ref ) => {
+                                        this.countryId = ref;
+                                    } }
+                                    elements={ countries }
+                                    label="country"
+                                />
+                                <Dropdown
+                                    value={ playerDetails.teamId }
+                                    ref={ ( ref ) => {
+                                        this.teamId = ref;
+                                    } }
+                                    elements={ teams }
+                                    label="team"
+                                />
                                 <input
                                     type="number"
                                     placeholder="nr"
@@ -227,56 +245,146 @@ class Players extends Component {
                                     value={ playerDetails.jerseyNumber || "" }
                                 />
                                 <span className="shirt-label">number</span>
-                                <Dropdown value={ playerDetails.position } ref={ ( ref ) => { this.position = ref; } } elements={ Dictionary.positions } label="position" />
-                                <Dropdown value={ playerDetails.preferredFoot } ref={ ( ref ) => { this.preferredFoot = ref; } } elements={ Dictionary.preferredFoot } label="foot" />
-                                <Dropdown value={ playerDetails.weakFoot } ref={ ( ref ) => { this.weakFoot = ref; } } elements={ Dictionary.stars } label="weak foot" />
+                                <Dropdown
+                                    value={ playerDetails.position }
+                                    ref={ ( ref ) => {
+                                        this.position = ref;
+                                    } }
+                                    elements={ Dictionary.positions }
+                                    label="position"
+                                />
+                                <Dropdown
+                                    value={ playerDetails.preferredFoot }
+                                    ref={ ( ref ) => {
+                                        this.preferredFoot = ref;
+                                    } }
+                                    elements={ Dictionary.preferredFoot }
+                                    label="foot"
+                                />
+                                <Dropdown
+                                    value={ playerDetails.weakFoot }
+                                    ref={ ( ref ) => {
+                                        this.weakFoot = ref;
+                                    } }
+                                    elements={ Dictionary.stars }
+                                    label="weak foot"
+                                />
                             </div>
                             <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
                             { updatePage && (
-                                <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>                        
+                                <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>
                             ) }
                         </div>
                         <div className="stats col-4">
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Attacking</span>
-                                    { attackingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { attackingStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Skill</span>
-                                    { skillStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { skillStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Movement</span>
-                                    { movementStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { movementStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Power</span>
-                                    { powerStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { powerStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Mentality</span>
-                                    { mentalityStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { mentalityStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Defending</span>
-                                    { defendingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { defendingStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Goalkeeping</span>
-                                    { goalkeepingStats.map( ( item ) => <StatsInput value={ playerDetails } ref={ ( ref ) => { this[ item ] = ref; } } key={ item } name={ item } /> ) }
+                                    { goalkeepingStats.map( ( item ) => ( <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this[ item ] = ref;
+                                        } }
+                                        key={ item }
+                                        name={ item }
+                                    /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Special</span>
-                                    <StatsInput value={ playerDetails } ref={ ( ref ) => { this.potential = ref; } } name="potential" />
-                                    <Dropdown value={ playerDetails.internationalReputation } ref={ ( ref ) => { this.internationalReputation = ref; } } elements={ Dictionary.stars } label="reputation" />
-                                    <Dropdown value={ playerDetails.skillMoves } ref={ ( ref ) => { this.skillMoves = ref; } } elements={ Dictionary.stars } label="skill moves" />
+                                    <StatsInput
+                                        value={ playerDetails }
+                                        ref={ ( ref ) => {
+                                            this.potential = ref;
+                                        } }
+                                        name="potential"
+                                    />
+                                    <Dropdown
+                                        value={ playerDetails.internationalReputation }
+                                        ref={ ( ref ) => {
+                                            this.internationalReputation = ref;
+                                        } }
+                                        elements={ Dictionary.stars }
+                                        label="reputation"
+                                    />
+                                    <Dropdown
+                                        value={ playerDetails.skillMoves }
+                                        ref={ ( ref ) => {
+                                            this.skillMoves = ref;
+                                        } }
+                                        elements={ Dictionary.stars }
+                                        label="skill moves"
+                                    />
                                 </div>
                             </div>
                         </div>

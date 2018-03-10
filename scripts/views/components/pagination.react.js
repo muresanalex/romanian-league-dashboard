@@ -41,7 +41,6 @@ class Pagination extends Component {
 
     buildItem( item ) {
         const { pathname } = this.props.history.location;
-        const { push } = this.props.history;
         const { _id } = item;
         let { name } = item;
 
@@ -59,7 +58,9 @@ class Pagination extends Component {
                 <span
                     className="delete-item"
                     onClick={ this.handleDeleteClick( _id ) }
-                    ref={ ( ref ) => this[ _id ] = ref }
+                    ref={ ( ref ) => {
+                        this[ _id ] = ref;
+                    } }
                 >
                     delete
                 </span>
@@ -71,21 +72,21 @@ class Pagination extends Component {
         return ( evt ) => {
             const { pathname } = this.props.history.location;
             const { push } = this.props.history;
-            if ( evt.target === this[ id ] ){
+            if ( evt.target === this[ id ] ) {
                 return;
             }
-            return push( `${ pathname }/${ id }` );
-        }
+            push( `${ pathname }/${ id }` );
+        };
     }
 
     handleDeleteClick( id ) {
-        return ( evt ) => {
+        return ( ) => {
             const { deleteItem, getResults } = this.props;
             this.setState( { showSpinner: true } );
             deleteItem( id ).then( () => {
                 getResults( `?page=${ 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1, showSpinner: false } ) );
-            } )
-        }
+            } );
+        };
     }
 
     buildNumberOfPages() {
@@ -115,7 +116,7 @@ class Pagination extends Component {
                 result: result.data,
                 numberOfPages: result.numberOfPages,
                 currentPage: position + 1,
-                showSpinner: false
+                showSpinner: false,
             } ) );
         };
     }

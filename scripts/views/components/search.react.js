@@ -109,7 +109,9 @@ class Search extends Component {
                     placeholder="Search"
                     onChange={ this.handleChange }
                     onClick={ this.handleClick }
-                    ref={ ( ref ) => this.input = ref }
+                    ref={ ( ref ) => {
+                        this.input = ref;
+                    } }
                 />
                 <div className={ `search-results ${ openClass }` }>{ results }</div>
             </div>

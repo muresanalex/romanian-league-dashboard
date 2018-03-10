@@ -9,7 +9,8 @@ import {
     getLeague,
     updateLeague,
 } from "../../apiService/apiService";
-import { getId, getNames } from "../../helpers/helpers";
+import { getId } from "../../helpers/helpers";
+import NotificationCenter from "./notificationCenter.react";
 
 class Leagues extends Component {
     constructor( props ) {
@@ -19,18 +20,18 @@ class Leagues extends Component {
             countries: [],
             updatePage: false,
             countryId: "",
-            showSpinner: props.id ? true : false,            
+            showSpinner: !!props.id,
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );       
+        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
         const { id } = this.props;
         const promises = [ getCountries() ];
-        
+
         if ( id ) {
             promises.push( getLeague( id ) );
         }
@@ -39,7 +40,7 @@ class Leagues extends Component {
             const [ countries, league ] = data;
             let newState = {
                 countries: countries.data,
-                showSpinner: false,                
+                showSpinner: false,
             };
 
             if ( league ) {
@@ -49,7 +50,7 @@ class Leagues extends Component {
                     leagueName: league.name,
                     countryId: league.countryId,
                 };
-                
+
                 newState = Object.assign( {}, newState, leagueState );
             }
 
@@ -69,7 +70,7 @@ class Leagues extends Component {
         const countryId = getId( countries, this.country.getValue() );
         const payload = {
             name: leagueName,
-            countryId: countryId,
+            countryId,
         };
 
         if ( updatePage ) {
@@ -81,7 +82,6 @@ class Leagues extends Component {
                 .then( ( res ) => res.json() )
                 .then( ( response ) => this.handleResponse( response ) );
         }
-
     }
 
     handleDeleteClick() {
@@ -90,15 +90,14 @@ class Leagues extends Component {
             deleteLeague( id )
                 .then( ( response ) => this.handleResponse( response ) );
         }
-        
     }
 
     handleResponse( response ) {
-        const { status, message, error } = response;
+        const { error } = response;
         if ( !error ) {
             this.props.history.push( "/leagues" );
         } else {
-            console.log( error );
+            this.notification.showMessage( error );
         }
     }
 
@@ -107,6 +106,10 @@ class Leagues extends Component {
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="league-container">
+                <NotificationCenter ref={ ( ref ) => {
+                    this.notification = ref;
+                } }
+                />
                 { showSpinner && <div className="lds-dual-ring" /> }
                 { !showSpinner && (
                     <div>
@@ -135,14 +138,18 @@ class Leagues extends Component {
                                 placeholder="name"
                                 className="league-name"
                                 onChange={ this.handleChange }
-                                ref={ ( ref ) => { this.leagueName = ref; } }
+                                ref={ ( ref ) => {
+                                    this.leagueName = ref;
+                                } }
                                 value={ leagueName }
                             />
                             <div className="dropdown-section">
                                 <Dropdown
                                     elements={ countries }
                                     label="country"
-                                    ref={ ( ref ) => { this.country = ref; } }
+                                    ref={ ( ref ) => {
+                                        this.country = ref;
+                                    } }
                                     value={ countryId }
                                 />
                             </div>

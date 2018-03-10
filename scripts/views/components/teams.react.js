@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
+import NotificationCenter from "./notificationCenter.react";
+import { getId } from "../../helpers/helpers";
 import {
     getLeagues,
     getCountries,
@@ -10,7 +12,6 @@ import {
     deleteTeam,
     updateTeam,
 } from "../../apiService/apiService";
-import { getNames, getId } from "../../helpers/helpers";
 
 class Teams extends Component {
     constructor( props ) {
@@ -23,13 +24,13 @@ class Teams extends Component {
             stadium: "",
             countryId: "",
             leagueId: "",
-            showSpinner: props.id ? true : false,
+            showSpinner: !!props.id,
         };
         this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleNameChange = this.handleNameChange.bind( this );
         this.handleStadiumChange = this.handleStadiumChange.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );       
+        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
@@ -42,7 +43,6 @@ class Teams extends Component {
 
         Promise.all( promises ).then( ( data ) => {
             const [ leagues, countries, team ] = data;
-            console.log('data: ', data);
             let newState = {
                 id,
                 leagues: leagues.data,
@@ -58,13 +58,12 @@ class Teams extends Component {
                     stadium: team.stadium,
                     countryId: team.countryId,
                     leagueId: team.leagueId,
-                }
+                };
                 newState = Object.assign( {}, newState, teamState );
             }
 
             this.setState( newState );
         } );
-
     }
 
     handleNameChange( evt ) {
@@ -79,11 +78,6 @@ class Teams extends Component {
         } );
     }
 
-    clearInputFields() {
-        this.name.value = "";
-        this.stadium.value = "";
-    }
-
     handleSaveClick() {
         const { teamName, stadium, countries, leagues } = this.state;
         const { id } = this.props;
@@ -95,7 +89,6 @@ class Teams extends Component {
             leagueId,
             countryId,
         };
-        console.log('payload: ', payload);
 
         if ( id ) {
             updateTeam( payload, id )
@@ -105,8 +98,7 @@ class Teams extends Component {
             createTeam( payload )
                 .then( ( res ) => res.json() )
                 .then( ( response ) => this.handleResponse( response ) );
-        } 
-        
+        }
     }
 
     handleDeleteClick() {
@@ -119,11 +111,11 @@ class Teams extends Component {
     }
 
     handleResponse( response ) {
-        const { status, message, error } = response;
+        const { error } = response;
         if ( !error ) {
             this.props.history.push( "/teams" );
         } else {
-            console.log( error );
+            this.notification.showMessage( error );
         }
     }
 
@@ -136,11 +128,15 @@ class Teams extends Component {
             leagueId,
             countryId,
             updatePage,
-            showSpinner
+            showSpinner,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="team-container">
+                <NotificationCenter ref={ ( ref ) => {
+                    this.notification = ref;
+                } }
+                />
                 { showSpinner && <div className="lds-dual-ring" /> }
                 { !showSpinner && (
                     <div>
@@ -171,7 +167,9 @@ class Teams extends Component {
                                 placeholder="name"
                                 className="team-name"
                                 onChange={ this.handleNameChange }
-                                ref={ ( ref ) => { this.name = ref; } }
+                                ref={ ( ref ) => {
+                                    this.name = ref;
+                                } }
                                 value={ teamName }
                             />
                             <input
@@ -179,20 +177,26 @@ class Teams extends Component {
                                 placeholder="stadium"
                                 className="team-stadium"
                                 onChange={ this.handleStadiumChange }
-                                ref={ ( ref ) => { this.stadium = ref; } }
+                                ref={ ( ref ) => {
+                                    this.stadium = ref;
+                                } }
                                 value={ stadium }
                             />
                             <div className="dropdown-section">
                                 <Dropdown
                                     elements={ countries }
                                     label="country"
-                                    ref={ ( ref ) => { this.country = ref; } }
+                                    ref={ ( ref ) => {
+                                        this.country = ref;
+                                    } }
                                     value={ countryId }
                                 />
                                 <Dropdown
                                     elements={ leagues }
                                     label="league"
-                                    ref={ ( ref ) => { this.league = ref; } }
+                                    ref={ ( ref ) => {
+                                        this.league = ref;
+                                    } }
                                     value={ leagueId }
                                 />
                             </div>

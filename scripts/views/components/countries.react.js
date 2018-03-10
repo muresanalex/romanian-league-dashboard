@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
-import { createCountry, getCountry, updateCountry, deleteCountry } from "../../apiService/apiService";
+import NotificationCenter from "./notificationCenter.react";
+import {
+    createCountry,
+    getCountry,
+    updateCountry,
+    deleteCountry,
+} from "../../apiService/apiService";
 
 class Countries extends Component {
     constructor( props ) {
@@ -9,12 +15,12 @@ class Countries extends Component {
         this.state = {
             countryName: "",
             updatePage: false,
-            showSpinner: props.id ? true : false,
+            showSpinner: !!props.id,
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
-        this.handleDeleteClick = this.handleDeleteClick.bind( this ); 
-        this.handleResponse = this.handleResponse.bind( this );       
+        this.handleDeleteClick = this.handleDeleteClick.bind( this );
+        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
@@ -57,15 +63,14 @@ class Countries extends Component {
             deleteCountry( id )
                 .then( ( response ) => this.handleResponse( response ) );
         }
-        
     }
 
     handleResponse( response ) {
-        const { status, message, error } = response;
+        const { error } = response;
         if ( !error ) {
             this.props.history.push( "/countries" );
         } else {
-            console.log( error );
+            this.notification.showMessage( error );
         }
     }
 
@@ -75,6 +80,10 @@ class Countries extends Component {
         const saveButtonText = id ? "update" : "save";
         return (
             <div className="country-container">
+                <NotificationCenter ref={ ( ref ) => {
+                    this.notification = ref;
+                } }
+                />
                 { showSpinner && <div className="lds-dual-ring" /> }
                 { !showSpinner && (
                     <div>
@@ -87,17 +96,20 @@ class Countries extends Component {
                                 { saveButtonText }
                             </button>
                             {
-                                id && ( <button
-                                className="button delete-button"
-                                onClick={ this.handleDeleteClick }
-                            >
-                                delete
-                                </button> )
+                                id && (
+                                    <button
+                                        className="button delete-button"
+                                        onClick={ this.handleDeleteClick }
+                                    >
+                                        delete
+                                    </button> )
                             }
                         </div>
                         <div className="country-details">
                             <input
-                                ref={ ( name ) => { this.name = name; } }
+                                ref={ ( name ) => {
+                                    this.name = name;
+                                } }
                                 type="text"
                                 placeholder="name"
                                 className="country-name"
