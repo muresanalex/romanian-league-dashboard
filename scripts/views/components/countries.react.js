@@ -70,7 +70,7 @@ class Countries extends Component {
         if ( !error ) {
             this.props.history.push( "/countries" );
         } else {
-            this.notification.showMessage( error );
+            this.notification.showMessage( error.details[ 0 ].message );
         }
     }
 

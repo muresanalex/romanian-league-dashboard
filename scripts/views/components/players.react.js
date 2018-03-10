@@ -139,7 +139,7 @@ class Players extends Component {
         if ( !error ) {
             this.props.history.push( "/players" );
         } else {
-            this.notification.showMessage( error );
+            this.notification.showMessage( error.details[ 0 ].message );
         }
     }
 

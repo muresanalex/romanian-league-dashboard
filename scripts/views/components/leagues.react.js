@@ -97,7 +97,7 @@ class Leagues extends Component {
         if ( !error ) {
             this.props.history.push( "/leagues" );
         } else {
-            this.notification.showMessage( error );
+            this.notification.showMessage( error.details[ 0 ].message );
         }
     }
 

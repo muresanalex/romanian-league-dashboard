@@ -115,7 +115,7 @@ class Teams extends Component {
         if ( !error ) {
             this.props.history.push( "/teams" );
         } else {
-            this.notification.showMessage( error );
+            this.notification.showMessage( error.details[ 0 ].message );
         }
     }
 
