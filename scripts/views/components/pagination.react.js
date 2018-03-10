@@ -92,18 +92,55 @@ class Pagination extends Component {
     buildNumberOfPages() {
         const { numberOfPages, currentPage } = this.state;
         const buttons = [];
-        for ( let i = 0; i < numberOfPages; i += 1 ) {
-            const activeClass = i + 1 === currentPage ? "active" : "";
+        const prevPage = currentPage - 1;
+        const nextPage = currentPage + 1;
+        let firstPage = currentPage === 1 ? currentPage : prevPage;
+        let lastPage = currentPage === numberOfPages ? currentPage : nextPage;
+
+        if ( currentPage === 1 && numberOfPages >= 3 ) {
+            lastPage += 1;
+        } else if ( currentPage === numberOfPages && numberOfPages >= 3 ) {
+            firstPage -= 1;
+        }
+
+        for ( let i = firstPage; i <= lastPage; i += 1 ) {
+            const activeClass = i === currentPage ? "active" : "";
             const button = (
                 <button
                     className={ activeClass }
                     key={ i }
                     onClick={ this.handlePageClick( i ) }
                 >
-                    { i + 1 }
+                    { i }
                 </button>
             );
             buttons.push( button );
+        }
+
+        if ( firstPage > 1 ) {
+            const leftDots = (
+                <button
+                    className="dots"
+                    key="leftDots"
+                    onClick={ this.handlePageClick( firstPage - 1 ) }
+                >
+                    ...
+                </button>
+            );
+            buttons.unshift( leftDots );
+        }
+
+        if ( lastPage < numberOfPages ) {
+            const rightDots = (
+                <button
+                    className="dots"
+                    key="rightDots"
+                    onClick={ this.handlePageClick( lastPage + 1 ) }
+                >
+                    ...
+                </button>
+            );
+            buttons.push( rightDots );
         }
         return buttons.map( ( item ) => item );
     }
@@ -111,11 +148,17 @@ class Pagination extends Component {
     handlePageClick( position ) {
         return () => {
             const { getResults } = this.props;
+            const { currentPage } = this.state;
+
+            if ( currentPage === position ) {
+                return;
+            }
+
             this.setState( { showSpinner: true } );
-            getResults( `?page=${ position + 1 }` ).then( ( result ) => this.setState( {
+            getResults( `?page=${ position }` ).then( ( result ) => this.setState( {
                 result: result.data,
                 numberOfPages: result.numberOfPages,
-                currentPage: position + 1,
+                currentPage: position,
                 showSpinner: false,
             } ) );
         };
