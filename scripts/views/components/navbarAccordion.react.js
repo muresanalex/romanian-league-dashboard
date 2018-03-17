@@ -20,7 +20,6 @@ class NavbarAccordion extends Component {
         const { label, children, history } = this.props;
         const { isOpen } = this.state;
         const openClassName = isOpen ? "open" : "";
-        const arrrow = isOpen ? "∧" : "∨";
         return (
             <div
                 className={ `navitem ${ openClassName }` }
@@ -33,7 +32,7 @@ class NavbarAccordion extends Component {
                     onClick={ this.handleClick }
                 >
                     <span className="label">{ label }</span>
-                    <span className="arrow">{ arrrow }</span>
+                    <span className="arrow">&gt;</span>
                 </div>
                 <div className="navitem-children">
                     {

@@ -10,12 +10,13 @@ import TeamsList from "../components/teamsList.react";
 import Players from "../components/players.react";
 import PlayersList from "../components/playersList.react";
 import UpdateItem from "../components/updateItem.react";
+import Home from "./home.react";
 
 const Template = () => (
     <div className="template clearfix">
         <Navbar />
         <Switch>
-            <Route exact path="/" component={ Countries } />
+            <Route exact path="/" component={ Home } />
             <Route exact path="/countries" component={ CountriesList } />
             <Route exact path="/countries/new-country" component={ Countries } />
             <Route exact path="/countries/:_id" component={ UpdateItem } />
