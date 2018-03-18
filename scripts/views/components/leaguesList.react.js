@@ -6,7 +6,7 @@ import { getLeagues, deleteLeague } from "../../apiService/apiService";
 const LeaguesList = () => (
     <div>
         <Search getResults={ getLeagues } />
-        <Pagination getResults={ getLeagues } deleteItem={ deleteLeague } />
+        <Pagination getResults={ getLeagues } deleteItem={ deleteLeague } path="/leagues" />
     </div>
 );
 

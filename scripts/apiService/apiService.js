@@ -120,27 +120,41 @@ function updateCountry( payload, id ) {
     } );
 }
 
-function deletePlayer( id ) {
-    return fetch( `${ baseUrl }/players/${ id }`, { method: "DELETE" } )
+function deletePlayer( { _id } ) {
+    return fetch( `${ baseUrl }/players/${ _id }`, { method: "DELETE" } )
         .then( ( response ) => response.json() )
         .then( ( data ) => data );
 }
 
-function deleteTeam( id ) {
-    return fetch( `${ baseUrl }/teams/${ id }`, { method: "DELETE" } )
+function deleteTeam( { _id } ) {
+    return fetch( `${ baseUrl }/teams/${ _id }`, { method: "DELETE" } )
         .then( ( response ) => response.json() )
         .then( ( data ) => data );
 }
 
-function deleteLeague( id ) {
-    return fetch( `${ baseUrl }/leagues/${ id }`, { method: "DELETE" } )
-        .then( ( response ) => response.json() )
+function deleteLeague( { _id } ) {
+    return fetch( `${ baseUrl }/leagues/${ _id }`, { method: "DELETE" } )
+        .then( ( response ) => response.json() );
 }
 
-function deleteCountry( id ) {
-    return fetch( `${ baseUrl }/countries/${ id }`, { method: "DELETE" } )
+function deleteCountry( { _id } ) {
+    return fetch( `${ baseUrl }/countries/${ _id }`, { method: "DELETE" } )
         .then( ( response ) => response.json() )
         .then( ( data ) => data );
+}
+
+// special requests
+
+function removeTeamFromLeague( team ) {
+    const payload = Object.assign( {}, team, { leagueId: "y9UbVpX6MVFRjnJX" } );
+    delete payload._id;
+    return updateTeam( payload, team._id );
+}
+
+function removePlayerFromTeam( player ) {
+    const payload = Object.assign( {}, player, { teamId: "4CcLQBCglPLz4xZj" } );
+    delete payload._id;
+    return updatePlayer( payload, player._id );
 }
 
 export {
@@ -164,4 +178,6 @@ export {
     deleteTeam,
     deleteCountry,
     deleteLeague,
+    removeTeamFromLeague,
+    removePlayerFromTeam,
 };

@@ -15,19 +15,7 @@ class UpdateItem extends Component {
     }
     componentWillMount() {
         const { pathname } = this.props.history.location;
-
-        let type = "";
-
-        if ( pathname.indexOf( "/players/" ) > -1 ) {
-            type = "players";
-        } else if ( pathname.indexOf( "/teams/" ) > -1 ) {
-            type = "teams";
-        } else if ( pathname.indexOf( "/leagues/" ) > -1 ) {
-            type = "leagues";
-        } else if ( pathname.indexOf( "/countries/" ) > -1 ) {
-            type = "countries";
-        }
-
+        const type = getType( pathname );
         const id = pathname.split( `/${ type }/` )[ 1 ];
 
         this.setState( {
@@ -36,9 +24,23 @@ class UpdateItem extends Component {
         } );
     }
 
+    componentWillReceiveProps( nextProps ) {
+        const { pathname } = nextProps.history.location;
+        const { type } = this.state;
+        const newType = getType( pathname );
+
+        if ( type !== newType ) {
+            const id = pathname.split( `/${ newType }/` )[ 1 ];
+
+            this.setState( {
+                id,
+                type: newType,
+            } );
+        }
+    }
+
     render() {
         const { id, type } = this.state;
-
         if ( type === "players" ) {
             return <Players id={ id } />;
         } else if ( type === "teams" ) {
@@ -50,6 +52,20 @@ class UpdateItem extends Component {
         }
         return false;
     }
+}
+
+function getType( pathname ) {
+    if ( pathname.indexOf( "/players/" ) > -1 ) {
+        return "players";
+    } else if ( pathname.indexOf( "/teams/" ) > -1 ) {
+        return "teams";
+    } else if ( pathname.indexOf( "/leagues/" ) > -1 ) {
+        return "leagues";
+    } else if ( pathname.indexOf( "/countries/" ) > -1 ) {
+        return "countries";
+    }
+
+    return "";
 }
 
 export default withRouter( UpdateItem );

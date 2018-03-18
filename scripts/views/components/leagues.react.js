@@ -8,9 +8,12 @@ import {
     deleteLeague,
     getLeague,
     updateLeague,
+    getTeams,
+    removeTeamFromLeague,
 } from "../../apiService/apiService";
 import { getId } from "../../helpers/helpers";
 import NotificationCenter from "./notificationCenter.react";
+import Pagination from "./pagination.react";
 
 class Leagues extends Component {
     constructor( props ) {
@@ -112,48 +115,61 @@ class Leagues extends Component {
                 />
                 { showSpinner && <div className="lds-dual-ring" /> }
                 { !showSpinner && (
-                    <div>
-                        <div className="league-logo">
-                            <ImageUploader />
-                            <button
-                                className="button save-button"
-                                onClick={ this.handleSaveClick }
-                            >
-                                { saveButtonText }
-                            </button>
-                            {
-                                updatePage && (
-                                    <button
-                                        className="button delete-button"
-                                        onClick={ this.handleDeleteClick }
-                                    >
+                    <div className="league-wrapper">
+                        <div className="league-details-wrapper">
+                            <div className="league-logo">
+                                <ImageUploader />
+                                <button
+                                    className="button save-button"
+                                    onClick={ this.handleSaveClick }
+                                >
+                                    { saveButtonText }
+                                </button>
+                                {
+                                    updatePage && (
+                                        <button
+                                            className="button delete-button"
+                                            onClick={ this.handleDeleteClick }
+                                        >
                                         delete
-                                    </button>
-                                )
-                            }
-                        </div>
-                        <div className="league-details">
-                            <input
-                                type="text"
-                                placeholder="name"
-                                className="league-name"
-                                onChange={ this.handleChange }
-                                ref={ ( ref ) => {
-                                    this.leagueName = ref;
-                                } }
-                                value={ leagueName }
-                            />
-                            <div className="dropdown-section">
-                                <Dropdown
-                                    elements={ countries }
-                                    label="country"
+                                        </button>
+                                    )
+                                }
+                            </div>
+                            <div className="league-details">
+                                <input
+                                    type="text"
+                                    placeholder="name"
+                                    className="league-name"
+                                    onChange={ this.handleChange }
                                     ref={ ( ref ) => {
-                                        this.country = ref;
+                                        this.leagueName = ref;
                                     } }
-                                    value={ countryId }
+                                    value={ leagueName }
                                 />
+                                <div className="dropdown-section">
+                                    <Dropdown
+                                        elements={ countries }
+                                        label="country"
+                                        ref={ ( ref ) => {
+                                            this.country = ref;
+                                        } }
+                                        value={ countryId }
+                                    />
+                                </div>
                             </div>
                         </div>
+                        {
+                            this.props.id && (
+                                <Pagination
+                                    getResults={ getTeams }
+                                    deleteItem={ removeTeamFromLeague }
+                                    path="/teams"
+                                    filterBy="leagueId"
+                                    id={ this.props.id }
+                                />
+                            )
+                        }
                     </div>
                 ) }
             </div>

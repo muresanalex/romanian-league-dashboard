@@ -1,6 +1,21 @@
 .team-container {
     font-family: sans-serif;
 
+    .team-wrapper {
+        display: grid;
+        grid-template-columns: 50% 50%;
+
+        .team-details-wrapper {
+            grid-column-start: 1;
+            grid-column-end: 2;
+        }
+
+        .pagination-wrapper {
+            grid-column-start: 2;
+            grid-column-end: 3;
+        }
+    }
+
     .team-logo {
         float: left;
         margin: 10px;

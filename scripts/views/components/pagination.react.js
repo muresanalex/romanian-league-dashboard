@@ -17,8 +17,12 @@ class Pagination extends Component {
 
     componentWillMount() {
         const { currentPage } = this.state;
-        const { getResults } = this.props;
-        getResults( `?page=${ currentPage }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, showSpinner: false } ) );
+        const { getResults, id } = this.props;
+        const query = id ? `?id=${ id }&page=${ currentPage }` : `?page=${ currentPage }`;
+        getResults( query )
+            .then( ( result ) => {
+                this.setState( { result: result.data, numberOfPages: result.numberOfPages, showSpinner: false } );
+            } );
     }
 
     buildResults() {
@@ -40,11 +44,10 @@ class Pagination extends Component {
     }
 
     buildItem( item ) {
-        const { pathname } = this.props.history.location;
+        const { path } = this.props;
         const { _id } = item;
         let { name } = item;
-
-        if ( pathname.indexOf( "players" ) > -1 ) {
+        if ( path.indexOf( "players" ) > -1 ) {
             name = `${ item.firstName } ${ item.lastName }`;
         }
 
@@ -57,7 +60,7 @@ class Pagination extends Component {
                 { name }
                 <span
                     className="delete-item"
-                    onClick={ this.handleDeleteClick( _id ) }
+                    onClick={ this.handleDeleteClick( item ) }
                     ref={ ( ref ) => {
                         this[ _id ] = ref;
                     } }
@@ -70,21 +73,21 @@ class Pagination extends Component {
 
     handleItemClick( id ) {
         return ( evt ) => {
-            const { pathname } = this.props.history.location;
-            const { push } = this.props.history;
+            const { path } = this.props;
             if ( evt.target === this[ id ] ) {
                 return;
             }
-            push( `${ pathname }/${ id }` );
+            this.props.history.push( `${ path }/${ id }` );
         };
     }
 
-    handleDeleteClick( id ) {
+    handleDeleteClick( item ) {
         return ( ) => {
             const { deleteItem, getResults } = this.props;
+            const query = this.props.id ? `?id=${ this.props.id }&page=${ 1 }` : `?page=${ 1 }`;
             this.setState( { showSpinner: true } );
-            deleteItem( id ).then( () => {
-                getResults( `?page=${ 1 }` ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1, showSpinner: false } ) );
+            deleteItem( item ).then( ( ) => {
+                getResults( query ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1, showSpinner: false } ) );
             } );
         };
     }
@@ -154,8 +157,9 @@ class Pagination extends Component {
                 return;
             }
 
+            const query = this.props.id ? `?id=${ this.props.id }&page=${ position }` : `?page=${ position }`;
             this.setState( { showSpinner: true } );
-            getResults( `?page=${ position }` ).then( ( result ) => this.setState( {
+            getResults( query ).then( ( result ) => this.setState( {
                 result: result.data,
                 numberOfPages: result.numberOfPages,
                 currentPage: position,
@@ -165,17 +169,19 @@ class Pagination extends Component {
     }
 
     render() {
-        const { showSpinner } = this.state;
+        const { showSpinner, numberOfPages } = this.state;
         const results = this.buildResults();
-        const numberOfPages = this.buildNumberOfPages();
+        const pages = numberOfPages > 0 ? this.buildNumberOfPages() : false;
 
         return (
-            <div>
+            <div className="pagination-wrapper">
                 <div className="pagination-container">
                     { showSpinner && <div className="lds-dual-ring" /> }
                     { !showSpinner && results }
                 </div>
-                <div className="number-of-pages">{ numberOfPages }</div>
+                {
+                    pages && <div className="number-of-pages">{ pages }</div>
+                }
             </div>
         );
     }
