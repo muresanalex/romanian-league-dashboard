@@ -252,6 +252,7 @@ class Players extends Component {
                                     } }
                                     elements={ Dictionary.positions }
                                     label="position"
+                                    small
                                 />
                                 <Dropdown
                                     value={ playerDetails.preferredFoot }
@@ -260,6 +261,7 @@ class Players extends Component {
                                     } }
                                     elements={ Dictionary.preferredFoot }
                                     label="foot"
+                                    small
                                 />
                                 <Dropdown
                                     value={ playerDetails.weakFoot }
@@ -268,6 +270,7 @@ class Players extends Component {
                                     } }
                                     elements={ Dictionary.stars }
                                     label="weak foot"
+                                    small
                                 />
                             </div>
                             <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
@@ -376,6 +379,7 @@ class Players extends Component {
                                         } }
                                         elements={ Dictionary.stars }
                                         label="reputation"
+                                        small
                                     />
                                     <Dropdown
                                         value={ playerDetails.skillMoves }
@@ -384,6 +388,7 @@ class Players extends Component {
                                         } }
                                         elements={ Dictionary.stars }
                                         label="skill moves"
+                                        small
                                     />
                                 </div>
                             </div>

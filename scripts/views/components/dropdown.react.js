@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+const defaultLabel = "";
+
 class Dropdown extends Component {
     constructor() {
         super();
@@ -38,12 +40,14 @@ class Dropdown extends Component {
 
     render() {
         const { selectedValue } = this.state;
-        const { elements, label } = this.props;
+        const { elements, label, small } = this.props;
         const options = elements ? elements.map( createElements ) : "";
         const style = label === "country" || label === "team" || label === "league" ? { width: "150px" } : {};
+        const smallClass = small ? "small" : "";
 
         return (
-            <div className="dropdown-container">
+            <div className={ `dropdown-container ${ smallClass }` }>
+                <span>{ label || defaultLabel }</span>
                 <select
                     onChange={ this.handleChange }
                     value={ selectedValue }
@@ -54,7 +58,6 @@ class Dropdown extends Component {
                 >
                     { options }
                 </select>
-                <span>{ label || "" }</span>
             </div>
         );
     }
