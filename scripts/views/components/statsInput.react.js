@@ -69,7 +69,7 @@ class StatsInput extends Component {
                     max="99"
                     style={ style }
                     placeholder={ name }
-                    onChange={ this.handleChange }
+                    onChange={ this.handleChange && this.handleChange }
                 />
                 <span>{ name }</span>
             </div>

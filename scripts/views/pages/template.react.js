@@ -13,7 +13,7 @@ import UpdateItem from "../components/updateItem.react";
 import Home from "./home.react";
 
 const Template = () => (
-    <div className="template clearfix">
+    <div className="template">
         <Navbar />
         <Switch>
             <Route exact path="/" component={ Home } />

@@ -3,6 +3,12 @@
 
     .details {
 
+        .top-right {
+            float: left;
+            width: 300px;
+            margin: 10px;
+        }
+
         .player-name,
         .birth-date
         {
@@ -10,6 +16,40 @@
             height: 24px;
             margin: 10px;
             padding-left: 5px;
+        }
+
+        .birth-date {
+            height: 30px;
+        }
+
+        .height-and-weight {
+            display: block;
+            float: left;
+            width: 150px;
+            margin-left: 10px;
+            margin-top: 10px;
+
+            input,
+            span
+            {
+                margin-bottom: 20px;
+                height: 30px;
+            }
+        }
+
+        .country-and-team {
+            display: block;
+            float: left;
+            width: 300px;
+        }
+
+        .position-and-foot {
+            .dropdown-container {
+                margin-left: 25px;
+            }
+            .dropdown-container:first-child {
+                margin-left: 10px;
+            }
         }
 
         .player-height,
@@ -22,14 +62,16 @@
         }
 
         .shirt-number {
-            width: 60px;
+            width: 70px;
             height: 30px;
             padding-left: 5px;
             margin-bottom: 5px;
+            margin-left: 10px;
         }
 
         .shirt-label {
-            margin-left: 5px;
+            margin-left: 6px;
+            margin-right: 20px;
             font-size: 13px;
         }
 
@@ -40,11 +82,38 @@
         .measure-unit {
             font-size: 13px;
         }
+
+        .overall {
+            width: 50px;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 5px;
+            color: white;
+            font-size: 13px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .plus-button,
+        .minus-button
+        {
+            width: 50px;
+            height: 30px;
+            background-color: white;
+            color: black;
+            font-size: 13px;
+            margin-left: 25px;
+        }
     }
 
     .stats {
 
         .stats-group {
+
+            .dropdown-container {
+                float: none;
+            }
+
             .title {
                 color: grey;
                 font-size: 20px;

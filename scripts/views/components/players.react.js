@@ -5,6 +5,7 @@ import Dropdown from "./dropdown.react";
 import StatsInput from "./statsInput.react";
 import NotificationCenter from "./notificationCenter.react";
 import Dictionary from "../../helpers/dictionary";
+import Overall from "./overall.react";
 import computeOverallValue from "../../helpers/computeOverallValue";
 import { getId } from "../../helpers/helpers";
 import { getCountries, getTeams, createPlayer, getPlayer, deletePlayer, updatePlayer } from "../../apiService/apiService";
@@ -20,7 +21,7 @@ class Players extends Component {
             mentalityStats: [ "aggression", "interceptions", "positioning", "vision", "penalties", "composure" ],
             defendingStats: [ "marking", "standingTackle", "slidingTackle" ],
             goalkeepingStats: [ "gkDiving", "gkHandling", "gkKicking", "gkPositioning", "gkReflexes" ],
-            otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves" ],
+            otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves", "overall" ],
             teams: [],
             countries: [],
             playerDetails: {},
@@ -150,9 +151,13 @@ class Players extends Component {
         newValue[ stat ] = value;
         const updatedDetails = Object.assign( {}, playerDetails, newValue );
         const overall = computeOverallValue( updatedDetails );
+
+        if ( playerDetails.ovarall !== overall ) {
+            newValue.overall = overall;
+        }
+
         this.setState( {
-            playerDetails: updatedDetails,
-            overall,
+            playerDetails: Object.assign( {}, updatedDetails, newValue ),
         } );
     }
 
@@ -170,12 +175,8 @@ class Players extends Component {
             playerDetails,
             updatePage,
             showSpinner,
-            overall,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
-        console.log( playerDetails );
-        console.log( "overall: ", overall );
-
         return (
             <div className="player-container grid-container">
                 <NotificationCenter ref={ ( ref ) => {
@@ -186,55 +187,75 @@ class Players extends Component {
                 { !showSpinner && (
                     <div>
                         <div className="details col-2">
-                            <ImageUploader />
+                            <div className="top-group clearfix">
+                                <ImageUploader />
+                                <div className="top-right">
+                                    <Overall renderValue={ playerDetails.overall } />
+                                    <button
+                                        className="plus-button"
+                                    >
+                                        +1
+                                    </button>
+                                    <button
+                                        className="minus-button"
+                                    >
+                                        -1
+                                    </button>
+                                    <input
+                                        type="text"
+                                        placeholder="first name"
+                                        className="player-name"
+                                        onChange={ this.handleInputChange( "firstName" ) }
+                                        value={ playerDetails.firstName || "" }
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="last name"
+                                        className="player-name"
+                                        onChange={ this.handleInputChange( "lastName" ) }
+                                        value={ playerDetails.lastName || "" }
+                                    />
+                                </div>
+                            </div>
                             <input
-                                type="text"
-                                placeholder="first name"
-                                className="player-name"
-                                onChange={ this.handleInputChange( "firstName" ) }
-                                value={ playerDetails.firstName || "" }
+                                type="number"
+                                placeholder="nr"
+                                min="1"
+                                max="99"
+                                className="shirt-number"
+                                onChange={ this.handleInputChange( "jerseyNumber" ) }
+                                value={ playerDetails.jerseyNumber || "" }
                             />
-                            <input
-                                type="text"
-                                placeholder="last name"
-                                className="player-name"
-                                onChange={ this.handleInputChange( "lastName" ) }
-                                value={ playerDetails.lastName || "" }
-                            />
+                            <span className="shirt-label">number</span>
                             <input
                                 type="date"
                                 className="birth-date"
                                 onChange={ this.handleInputChange( "dateOfBirth" ) }
                                 value={ playerDetails.dateOfBirth || "" }
                             />
-                            <div className="row">
-                                <div className="col-2">
-                                    <input
-                                        type="number"
-                                        placeholder="height"
-                                        min="150"
-                                        max="220"
-                                        className="player-height"
-                                        onChange={ this.handleInputChange( "height" ) }
-                                        value={ playerDetails.height || "" }
-                                    />
-                                    <span className="measure-unit">cm</span>
-                                </div>
-                                <div className="col-2">
-                                    <input
-                                        type="number"
-                                        placeholder="weight"
-                                        min="50"
-                                        max="130"
-                                        className="player-weight"
-                                        onChange={ this.handleInputChange( "weight" ) }
-                                        value={ playerDetails.weight || "" }
-                                    />
-                                    <span className="measure-unit">kg</span>
-                                </div>
+                            <div className="height-and-weight">
+                                <input
+                                    type="number"
+                                    placeholder="height"
+                                    min="150"
+                                    max="220"
+                                    className="player-height"
+                                    onChange={ this.handleInputChange( "height" ) }
+                                    value={ playerDetails.height || "" }
+                                />
+                                <span className="measure-unit">cm</span>
+                                <input
+                                    type="number"
+                                    placeholder="weight"
+                                    min="50"
+                                    max="130"
+                                    className="player-weight"
+                                    onChange={ this.handleInputChange( "weight" ) }
+                                    value={ playerDetails.weight || "" }
+                                />
+                                <span className="measure-unit">kg</span>
                             </div>
-
-                            <div className="dropdown-section">
+                            <div className="country-and-team clearfix">
                                 <Dropdown
                                     value={ playerDetails.countryId }
                                     ref={ ( ref ) => {
@@ -251,16 +272,8 @@ class Players extends Component {
                                     elements={ teams }
                                     label="team"
                                 />
-                                <input
-                                    type="number"
-                                    placeholder="nr"
-                                    min="1"
-                                    max="99"
-                                    className="shirt-number"
-                                    onChange={ this.handleInputChange( "jerseyNumber" ) }
-                                    value={ playerDetails.jerseyNumber || "" }
-                                />
-                                <span className="shirt-label">number</span>
+                            </div>
+                            <div className="position-and-foot clearfix">
                                 <Dropdown
                                     value={ playerDetails.position }
                                     ref={ ( ref ) => {
