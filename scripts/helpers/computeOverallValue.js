@@ -1,6 +1,7 @@
 const defaultOverall = 1;
 
-function computeOverallValue( playerDetails, position ) {
+function computeOverallValue( playerDetails ) {
+    const { position } = playerDetails;
     const percentageValues = {
         ST: {
             finishing: 18,

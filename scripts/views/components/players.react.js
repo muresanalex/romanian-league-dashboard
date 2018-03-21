@@ -5,6 +5,7 @@ import Dropdown from "./dropdown.react";
 import StatsInput from "./statsInput.react";
 import NotificationCenter from "./notificationCenter.react";
 import Dictionary from "../../helpers/dictionary";
+import computeOverallValue from "../../helpers/computeOverallValue";
 import { getId } from "../../helpers/helpers";
 import { getCountries, getTeams, createPlayer, getPlayer, deletePlayer, updatePlayer } from "../../apiService/apiService";
 
@@ -30,6 +31,7 @@ class Players extends Component {
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
         this.getValues = this.getValues.bind( this );
         this.handleResponse = this.handleResponse.bind( this );
+        this.handleStatChange = this.handleStatChange.bind( this );
     }
 
     componentWillMount() {
@@ -142,6 +144,18 @@ class Players extends Component {
         }
     }
 
+    handleStatChange( stat, value ) {
+        const { playerDetails } = this.state;
+        const newValue = {};
+        newValue[ stat ] = value;
+        const updatedDetails = Object.assign( {}, playerDetails, newValue );
+        const overall = computeOverallValue( updatedDetails );
+        this.setState( {
+            playerDetails: updatedDetails,
+            overall,
+        } );
+    }
+
     render() {
         const {
             attackingStats,
@@ -156,8 +170,11 @@ class Players extends Component {
             playerDetails,
             updatePage,
             showSpinner,
+            overall,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
+        console.log( playerDetails );
+        console.log( "overall: ", overall );
 
         return (
             <div className="player-container grid-container">
@@ -288,6 +305,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
@@ -299,6 +317,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                             </div>
@@ -312,6 +331,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
@@ -323,6 +343,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                             </div>
@@ -336,6 +357,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">
@@ -347,6 +369,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                             </div>
@@ -360,6 +383,7 @@ class Players extends Component {
                                         } }
                                         key={ item }
                                         name={ item }
+                                        handleStatChange={ this.handleStatChange }
                                     /> ) ) }
                                 </div>
                                 <div className="stats-group col-3">

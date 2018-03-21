@@ -9,6 +9,7 @@ class StatsInput extends Component {
         };
 
         this.getValue = this.getValue.bind( this );
+        this.handleChange = this.handleChange.bind( this );
     }
 
     componentWillMount( ) {
@@ -25,6 +26,17 @@ class StatsInput extends Component {
     getValue() {
         const { changedValue, defaultValue } = this.state;
         return changedValue || defaultValue;
+    }
+
+    handleChange( evt ) {
+        const { name, handleStatChange } = this.props;
+        const value = parseInt( evt.target.value, 10 );
+
+        this.setState( {
+            changedValue: value,
+        } );
+
+        handleStatChange( name, value );
     }
 
     render() {
@@ -57,9 +69,7 @@ class StatsInput extends Component {
                     max="99"
                     style={ style }
                     placeholder={ name }
-                    onChange={ ( evt ) => this.setState( {
-                        changedValue: parseInt( evt.target.value, 10 ),
-                    } ) }
+                    onChange={ this.handleChange }
                 />
                 <span>{ name }</span>
             </div>
