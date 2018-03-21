@@ -54,7 +54,6 @@ class Players extends Component {
                     updatePage: true,
                     playerDetails: player,
                 };
-
                 newState = Object.assign( {}, newState, playerState );
             }
 

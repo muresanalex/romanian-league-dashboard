@@ -58,7 +58,7 @@ class StatsInput extends Component {
                     style={ style }
                     placeholder={ name }
                     onChange={ ( evt ) => this.setState( {
-                        changedValue: evt.target.value,
+                        changedValue: parseInt( evt.target.value, 10 ),
                     } ) }
                 />
                 <span>{ name }</span>
