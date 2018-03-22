@@ -1,14 +1,17 @@
 import React from "react";
 
+const defaultValue = 50;
+
 const Overall = ( { renderValue } ) => {
+    const value = renderValue || defaultValue;
     let backgroundColor = "#E9573E";
-    if ( renderValue < 51 ) {
+    if ( value < 51 ) {
         backgroundColor = "#E9573E";
-    } else if ( renderValue < 61 ) {
+    } else if ( value < 61 ) {
         backgroundColor = "#E77E23";
-    } else if ( renderValue < 71 ) {
+    } else if ( value < 71 ) {
         backgroundColor = "#F6BB43";
-    } else if ( renderValue < 81 ) {
+    } else if ( value < 81 ) {
         backgroundColor = "#8DC153";
     } else {
         backgroundColor = "#239454";
@@ -17,7 +20,7 @@ const Overall = ( { renderValue } ) => {
         backgroundColor,
     };
     return (
-        <span className="overall" style={ style }>{ renderValue }</span>
+        <span className="overall" style={ style }>{ value }</span>
     );
 };
 

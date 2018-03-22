@@ -35,7 +35,12 @@ class Dropdown extends Component {
     handleChange() {
         const { options, selectedIndex } = this.option;
         const value = options[ selectedIndex ].text;
+
         this.setState( { selectedValue: value } );
+
+        if ( typeof this.props.handleStatChange === "function" ) {
+            this.props.handleStatChange();
+        }
     }
 
     render() {

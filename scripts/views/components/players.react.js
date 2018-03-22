@@ -21,7 +21,7 @@ class Players extends Component {
             mentalityStats: [ "aggression", "interceptions", "positioning", "vision", "penalties", "composure" ],
             defendingStats: [ "marking", "standingTackle", "slidingTackle" ],
             goalkeepingStats: [ "gkDiving", "gkHandling", "gkKicking", "gkPositioning", "gkReflexes" ],
-            otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves", "overall" ],
+            otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves", "overall", "position" ],
             teams: [],
             countries: [],
             playerDetails: {},
@@ -35,7 +35,7 @@ class Players extends Component {
         this.handleStatChange = this.handleStatChange.bind( this );
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { id } = this.props;
         const promises = [ getTeams(), getCountries() ];
 
@@ -58,6 +58,9 @@ class Players extends Component {
                     playerDetails: player,
                 };
                 newState = Object.assign( {}, newState, playerState );
+            } else {
+                const fullDetails = this.getFullDetails();
+                newState = Object.assign( {}, newState, fullDetails );
             }
 
             this.setState( newState );
@@ -83,7 +86,7 @@ class Players extends Component {
         return accumulator;
     }
 
-    handleSaveClick() {
+    getFullDetails() {
         const {
             attackingStats,
             skillStats,
@@ -95,7 +98,6 @@ class Players extends Component {
             otherStats,
             playerDetails,
         } = this.state;
-        const { id } = this.props;
 
         const attackingStatsValues = this.getValues( attackingStats );
         const skillStatsValues = this.getValues( skillStats );
@@ -106,7 +108,14 @@ class Players extends Component {
         const goalkeepingStatsValues = this.getValues( goalkeepingStats );
         const otherStatsValues = this.getValues( otherStats );
 
-        const fullDetails = Object.assign( {}, playerDetails, attackingStatsValues, skillStatsValues, movementStatsValues, powerStatsValues, mentalityStatsValues, defendingStatsValues, goalkeepingStatsValues, otherStatsValues );
+        return Object.assign( {}, playerDetails, attackingStatsValues, skillStatsValues, movementStatsValues, powerStatsValues, mentalityStatsValues, defendingStatsValues, goalkeepingStatsValues, otherStatsValues );
+    }
+
+    handleSaveClick() {
+        const { id } = this.props;
+
+        const fullDetails = this.getFullDetails();
+
         if ( id ) {
             delete fullDetails._id;
             updatePlayer( fullDetails, id )
@@ -177,6 +186,7 @@ class Players extends Component {
             showSpinner,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
+        console.log( "playerDetails: ", playerDetails );
         return (
             <div className="player-container grid-container">
                 <NotificationCenter ref={ ( ref ) => {
@@ -281,6 +291,7 @@ class Players extends Component {
                                     } }
                                     elements={ Dictionary.positions }
                                     label="position"
+                                    handleStatChange={ this.handleStatChange }
                                     small
                                 />
                                 <Dropdown
