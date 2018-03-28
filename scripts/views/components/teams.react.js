@@ -108,7 +108,7 @@ class Teams extends Component {
         const { id } = this.props;
 
         if ( id ) {
-            deleteTeam( id )
+            deleteTeam( { _id: id } )
                 .then( ( response ) => this.handleResponse( response ) );
         }
     }

@@ -60,7 +60,7 @@ class Countries extends Component {
     handleDeleteClick() {
         const { id } = this.props;
         if ( id ) {
-            deleteCountry( id )
+            deleteCountry( { _id: id } )
                 .then( ( response ) => this.handleResponse( response ) );
         }
     }

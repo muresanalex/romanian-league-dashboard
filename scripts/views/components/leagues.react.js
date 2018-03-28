@@ -90,7 +90,7 @@ class Leagues extends Component {
     handleDeleteClick() {
         const { id } = this.props;
         if ( id ) {
-            deleteLeague( id )
+            deleteLeague( { _id: id } )
                 .then( ( response ) => this.handleResponse( response ) );
         }
     }

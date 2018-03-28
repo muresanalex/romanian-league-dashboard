@@ -133,16 +133,18 @@ class Players extends Component {
             playerDetails,
         } = this.state;
 
-        const attackingStatsValues = this.getValues( attackingStats );
-        const skillStatsValues = this.getValues( skillStats );
-        const movementStatsValues = this.getValues( movementStats );
-        const powerStatsValues = this.getValues( powerStats );
-        const mentalityStatsValues = this.getValues( mentalityStats );
-        const defendingStatsValues = this.getValues( defendingStats );
-        const goalkeepingStatsValues = this.getValues( goalkeepingStats );
-        const otherStatsValues = this.getValues( otherStats );
+        const stats = attackingStats.concat(
+            skillStats,
+            movementStats,
+            powerStats,
+            mentalityStats,
+            defendingStats,
+            goalkeepingStats,
+            otherStats,
+        );
+        const values = this.getValues( stats );
 
-        return Object.assign( {}, playerDetails, attackingStatsValues, skillStatsValues, movementStatsValues, powerStatsValues, mentalityStatsValues, defendingStatsValues, goalkeepingStatsValues, otherStatsValues );
+        return Object.assign( {}, playerDetails, values );
     }
 
     handleSaveClick() {
@@ -164,7 +166,7 @@ class Players extends Component {
 
     handleDeleteClick() {
         const { id } = this.props;
-        deletePlayer( id )
+        deletePlayer( { _id: id } )
             .then( ( response ) => this.handleResponse( response ) );
     }
 
@@ -193,7 +195,6 @@ class Players extends Component {
         const newValue = {};
         newValue[ stat ] = value;
         const updatedDetails = Object.assign( {}, playerDetails, newValue );
-        console.log( "​Players -> handleStatChange -> updatedDetails", updatedDetails );
         const overall = computeOverallValue( updatedDetails );
 
         if ( playerDetails.ovarall !== overall ) {
