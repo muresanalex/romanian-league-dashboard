@@ -10,6 +10,8 @@ class StatsInput extends Component {
 
         this.getValue = this.getValue.bind( this );
         this.handleChange = this.handleChange.bind( this );
+        this.plusOne = this.plusOne.bind( this );
+        this.minusOne = this.minusOne.bind( this );
     }
 
     componentWillMount( ) {
@@ -37,6 +39,30 @@ class StatsInput extends Component {
         } );
 
         handleStatChange( name, value );
+    }
+
+    plusOne() {
+        const { changedValue, defaultValue } = this.state;
+        let newValue = parseInt( defaultValue, 10 ) + 1 > 99 ? 99 : parseInt( defaultValue, 10 ) + 1;
+        if ( changedValue ) {
+            newValue = parseInt( changedValue, 10 ) + 1 > 99 ? 99 : parseInt( changedValue, 10 ) + 1;
+        }
+
+        this.setState( {
+            changedValue: newValue,
+        } );
+    }
+
+    minusOne() {
+        const { changedValue, defaultValue } = this.state;
+        let newValue = parseInt( defaultValue, 10 ) - 1 < 1 ? 1 : parseInt( defaultValue, 10 ) - 1;
+        if ( changedValue ) {
+            newValue = parseInt( changedValue, 10 ) - 1 < 1 ? 1 : parseInt( changedValue, 10 ) - 1;
+        }
+
+        this.setState( {
+            changedValue: newValue,
+        } );
     }
 
     render() {

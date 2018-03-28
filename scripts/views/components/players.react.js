@@ -68,6 +68,8 @@ class Players extends Component {
         this.getValues = this.getValues.bind( this );
         this.handleResponse = this.handleResponse.bind( this );
         this.handleStatChange = this.handleStatChange.bind( this );
+        this.plusOne = this.plusOne.bind( this );
+        this.minusOne = this.minusOne.bind( this );
     }
 
     componentWillMount() {
@@ -206,6 +208,82 @@ class Players extends Component {
         } );
     }
 
+    plusOne() {
+        const {
+            attackingStats,
+            skillStats,
+            movementStats,
+            powerStats,
+            mentalityStats,
+            defendingStats,
+            goalkeepingStats,
+            playerDetails,
+        } = this.state;
+
+        const stats = attackingStats.concat(
+            skillStats,
+            movementStats,
+            powerStats,
+            mentalityStats,
+            defendingStats,
+            goalkeepingStats,
+        );
+
+        stats.forEach( ( stat ) => {
+            this[ stat ].plusOne();
+        } );
+
+        const values = this.getValues( stats );
+        const updatedDetails = Object.assign( {}, playerDetails, values );
+        const overall = computeOverallValue( updatedDetails );
+
+        if ( updatedDetails.ovarall !== overall ) {
+            values.overall = overall;
+        }
+
+        this.setState( {
+            playerDetails: Object.assign( {}, updatedDetails, values ),
+        } );
+    }
+
+    minusOne() {
+        const {
+            attackingStats,
+            skillStats,
+            movementStats,
+            powerStats,
+            mentalityStats,
+            defendingStats,
+            goalkeepingStats,
+            playerDetails,
+        } = this.state;
+
+        const stats = attackingStats.concat(
+            skillStats,
+            movementStats,
+            powerStats,
+            mentalityStats,
+            defendingStats,
+            goalkeepingStats,
+        );
+
+        stats.forEach( ( stat ) => {
+            this[ stat ].minusOne();
+        } );
+
+        const values = this.getValues( stats );
+        const updatedDetails = Object.assign( {}, playerDetails, values );
+        const overall = computeOverallValue( updatedDetails );
+
+        if ( updatedDetails.ovarall !== overall ) {
+            values.overall = overall;
+        }
+
+        this.setState( {
+            playerDetails: Object.assign( {}, updatedDetails, values ),
+        } );
+    }
+
     render() {
         const {
             attackingStats,
@@ -239,11 +317,13 @@ class Players extends Component {
                                     <Overall renderValue={ playerDetails.overall } />
                                     <button
                                         className="plus-button"
+                                        onClick={ this.plusOne }
                                     >
                                         +1
                                     </button>
                                     <button
                                         className="minus-button"
+                                        onClick={ this.minusOne }
                                     >
                                         -1
                                     </button>
