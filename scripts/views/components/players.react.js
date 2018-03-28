@@ -229,20 +229,22 @@ class Players extends Component {
             goalkeepingStats,
         );
 
+        const newValues = {};
+
         stats.forEach( ( stat ) => {
             this[ stat ].plusOne();
+            newValues[ stat ] = playerDetails[ stat ] + 1;
         } );
 
-        const values = this.getValues( stats );
-        const updatedDetails = Object.assign( {}, playerDetails, values );
+        const updatedDetails = Object.assign( {}, playerDetails, newValues );
         const overall = computeOverallValue( updatedDetails );
 
         if ( updatedDetails.ovarall !== overall ) {
-            values.overall = overall;
+            newValues.overall = overall;
         }
 
         this.setState( {
-            playerDetails: Object.assign( {}, updatedDetails, values ),
+            playerDetails: Object.assign( {}, updatedDetails, newValues ),
         } );
     }
 
@@ -267,20 +269,22 @@ class Players extends Component {
             goalkeepingStats,
         );
 
+        const newValues = {};
+
         stats.forEach( ( stat ) => {
             this[ stat ].minusOne();
+            newValues[ stat ] = playerDetails[ stat ] - 1;
         } );
 
-        const values = this.getValues( stats );
-        const updatedDetails = Object.assign( {}, playerDetails, values );
+        const updatedDetails = Object.assign( {}, playerDetails, newValues );
         const overall = computeOverallValue( updatedDetails );
 
         if ( updatedDetails.ovarall !== overall ) {
-            values.overall = overall;
+            newValues.overall = overall;
         }
 
         this.setState( {
-            playerDetails: Object.assign( {}, updatedDetails, values ),
+            playerDetails: Object.assign( {}, updatedDetails, newValues ),
         } );
     }
 
