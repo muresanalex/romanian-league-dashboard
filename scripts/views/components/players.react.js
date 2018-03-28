@@ -24,7 +24,42 @@ class Players extends Component {
             otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves", "overall", "position" ],
             teams: [],
             countries: [],
-            playerDetails: {},
+            playerDetails: {
+                acceleration: 50,
+                aggression: 50,
+                agility: 50,
+                balance: 50,
+                ballControl: 50,
+                composure: 50,
+                crossing: 50,
+                curve: 50,
+                dribbling: 50,
+                finishing: 50,
+                fkAccuracy: 50,
+                gkDiving: 50,
+                gkHandling: 50,
+                gkKicking: 50,
+                gkPositioning: 50,
+                gkReflexes: 50,
+                headingAcc: 50,
+                interceptions: 50,
+                longPassing: 50,
+                longShots: 50,
+                marking: 50,
+                penalties: 50,
+                positioning: 50,
+                reactions: 50,
+                shortPassing: 50,
+                shotPower: 50,
+                slidingTackle: 50,
+                sprintSpeed: 50,
+                stamina: 50,
+                standingTackle: 50,
+                strength: 50,
+                vision: 50,
+                volleys: 50,
+                position: "GK",
+            },
             showSpinner: !!props.id,
         };
 
@@ -35,7 +70,8 @@ class Players extends Component {
         this.handleStatChange = this.handleStatChange.bind( this );
     }
 
-    componentDidMount() {
+    componentWillMount() {
+        const { playerDetails } = this.state;
         const { id } = this.props;
         const promises = [ getTeams(), getCountries() ];
 
@@ -59,10 +95,8 @@ class Players extends Component {
                 };
                 newState = Object.assign( {}, newState, playerState );
             } else {
-                const fullDetails = this.getFullDetails();
-                newState = Object.assign( {}, newState, fullDetails );
+                newState = Object.assign( {}, newState, playerDetails );
             }
-
             this.setState( newState );
         } );
     }
@@ -159,6 +193,7 @@ class Players extends Component {
         const newValue = {};
         newValue[ stat ] = value;
         const updatedDetails = Object.assign( {}, playerDetails, newValue );
+        console.log( "​Players -> handleStatChange -> updatedDetails", updatedDetails );
         const overall = computeOverallValue( updatedDetails );
 
         if ( playerDetails.ovarall !== overall ) {
@@ -186,7 +221,7 @@ class Players extends Component {
             showSpinner,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
-        console.log( "playerDetails: ", playerDetails );
+
         return (
             <div className="player-container grid-container">
                 <NotificationCenter ref={ ( ref ) => {
