@@ -25,12 +25,14 @@ class Teams extends Component {
             leagues: [],
             teamName: "",
             stadium: "",
+            coach: "",
             countryId: "",
             leagueId: "",
             showSpinner: !!props.id,
         };
         this.handleSaveClick = this.handleSaveClick.bind( this );
         this.handleNameChange = this.handleNameChange.bind( this );
+        this.handleCoachChange = this.handleCoachChange.bind( this );
         this.handleStadiumChange = this.handleStadiumChange.bind( this );
         this.handleDeleteClick = this.handleDeleteClick.bind( this );
         this.handleResponse = this.handleResponse.bind( this );
@@ -59,6 +61,7 @@ class Teams extends Component {
                     updatePage: true,
                     teamName: team.name,
                     stadium: team.stadium,
+                    coach: team.coach,
                     countryId: team.countryId,
                     leagueId: team.leagueId,
                 };
@@ -75,6 +78,12 @@ class Teams extends Component {
         } );
     }
 
+    handleCoachChange( evt ) {
+        this.setState( {
+            coach: evt.target.value,
+        } );
+    }
+
     handleStadiumChange( evt ) {
         this.setState( {
             stadium: evt.target.value,
@@ -82,13 +91,14 @@ class Teams extends Component {
     }
 
     handleSaveClick() {
-        const { teamName, stadium, countries, leagues } = this.state;
+        const { teamName, stadium, countries, leagues, coach } = this.state;
         const { id } = this.props;
         const leagueId = getId( leagues, this.league.getValue() );
         const countryId = getId( countries, this.country.getValue() );
         const payload = {
             name: teamName,
             stadium,
+            coach,
             leagueId,
             countryId,
         };
@@ -127,6 +137,7 @@ class Teams extends Component {
             countries,
             leagues,
             stadium,
+            coach,
             teamName,
             leagueId,
             countryId,
@@ -185,6 +196,16 @@ class Teams extends Component {
                                         this.stadium = ref;
                                     } }
                                     value={ stadium }
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="coach"
+                                    className="team-coach"
+                                    onChange={ this.handleCoachChange }
+                                    ref={ ( ref ) => {
+                                        this.coach = ref;
+                                    } }
+                                    value={ coach }
                                 />
                                 <div className="dropdown-section clearfix">
                                     <Dropdown
