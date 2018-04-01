@@ -145,7 +145,7 @@ class Teams extends Component {
                     <div className="team-wrapper">
                         <div className="team-details-wrapper">
                             <div className="team-logo">
-                                <div className="logo-wrapper">
+                                <div className="logo-wrapper clearfix">
                                     <ImageUploader />
                                     <button
                                         className="button save-button"
@@ -186,7 +186,7 @@ class Teams extends Component {
                                     } }
                                     value={ stadium }
                                 />
-                                <div className="dropdown-section">
+                                <div className="dropdown-section clearfix">
                                     <Dropdown
                                         elements={ countries }
                                         label="country"

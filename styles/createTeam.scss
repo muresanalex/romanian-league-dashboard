@@ -19,6 +19,10 @@
     .team-logo {
         float: left;
         margin: 10px;
+
+        .logo-wrapper {
+            width: 140px;
+        }
     }
 
     .team-details{
@@ -35,6 +39,7 @@
         }
 
         .dropdown-section {
+            width: 200px;
             margin-left: 10px;
         }
     }
