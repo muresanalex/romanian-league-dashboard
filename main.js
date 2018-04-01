@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./scripts/application.react";
 import "./styles/style.scss";
 
-// test commit
 ReactDOM.render(
     <BrowserRouter>
         <App />
