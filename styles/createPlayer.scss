@@ -6,7 +6,7 @@
         .top-right {
             float: left;
             width: 220px;
-            margin: 10px;
+            margin: 10px 10px 0 20px;
         }
 
         .player-name,
@@ -14,7 +14,7 @@
         {
             width: 200px;
             height: 24px;
-            margin: 10px;
+            margin: 10px 10px 10px 0;
             padding-left: 5px;
         }
 
@@ -44,12 +44,19 @@
         }
 
         .position-and-foot {
+            float: left;
+
             .dropdown-container {
                 margin-left: 25px;
             }
             .dropdown-container:first-child {
                 margin-left: 10px;
             }
+        }
+
+        .buttons-section {
+            float: left;
+            width: 100%;
         }
 
         .player-height,
@@ -66,7 +73,6 @@
             height: 30px;
             padding-left: 5px;
             margin-bottom: 5px;
-            margin-left: 10px;
         }
 
         .shirt-label {
@@ -91,7 +97,6 @@
             color: white;
             font-size: 13px;
             display: inline-block;
-            margin-left: 10px;
         }
 
         .plus-button,

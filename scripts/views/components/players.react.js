@@ -347,45 +347,51 @@ class Players extends Component {
                                     />
                                 </div>
                             </div>
-                            <input
-                                type="number"
-                                placeholder="nr"
-                                min="1"
-                                max="99"
-                                className="shirt-number"
-                                onChange={ this.handleInputChange( "jerseyNumber" ) }
-                                value={ playerDetails.jerseyNumber || "" }
-                            />
-                            <span className="shirt-label">number</span>
-                            <input
-                                type="date"
-                                className="birth-date"
-                                onChange={ this.handleInputChange( "dateOfBirth" ) }
-                                value={ playerDetails.dateOfBirth || "" }
-                            />
                             <div className="height-and-weight">
-                                <input
-                                    type="number"
-                                    placeholder="height"
-                                    min="150"
-                                    max="220"
-                                    className="player-height"
-                                    onChange={ this.handleInputChange( "height" ) }
-                                    value={ playerDetails.height || "" }
-                                />
-                                <span className="measure-unit">cm</span>
-                                <input
-                                    type="number"
-                                    placeholder="weight"
-                                    min="50"
-                                    max="130"
-                                    className="player-weight"
-                                    onChange={ this.handleInputChange( "weight" ) }
-                                    value={ playerDetails.weight || "" }
-                                />
-                                <span className="measure-unit">kg</span>
+                                <div className="input-wrapper">
+                                    <input
+                                        type="number"
+                                        placeholder="nr"
+                                        min="1"
+                                        max="99"
+                                        className="shirt-number"
+                                        onChange={ this.handleInputChange( "jerseyNumber" ) }
+                                        value={ playerDetails.jerseyNumber || "" }
+                                    />
+                                    <span className="shirt-label">number</span>
+                                </div>
+                                <div className="input-wrapper">
+                                    <input
+                                        type="number"
+                                        placeholder="height"
+                                        min="150"
+                                        max="220"
+                                        className="player-height"
+                                        onChange={ this.handleInputChange( "height" ) }
+                                        value={ playerDetails.height || "" }
+                                    />
+                                    <span className="measure-unit">cm</span>
+                                </div>
+                                <div className="input-wrapper">
+                                    <input
+                                        type="number"
+                                        placeholder="weight"
+                                        min="50"
+                                        max="130"
+                                        className="player-weight"
+                                        onChange={ this.handleInputChange( "weight" ) }
+                                        value={ playerDetails.weight || "" }
+                                    />
+                                    <span className="measure-unit">kg</span>
+                                </div>
                             </div>
                             <div className="country-and-team clearfix">
+                                <input
+                                    type="date"
+                                    className="birth-date"
+                                    onChange={ this.handleInputChange( "dateOfBirth" ) }
+                                    value={ playerDetails.dateOfBirth || "" }
+                                />
                                 <Dropdown
                                     value={ playerDetails.countryId }
                                     ref={ ( ref ) => {
@@ -433,10 +439,12 @@ class Players extends Component {
                                     small
                                 />
                             </div>
-                            <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
-                            { updatePage && (
-                                <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>
-                            ) }
+                            <div className="buttons-section">
+                                <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
+                                { updatePage && (
+                                    <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>
+                                ) }
+                            </div>
                         </div>
                         <div className="stats col-4">
                             <div className="col-3">
