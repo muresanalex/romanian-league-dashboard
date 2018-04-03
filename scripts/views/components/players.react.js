@@ -233,7 +233,7 @@ class Players extends Component {
 
         stats.forEach( ( stat ) => {
             this[ stat ].plusOne();
-            newValues[ stat ] = playerDetails[ stat ] + 1;
+            newValues[ stat ] = playerDetails[ stat ] + 1 > 99 ? 99 : playerDetails[ stat ] + 1;
         } );
 
         const updatedDetails = Object.assign( {}, playerDetails, newValues );
@@ -273,7 +273,7 @@ class Players extends Component {
 
         stats.forEach( ( stat ) => {
             this[ stat ].minusOne();
-            newValues[ stat ] = playerDetails[ stat ] - 1;
+            newValues[ stat ] = playerDetails[ stat ] - 1 < 1 ? 1 : playerDetails[ stat ] - 1;
         } );
 
         const updatedDetails = Object.assign( {}, playerDetails, newValues );
