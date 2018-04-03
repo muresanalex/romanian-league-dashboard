@@ -59,6 +59,7 @@ class Players extends Component {
                 vision: 50,
                 volleys: 50,
                 position: "GK",
+                image: "",
             },
             showSpinner: !!props.id,
         };
@@ -145,6 +146,7 @@ class Players extends Component {
             otherStats,
         );
         const values = this.getValues( stats );
+        values.image = this.image.getResult();
 
         return Object.assign( {}, playerDetails, values );
     }
@@ -316,7 +318,12 @@ class Players extends Component {
                     <div>
                         <div className="details col-2">
                             <div className="top-group clearfix">
-                                <ImageUploader />
+                                <ImageUploader
+                                    ref={ ( ref ) => {
+                                        this.image = ref;
+                                    } }
+                                    image={ playerDetails.image }
+                                />
                                 <div className="top-right">
                                     <Overall renderValue={ playerDetails.overall } />
                                     <button

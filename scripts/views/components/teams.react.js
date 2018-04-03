@@ -28,6 +28,7 @@ class Teams extends Component {
             coach: "",
             countryId: "",
             leagueId: "",
+            image: "",
             showSpinner: !!props.id,
         };
         this.handleSaveClick = this.handleSaveClick.bind( this );
@@ -64,6 +65,7 @@ class Teams extends Component {
                     coach: team.coach,
                     countryId: team.countryId,
                     leagueId: team.leagueId,
+                    image: team.image,
                 };
                 newState = Object.assign( {}, newState, teamState );
             }
@@ -95,12 +97,14 @@ class Teams extends Component {
         const { id } = this.props;
         const leagueId = getId( leagues, this.league.getValue() );
         const countryId = getId( countries, this.country.getValue() );
+        const image = this.image.getResult();
         const payload = {
             name: teamName,
             stadium,
             coach,
             leagueId,
             countryId,
+            image,
         };
 
         if ( id ) {
@@ -143,6 +147,7 @@ class Teams extends Component {
             countryId,
             updatePage,
             showSpinner,
+            image,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         return (
@@ -157,7 +162,12 @@ class Teams extends Component {
                         <div className="team-details-wrapper">
                             <div className="team-logo">
                                 <div className="logo-wrapper clearfix">
-                                    <ImageUploader />
+                                    <ImageUploader
+                                        ref={ ( ref ) => {
+                                            this.image = ref;
+                                        } }
+                                        image={ image }
+                                    />
                                     <button
                                         className="button save-button"
                                         onClick={ this.handleSaveClick }

@@ -16,6 +16,7 @@ class Countries extends Component {
             countryName: "",
             updatePage: false,
             showSpinner: !!props.id,
+            image: "",
         };
         this.handleChange = this.handleChange.bind( this );
         this.handleSaveClick = this.handleSaveClick.bind( this );
@@ -32,6 +33,7 @@ class Countries extends Component {
                     updatePage: true,
                     countryName: country.name,
                     showSpinner: false,
+                    image: country.image,
                 } );
             } );
         }
@@ -45,13 +47,14 @@ class Countries extends Component {
 
     handleSaveClick() {
         const { countryName, updatePage, country } = this.state;
+        const image = this.image.getResult();
 
         if ( updatePage ) {
-            updateCountry( { name: countryName }, country._id )
+            updateCountry( { name: countryName, image }, country._id )
                 .then( ( res ) => res.json() )
                 .then( ( response ) => this.handleResponse( response ) );
         } else {
-            createCountry( { name: countryName } )
+            createCountry( { name: countryName, image } )
                 .then( ( res ) => res.json() )
                 .then( ( response ) => this.handleResponse( response ) );
         }
@@ -75,7 +78,7 @@ class Countries extends Component {
     }
 
     render() {
-        const { countryName, showSpinner } = this.state;
+        const { countryName, showSpinner, image } = this.state;
         const { id } = this.props;
         const saveButtonText = id ? "update" : "save";
         return (
@@ -88,7 +91,12 @@ class Countries extends Component {
                 { !showSpinner && (
                     <div>
                         <div className="flag-wrapper">
-                            <ImageUploader />
+                            <ImageUploader
+                                ref={ ( ref ) => {
+                                    this.image = ref;
+                                } }
+                                image={ image }
+                            />
                             <button
                                 className="button save-button"
                                 onClick={ this.handleSaveClick }
