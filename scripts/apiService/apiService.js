@@ -146,13 +146,13 @@ function deleteCountry( { _id } ) {
 // special requests
 
 function removeTeamFromLeague( team ) {
-    const payload = Object.assign( {}, team, { leagueId: "y9UbVpX6MVFRjnJX" } );
+    const payload = Object.assign( {}, team, { leagueId: "noId" } );
     delete payload._id;
     return updateTeam( payload, team._id );
 }
 
 function removePlayerFromTeam( player ) {
-    const payload = Object.assign( {}, player, { teamId: "4CcLQBCglPLz4xZj" } );
+    const payload = Object.assign( {}, player, { teamId: "noId" } );
     delete payload._id;
     return updatePlayer( payload, player._id );
 }

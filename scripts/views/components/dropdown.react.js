@@ -39,7 +39,12 @@ class Dropdown extends Component {
         this.setState( { selectedValue: value } );
 
         if ( typeof this.props.handleStatChange === "function" ) {
-            this.props.handleStatChange();
+            const props = [];
+            if ( this.props.label === "position" ) {
+                props.push( this.props.label );
+                props.push( value );
+            }
+            this.props.handleStatChange( ...props );
         }
     }
 

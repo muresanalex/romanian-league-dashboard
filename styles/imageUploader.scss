@@ -12,11 +12,17 @@
         height: 120px;
         border: 1px solid grey;
         margin-bottom: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
 
         img {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
+            width: 118px;
+            display: none;
+
+            &.show {
+                display: block;
+            }
         }
     }
     

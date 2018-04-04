@@ -42,11 +42,12 @@ class ImageViewer extends Component {
     }
 
     render() {
-        const result = this.state.result;
+        const { result } = this.state;
+        const imageClassName = result ? "show" : "";
         return (
             <div className="image-uploader">
                 <div className="image-container">
-                    <img src={ result } alt="preview" />
+                    <img className={ imageClassName } src={ result } alt="preview" />
                 </div>
                 <input type="file" onChange={ this.previewFile } />
                 {

@@ -43,6 +43,7 @@ class Players extends Component {
                 gkReflexes: 50,
                 headingAcc: 50,
                 interceptions: 50,
+                jumping: 50,
                 longPassing: 50,
                 longShots: 50,
                 marking: 50,
