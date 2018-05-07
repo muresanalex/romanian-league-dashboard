@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import { debounce } from "../../helpers/helpers";
 
 const MIN_CHARACTERS = 3;
+const DEBOUNCE_TIMEOUT = 300;
 
 class Search extends Component {
     constructor() {
@@ -16,14 +18,24 @@ class Search extends Component {
         this.buildItems = this.buildItems.bind( this );
         this.handleClick = this.handleClick.bind( this );
         this.handleBodyClick = this.handleBodyClick.bind( this );
+        this.createDebounce = this.createDebounce.bind( this );
     }
 
     componentDidMount() {
         window.addEventListener( "click", this.handleBodyClick );
+        this.createDebounce();
     }
 
     componentWillUnmount() {
         window.removeEventListener( "click", this.handleBodyClick );
+    }
+
+    createDebounce() {
+        this.debouncedApiCall = debounce( ( query ) => {
+            this.props.getResults( query ).then( ( results ) => {
+                this.setState( { results: results.data } );
+            } );
+        }, DEBOUNCE_TIMEOUT );
     }
 
     handleBodyClick( evt ) {
@@ -41,11 +53,10 @@ class Search extends Component {
 
     handleChange( evt ) {
         const { open } = this.state;
-        const { getResults } = this.props;
         const string = evt.target.value;
         const stringLength = string.length;
         if ( stringLength >= MIN_CHARACTERS ) {
-            getResults( `?search=${ string }` ).then( ( results ) => this.setState( { results: results.data } ) );
+            this.debouncedApiCall( `?search=${ string }` );
 
             if ( !open ) {
                 this.setState( {
