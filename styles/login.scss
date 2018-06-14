@@ -1,0 +1,45 @@
+.form-wrapper {
+    display: flex;
+    align-items: center;
+
+    .login-form {
+        width: 350px;
+        margin: -100px auto 0;
+        border: 1px solid rgb(32, 189, 149);
+        text-align: center;
+    
+        h1 {
+            background-color:rgb(32, 189, 149);
+            color: white;
+            text-transform: uppercase;
+            height: 50px;
+            line-height: 50px;
+            font-size: 26px;
+        }
+    
+        input[ type="text" ],
+        input[ type="password" ],
+        input[ type="submit" ]
+        {
+            display: block;
+            height: 40px;
+            width: 300px;
+            margin: 20px auto 0;
+        }
+
+        input[ type="text" ] {
+            margin-top: 40px;
+            padding-left: 10px;
+        }
+
+        input[ type="password" ] {
+            padding-left: 10px;            
+        }
+    
+        input[ type="submit" ] {
+            color: white;
+            background-color: #415069;
+            margin-bottom: 40px;
+        }
+    }
+}

@@ -11,11 +11,13 @@ import Players from "../components/players.react";
 import PlayersList from "../components/playersList.react";
 import UpdateItem from "../components/updateItem.react";
 import Home from "./home.react";
+import Login from "./login.react";
 
 const Template = () => (
     <div className="template">
         <Navbar />
         <Switch>
+            <Route exact path="/login" component={ Login } />
             <Route exact path="/" component={ Home } />
             <Route exact path="/countries" component={ CountriesList } />
             <Route exact path="/countries/new-country" component={ Countries } />
