@@ -1,25 +1,28 @@
-.form-wrapper {
+.sign-up-wrapper {
     display: flex;
     align-items: center;
+    font-family: sans-serif;
 
-    .login-form {
+    .sign-up-form {
         width: 350px;
         margin: -100px auto 0;
-        border: 1px solid rgb(32, 189, 149);
+        border: 1px solid #415069;
         text-align: center;
     
         h1 {
-            background-color:rgb(32, 189, 149);
+            background-color:#415069;
             color: white;
             text-transform: uppercase;
             height: 50px;
             line-height: 50px;
+            margin-bottom: 40px;
             font-size: 26px;
             font-weight: normal;
         }
     
         input[ type="text" ],
         input[ type="password" ],
+        input[ type="email" ],
         input[ type="submit" ]
         {
             display: block;
@@ -28,19 +31,30 @@
             margin: 20px auto 0;
         }
 
-        input[ type="text" ] {
-            margin-top: 40px;
-            padding-left: 10px;
-        }
-
-        input[ type="password" ] {
+        input[ type="text" ],
+        input[ type="email" ],        
+        input[ type="password" ]
+        {
             padding-left: 10px;            
         }
     
         input[ type="submit" ] {
             color: white;
-            background-color: #415069;
+            background-color: rgb(32, 189, 149);
             margin-bottom: 40px;
         }
+
+        .password-wrapper {
+            position: relative;
+            
+            button.toggle-password {
+                border: none;
+                position: absolute;
+                top: 14px;
+                right: 30px;
+                cursor: pointer;
+            }
+        }
+        
     }
 }
