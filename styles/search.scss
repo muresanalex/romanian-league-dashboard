@@ -46,5 +46,15 @@
                 cursor: default;
             }
         }
+
+        .lds-dual-ring {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            &:after {
+                height: 30px;
+                width: 30px;
+            }
+        }
     }
 }

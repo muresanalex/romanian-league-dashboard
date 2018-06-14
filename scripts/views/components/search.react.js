@@ -10,6 +10,7 @@ class Search extends Component {
         super();
         this.state = {
             open: false,
+            showSpinner: true,
             results: [],
         };
 
@@ -33,7 +34,10 @@ class Search extends Component {
     createDebounce() {
         this.debouncedApiCall = debounce( ( query ) => {
             this.props.getResults( query ).then( ( results ) => {
-                this.setState( { results: results.data } );
+                this.setState( {
+                    results: results.data,
+                    showSpinner: false,
+                } );
             } );
         }, DEBOUNCE_TIMEOUT );
     }
@@ -55,6 +59,7 @@ class Search extends Component {
         const { open } = this.state;
         const string = evt.target.value;
         const stringLength = string.length;
+        this.setState( { showSpinner: true } );
         if ( stringLength >= MIN_CHARACTERS ) {
             this.debouncedApiCall( `?search=${ string }` );
 
@@ -110,7 +115,7 @@ class Search extends Component {
     }
 
     render() {
-        const { open } = this.state;
+        const { open, showSpinner } = this.state;
         const openClass = open ? "open" : "";
         const results = this.buildResults();
         return (
@@ -124,7 +129,10 @@ class Search extends Component {
                         this.input = ref;
                     } }
                 />
-                <div className={ `search-results ${ openClass }` }>{ results }</div>
+                <div className={ `search-results ${ openClass }` }>
+                    { showSpinner && ( <div className="lds-dual-ring" /> ) }
+                    { !showSpinner && results }
+                </div>
             </div>
         );
     }

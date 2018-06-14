@@ -1,3 +1,5 @@
+const DEFUALT_TIMEOUT = 200;
+
 function getNames( array ) {
     return array.map( ( item ) => item.name );
 }
@@ -7,7 +9,7 @@ function getId( array, name ) {
     return newArray[ 0 ]._id;
 }
 
-function debounce( inner, ms = 0 ) {
+function debounce( inner, timeout = DEFUALT_TIMEOUT ) {
     let timer = null;
     let resolves = [];
 
@@ -20,7 +22,7 @@ function debounce( inner, ms = 0 ) {
             const result = inner( ...args );
             resolves.forEach( r => r( result ) );
             resolves = [];
-        }, ms );
+        }, timeout );
 
         return new Promise( r => resolves.push( r ) );
     };
