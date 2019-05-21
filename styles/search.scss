@@ -49,11 +49,11 @@
 
         .lds-dual-ring {
             position: absolute;
-            top: 0;
+            top: 5px;
             left: 50%;
             &:after {
-                height: 30px;
-                width: 30px;
+                height: 20px;
+                width: 20px;
             }
         }
     }
