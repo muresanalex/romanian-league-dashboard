@@ -8,31 +8,30 @@ class Dropdown extends Component {
         this.state = {
             selectedValue: "",
         };
-
-        this.getValue = this.getValue.bind( this );
-        this.handleChange = this.handleChange.bind( this );
     }
 
-    componentWillMount( ) {
+    componentWillMount() {
         const { selectedValue } = this.state;
         const { value, elements } = this.props;
 
         if ( value !== null && !selectedValue ) {
-            const filteredById = elements.filter( ( item ) => item._id === value ).map( ( item ) => item.name )[ 0 ];
-            const filteredByValue = elements.filter( ( item ) => item === value )[ 0 ];
+            const filteredById = elements
+                .filter( item => item._id === value )
+                .map( item => item.name )[ 0 ];
+            const filteredByValue = elements.filter( item => item === value )[ 0 ];
             const name = typeof elements[ 0 ] === "object" ? filteredById : filteredByValue;
             this.setState( { selectedValue: name } );
         }
     }
 
-    getValue() {
+    getValue = () => {
         const { options, selectedIndex } = this.option;
         const value = options[ selectedIndex ].text;
         const numericValue = parseInt( value, 10 );
         return isNaN( numericValue ) ? value : numericValue;
-    }
+    };
 
-    handleChange() {
+    handleChange = () => {
         const { options, selectedIndex } = this.option;
         const value = options[ selectedIndex ].text;
 
@@ -46,27 +45,28 @@ class Dropdown extends Component {
             }
             this.props.handleStatChange( ...props );
         }
-    }
+    };
 
     render() {
         const { selectedValue } = this.state;
         const { elements, label, small } = this.props;
         const options = elements ? elements.map( createElements ) : "";
-        const style = label === "country" || label === "team" || label === "league" ? { width: "150px" } : {};
+        const style =
+            label === "country" || label === "team" || label === "league" ? { width: "150px" } : {};
         const smallClass = small ? "small" : "";
 
         return (
             <div className={ `dropdown-container ${ smallClass }` }>
-                <span>{ label || defaultLabel }</span>
+                <span>{label || defaultLabel}</span>
                 <select
                     onChange={ this.handleChange }
                     value={ selectedValue }
                     style={ style }
-                    ref={ ( ref ) => {
+                    ref={ ref => {
                         this.option = ref;
                     } }
                 >
-                    { options }
+                    {options}
                 </select>
             </div>
         );
@@ -75,13 +75,7 @@ class Dropdown extends Component {
 
 function createElements( element, index ) {
     const item = typeof element === "object" ? element.name : element;
-    return (
-        <option
-            key={ index }
-        >
-            { item }
-        </option>
-    );
+    return <option key={ index }>{item}</option>;
 }
 
 export default Dropdown;

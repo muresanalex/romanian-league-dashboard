@@ -4,24 +4,21 @@ const defaultValue = 50;
 
 const Overall = ( { renderValue } ) => {
     const value = renderValue || defaultValue;
-    let backgroundColor = "#E9573E";
+
+    let colorClass = "red";
     if ( value < 51 ) {
-        backgroundColor = "#E9573E";
+        colorClass = "red";
     } else if ( value < 61 ) {
-        backgroundColor = "#E77E23";
+        colorClass = "orange";
     } else if ( value < 71 ) {
-        backgroundColor = "#F6BB43";
+        colorClass = "yellow";
     } else if ( value < 81 ) {
-        backgroundColor = "#8DC153";
+        colorClass = "light-green";
     } else {
-        backgroundColor = "#239454";
+        colorClass = "dark-green";
     }
-    const style = {
-        backgroundColor,
-    };
-    return (
-        <span className="overall" style={ style }>{ value }</span>
-    );
+
+    return <span className={ `overall ${ colorClass }` }>{value}</span>;
 };
 
 export default Overall;

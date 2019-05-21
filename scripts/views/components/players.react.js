@@ -8,70 +8,43 @@ import Dictionary from "../../helpers/dictionary";
 import Overall from "./overall.react";
 import computeOverallValue from "../../helpers/computeOverallValue";
 import { getId } from "../../helpers/helpers";
-import { getCountries, getTeams, createPlayer, getPlayer, deletePlayer, updatePlayer } from "../../apiService/apiService";
+import {
+    getCountries,
+    getTeams,
+    createPlayer,
+    getPlayer,
+    deletePlayer,
+    updatePlayer,
+} from "../../apiService/apiService";
+import {
+    defaultPlayerDetails,
+    defaultAttackingStats,
+    defaultSkillStats,
+    defaultMovementStats,
+    defaultPowerStats,
+    defaultMentalityStats,
+    defaultDefendingStats,
+    defaultGoalkeepingStats,
+    defaultOtherStats,
+} from "../../enums/player";
 
 class Players extends Component {
     constructor( props ) {
         super( props );
         this.state = {
-            attackingStats: [ "crossing", "finishing", "headingAcc", "shortPassing", "volleys" ],
-            skillStats: [ "dribbling", "curve", "fkAccuracy", "longPassing", "ballControl" ],
-            movementStats: [ "acceleration", "sprintSpeed", "agility", "reactions", "balance" ],
-            powerStats: [ "shotPower", "jumping", "stamina", "strength", "longShots" ],
-            mentalityStats: [ "aggression", "interceptions", "positioning", "vision", "penalties", "composure" ],
-            defendingStats: [ "marking", "standingTackle", "slidingTackle" ],
-            goalkeepingStats: [ "gkDiving", "gkHandling", "gkKicking", "gkPositioning", "gkReflexes" ],
-            otherStats: [ "countryId", "teamId", "position", "preferredFoot", "weakFoot", "potential", "internationalReputation", "skillMoves", "overall", "position" ],
+            attackingStats: defaultAttackingStats,
+            skillStats: defaultSkillStats,
+            movementStats: defaultMovementStats,
+            powerStats: defaultPowerStats,
+            mentalityStats: defaultMentalityStats,
+            defendingStats: defaultDefendingStats,
+            goalkeepingStats: defaultGoalkeepingStats,
+            otherStats: defaultOtherStats,
             teams: [],
             countries: [],
-            playerDetails: {
-                acceleration: 50,
-                aggression: 50,
-                agility: 50,
-                balance: 50,
-                ballControl: 50,
-                composure: 50,
-                crossing: 50,
-                curve: 50,
-                dribbling: 50,
-                finishing: 50,
-                fkAccuracy: 50,
-                gkDiving: 50,
-                gkHandling: 50,
-                gkKicking: 50,
-                gkPositioning: 50,
-                gkReflexes: 50,
-                headingAcc: 50,
-                interceptions: 50,
-                jumping: 50,
-                longPassing: 50,
-                longShots: 50,
-                marking: 50,
-                penalties: 50,
-                positioning: 50,
-                reactions: 50,
-                shortPassing: 50,
-                shotPower: 50,
-                slidingTackle: 50,
-                sprintSpeed: 50,
-                stamina: 50,
-                standingTackle: 50,
-                strength: 50,
-                vision: 50,
-                volleys: 50,
-                position: "GK",
-                image: "",
-            },
+            playerDetails: defaultPlayerDetails,
             showSpinner: !!props.id,
         };
-
-        this.handleSaveClick = this.handleSaveClick.bind( this );
-        this.handleDeleteClick = this.handleDeleteClick.bind( this );
-        this.getValues = this.getValues.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );
-        this.handleStatChange = this.handleStatChange.bind( this );
-        this.plusOne = this.plusOne.bind( this );
-        this.minusOne = this.minusOne.bind( this );
     }
 
     componentWillMount() {
@@ -83,7 +56,7 @@ class Players extends Component {
             promises.push( getPlayer( id ) );
         }
 
-        Promise.all( promises ).then( ( data ) => {
+        Promise.all( promises ).then( data => {
             const [ teams, countries, player ] = data;
             let newState = {
                 teams: teams.data,
@@ -105,10 +78,10 @@ class Players extends Component {
         } );
     }
 
-    getValues( statsArray ) {
+    getValues = statsArray => {
         const { teams, countries } = this.state;
         const accumulator = {};
-        statsArray.forEach( ( item ) => {
+        statsArray.forEach( item => {
             if ( this[ item ] ) {
                 const value = this[ item ].getValue();
 
@@ -122,9 +95,9 @@ class Players extends Component {
             }
         } );
         return accumulator;
-    }
+    };
 
-    getFullDetails() {
+    getFullDetails = () => {
         const {
             attackingStats,
             skillStats,
@@ -150,9 +123,9 @@ class Players extends Component {
         values.image = this.image.getResult();
 
         return Object.assign( {}, playerDetails, values );
-    }
+    };
 
-    handleSaveClick() {
+    handleSaveClick = () => {
         const { id } = this.props;
 
         const fullDetails = this.getFullDetails();
@@ -160,42 +133,39 @@ class Players extends Component {
         if ( id ) {
             delete fullDetails._id;
             updatePlayer( fullDetails, id )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         } else {
             createPlayer( fullDetails )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleDeleteClick() {
+    handleDeleteClick = () => {
         const { id } = this.props;
-        deletePlayer( { _id: id } )
-            .then( ( response ) => this.handleResponse( response ) );
-    }
+        deletePlayer( { _id: id } ).then( response => this.handleResponse( response ) );
+    };
 
-    handleInputChange( item ) {
-        return ( evt ) => {
-            const details = {};
-            const { value } = evt.target;
-            details[ item ] = isNaN( value ) ? value : parseInt( value, 10 );
-            this.setState( {
-                playerDetails: Object.assign( {}, this.state.playerDetails, details ),
-            } );
-        };
-    }
+    handleInputChange = item => evt => {
+        const details = {};
+        const { value } = evt.target;
+        details[ item ] = isNaN( value ) ? value : parseInt( value, 10 );
+        this.setState( {
+            playerDetails: Object.assign( {}, this.state.playerDetails, details ),
+        } );
+    };
 
-    handleResponse( response ) {
+    handleResponse = response => {
         const { error } = response;
         if ( !error ) {
             this.props.history.push( "/players" );
         } else {
             this.notification.showMessage( error.details[ 0 ].message );
         }
-    }
+    };
 
-    handleStatChange( stat, value ) {
+    handleStatChange = ( stat, value ) => {
         const { playerDetails } = this.state;
         const newValue = {};
         newValue[ stat ] = value;
@@ -209,9 +179,9 @@ class Players extends Component {
         this.setState( {
             playerDetails: Object.assign( {}, updatedDetails, newValue ),
         } );
-    }
+    };
 
-    plusOne() {
+    plusOne = () => {
         const {
             attackingStats,
             skillStats,
@@ -234,7 +204,7 @@ class Players extends Component {
 
         const newValues = {};
 
-        stats.forEach( ( stat ) => {
+        stats.forEach( stat => {
             this[ stat ].plusOne();
             newValues[ stat ] = playerDetails[ stat ] + 1 > 99 ? 99 : playerDetails[ stat ] + 1;
         } );
@@ -249,9 +219,9 @@ class Players extends Component {
         this.setState( {
             playerDetails: Object.assign( {}, updatedDetails, newValues ),
         } );
-    }
+    };
 
-    minusOne() {
+    minusOne = () => {
         const {
             attackingStats,
             skillStats,
@@ -274,7 +244,7 @@ class Players extends Component {
 
         const newValues = {};
 
-        stats.forEach( ( stat ) => {
+        stats.forEach( stat => {
             this[ stat ].minusOne();
             newValues[ stat ] = playerDetails[ stat ] - 1 < 1 ? 1 : playerDetails[ stat ] - 1;
         } );
@@ -289,7 +259,7 @@ class Players extends Component {
         this.setState( {
             playerDetails: Object.assign( {}, updatedDetails, newValues ),
         } );
-    }
+    };
 
     render() {
         const {
@@ -310,33 +280,28 @@ class Players extends Component {
 
         return (
             <div className="player-container grid-container">
-                <NotificationCenter ref={ ( ref ) => {
-                    this.notification = ref;
-                } }
+                <NotificationCenter
+                    ref={ ref => {
+                        this.notification = ref;
+                    } }
                 />
-                { showSpinner && <div className="lds-dual-ring" /> }
-                { !showSpinner && (
+                {showSpinner && <div className="lds-dual-ring" />}
+                {!showSpinner && (
                     <div>
                         <div className="details col-2">
                             <div className="top-group clearfix">
                                 <ImageUploader
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.image = ref;
                                     } }
                                     image={ playerDetails.image }
                                 />
                                 <div className="top-right">
                                     <Overall renderValue={ playerDetails.overall } />
-                                    <button
-                                        className="plus-button"
-                                        onClick={ this.plusOne }
-                                    >
+                                    <button className="plus-button" onClick={ this.plusOne }>
                                         +1
                                     </button>
-                                    <button
-                                        className="minus-button"
-                                        onClick={ this.minusOne }
-                                    >
+                                    <button className="minus-button" onClick={ this.minusOne }>
                                         -1
                                     </button>
                                     <input
@@ -402,7 +367,7 @@ class Players extends Component {
                                 />
                                 <Dropdown
                                     value={ playerDetails.countryId }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.countryId = ref;
                                     } }
                                     elements={ countries }
@@ -410,7 +375,7 @@ class Players extends Component {
                                 />
                                 <Dropdown
                                     value={ playerDetails.teamId }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.teamId = ref;
                                     } }
                                     elements={ teams }
@@ -420,7 +385,7 @@ class Players extends Component {
                             <div className="position-and-foot clearfix">
                                 <Dropdown
                                     value={ playerDetails.position }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.position = ref;
                                     } }
                                     elements={ Dictionary.positions }
@@ -430,7 +395,7 @@ class Players extends Component {
                                 />
                                 <Dropdown
                                     value={ playerDetails.preferredFoot }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.preferredFoot = ref;
                                     } }
                                     elements={ Dictionary.preferredFoot }
@@ -439,7 +404,7 @@ class Players extends Component {
                                 />
                                 <Dropdown
                                     value={ playerDetails.weakFoot }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.weakFoot = ref;
                                     } }
                                     elements={ Dictionary.stars }
@@ -448,116 +413,140 @@ class Players extends Component {
                                 />
                             </div>
                             <div className="buttons-section">
-                                <button className="button save-button" onClick={ this.handleSaveClick } >{ saveButtonText }</button>
-                                { updatePage && (
-                                    <button className="button delete-button" onClick={ this.handleDeleteClick } >delete</button>
-                                ) }
+                                <button
+                                    className="button save-button"
+                                    onClick={ this.handleSaveClick }
+                                >
+                                    {saveButtonText}
+                                </button>
+                                {updatePage && (
+                                    <button
+                                        className="button delete-button"
+                                        onClick={ this.handleDeleteClick }
+                                    >
+                                        delete
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <div className="stats col-4">
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Attacking</span>
-                                    { attackingStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {attackingStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Skill</span>
-                                    { skillStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {skillStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Movement</span>
-                                    { movementStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {movementStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Power</span>
-                                    { powerStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {powerStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Mentality</span>
-                                    { mentalityStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {mentalityStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Defending</span>
-                                    { defendingStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {defendingStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                             </div>
                             <div className="col-3">
                                 <div className="stats-group col-3">
                                     <span className="title">Goalkeeping</span>
-                                    { goalkeepingStats.map( ( item ) => ( <StatsInput
-                                        value={ playerDetails }
-                                        ref={ ( ref ) => {
-                                            this[ item ] = ref;
-                                        } }
-                                        key={ item }
-                                        name={ item }
-                                        handleStatChange={ this.handleStatChange }
-                                    /> ) ) }
+                                    {goalkeepingStats.map( item => (
+                                        <StatsInput
+                                            value={ playerDetails }
+                                            ref={ ref => {
+                                                this[ item ] = ref;
+                                            } }
+                                            key={ item }
+                                            name={ item }
+                                            handleStatChange={ this.handleStatChange }
+                                        />
+                                    ) )}
                                 </div>
                                 <div className="stats-group col-3">
                                     <span className="title">Special</span>
                                     <StatsInput
                                         value={ playerDetails }
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.potential = ref;
                                         } }
                                         name="potential"
                                     />
                                     <Dropdown
                                         value={ playerDetails.internationalReputation }
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.internationalReputation = ref;
                                         } }
                                         elements={ Dictionary.stars }
@@ -566,7 +555,7 @@ class Players extends Component {
                                     />
                                     <Dropdown
                                         value={ playerDetails.skillMoves }
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.skillMoves = ref;
                                         } }
                                         elements={ Dictionary.stars }
@@ -577,7 +566,7 @@ class Players extends Component {
                             </div>
                         </div>
                     </div>
-                ) }
+                )}
             </div>
         );
     }

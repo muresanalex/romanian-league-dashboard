@@ -13,13 +13,6 @@ class Search extends Component {
             showSpinner: true,
             results: [],
         };
-
-        this.buildResults = this.buildResults.bind( this );
-        this.handleChange = this.handleChange.bind( this );
-        this.buildItems = this.buildItems.bind( this );
-        this.handleClick = this.handleClick.bind( this );
-        this.handleBodyClick = this.handleBodyClick.bind( this );
-        this.createDebounce = this.createDebounce.bind( this );
     }
 
     componentDidMount() {
@@ -31,31 +24,31 @@ class Search extends Component {
         window.removeEventListener( "click", this.handleBodyClick );
     }
 
-    createDebounce() {
-        this.debouncedApiCall = debounce( ( query ) => {
-            this.props.getResults( query ).then( ( results ) => {
+    createDebounce = () => {
+        this.debouncedApiCall = debounce( query => {
+            this.props.getResults( query ).then( results => {
                 this.setState( {
                     results: results.data,
                     showSpinner: false,
                 } );
             } );
         }, DEBOUNCE_TIMEOUT );
-    }
+    };
 
-    handleBodyClick( evt ) {
+    handleBodyClick = evt => {
         const { open } = this.state;
         if ( open && evt.target !== this.input ) {
             this.setState( { open: false } );
         }
-    }
+    };
 
-    handleClick( evt ) {
+    handleClick = evt => {
         if ( evt.target.value.length >= MIN_CHARACTERS ) {
             this.setState( { open: true } );
         }
-    }
+    };
 
-    handleChange( evt ) {
+    handleChange = evt => {
         const { open } = this.state;
         const string = evt.target.value;
         const stringLength = string.length;
@@ -73,26 +66,18 @@ class Search extends Component {
                 open: false,
             } );
         }
-    }
+    };
 
-    buildResults() {
+    buildResults = () => {
         const { results } = this.state;
         if ( results.length === 0 ) {
-            return (
-                <div className="result-line no-result">No results!</div>
-            );
+            return <div className="result-line no-result">No results!</div>;
         }
 
-        return (
-            <div className="results-container" >
-                {
-                    results.map( this.buildItems )
-                }
-            </div>
-        );
-    }
+        return <div className="results-container">{results.map( this.buildItems )}</div>;
+    };
 
-    buildItems( item ) {
+    buildItems = item => {
         const { _id } = item;
         const { pathname } = this.props.history.location;
         const { push } = this.props.history;
@@ -104,15 +89,11 @@ class Search extends Component {
         }
 
         return (
-            <button
-                className="result-line"
-                key={ _id }
-                onClick={ () => push( `${ pathname }/${ _id }` ) }
-            >
-                { name }
+            <button className="result-line" key={ _id } onClick={ () => push( `${ pathname }/${ _id }` ) }>
+                {name}
             </button>
         );
-    }
+    };
 
     render() {
         const { open, showSpinner } = this.state;
@@ -125,13 +106,13 @@ class Search extends Component {
                     placeholder="Search"
                     onChange={ this.handleChange }
                     onClick={ this.handleClick }
-                    ref={ ( ref ) => {
+                    ref={ ref => {
                         this.input = ref;
                     } }
                 />
                 <div className={ `search-results ${ openClass }` }>
-                    { showSpinner && ( <div className="lds-dual-ring" /> ) }
-                    { !showSpinner && results }
+                    {showSpinner && <div className="lds-dual-ring" />}
+                    {!showSpinner && results}
                 </div>
             </div>
         );

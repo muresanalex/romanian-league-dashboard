@@ -65,30 +65,28 @@ class Navbar extends Component {
                 },
             ],
         };
-
-        this.buildNavItems = this.buildNavItems.bind( this );
-        this.buildItemsWithoutChildren = this.buildItemsWithoutChildren.bind( this );
     }
 
-    buildNavItems() {
+    buildNavItems = () => {
         const { navitems } = this.state;
-        const items = navitems.map( ( item ) => {
+        const items = navitems.map( item => {
             const hasChildren = Array.isArray( item.children );
-            const navbaritem = hasChildren ?
-                <NavbarAccordion label={ item.label }>{ item.children }</NavbarAccordion>
-                :
-                this.buildItemsWithoutChildren( item );
-            return <div key={ item.label } >{ navbaritem }</div>;
+            const navbaritem = hasChildren ? (
+                <NavbarAccordion label={ item.label }>{item.children}</NavbarAccordion>
+            ) : (
+                this.buildItemsWithoutChildren( item )
+            );
+            return <div key={ item.label }>{navbaritem}</div>;
         } );
         return (
             <div className="navbar-items">
                 <div className="dashboard-logo">Dashboard</div>
-                <div>{ items }</div>
+                <div>{items}</div>
             </div>
         );
-    }
+    };
 
-    buildItemsWithoutChildren( item ) {
+    buildItemsWithoutChildren = item => {
         const { label, slug } = item;
         const { history } = this.props;
 
@@ -100,18 +98,14 @@ class Navbar extends Component {
                 role="menuitem"
                 tabIndex="-1"
             >
-                { label }
+                {label}
             </div>
         );
-    }
+    };
 
     render() {
         const navbaritems = this.buildNavItems();
-        return (
-            <div className="navbar">
-                { navbaritems }
-            </div>
-        );
+        return <div className="navbar">{navbaritems}</div>;
     }
 }
 

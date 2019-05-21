@@ -7,12 +7,9 @@ class NotificationCenter extends Component {
             message: props.message || "",
             open: false,
         };
-
-        this.showMessage = this.showMessage.bind( this );
-        this.hideMessage = this.hideMessage.bind( this );
     }
 
-    hideMessage() {
+    hideMessage = () => {
         const { open } = this.state;
         if ( open ) {
             this.setState( {
@@ -21,16 +18,16 @@ class NotificationCenter extends Component {
                 deleteMessage: false,
             } );
         }
-    }
+    };
 
-    showMessage( message, deleteMessage ) {
+    showMessage = ( message, deleteMessage ) => {
         this.setState( {
             open: true,
             message,
             deleteMessage,
         } );
         setTimeout( this.hideMessage, 2000 );
-    }
+    };
 
     render() {
         const { message, open, deleteMessage } = this.state;
@@ -38,7 +35,9 @@ class NotificationCenter extends Component {
         const deleteClassName = deleteMessage ? "delete" : "";
 
         return (
-            <div className={ `notification-center ${ openClassName } ${ deleteClassName }` }>{ message }</div>
+            <div className={ `notification-center ${ openClassName } ${ deleteClassName }` }>
+                {message}
+            </div>
         );
     }
 }

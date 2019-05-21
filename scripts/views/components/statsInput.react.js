@@ -7,14 +7,9 @@ class StatsInput extends Component {
             defaultValue: 50,
             changedValue: null,
         };
-
-        this.getValue = this.getValue.bind( this );
-        this.handleChange = this.handleChange.bind( this );
-        this.plusOne = this.plusOne.bind( this );
-        this.minusOne = this.minusOne.bind( this );
     }
 
-    componentWillMount( ) {
+    componentWillMount() {
         const { value, name } = this.props;
         const { changedValue } = this.state;
 
@@ -25,12 +20,12 @@ class StatsInput extends Component {
         }
     }
 
-    getValue() {
+    getValue = () => {
         const { changedValue, defaultValue } = this.state;
         return changedValue || defaultValue;
-    }
+    };
 
-    handleChange( evt ) {
+    handleChange = evt => {
         const { name, handleStatChange } = this.props;
         const value = parseInt( evt.target.value, 10 );
 
@@ -39,9 +34,9 @@ class StatsInput extends Component {
         } );
 
         handleStatChange( name, value );
-    }
+    };
 
-    plusOne() {
+    plusOne = () => {
         const { changedValue, defaultValue } = this.state;
         let newValue = parseInt( defaultValue, 10 ) + 1 > 99 ? 99 : parseInt( defaultValue, 10 ) + 1;
         if ( changedValue ) {
@@ -51,9 +46,9 @@ class StatsInput extends Component {
         this.setState( {
             changedValue: newValue,
         } );
-    }
+    };
 
-    minusOne() {
+    minusOne = () => {
         const { changedValue, defaultValue } = this.state;
         let newValue = parseInt( defaultValue, 10 ) - 1 < 1 ? 1 : parseInt( defaultValue, 10 ) - 1;
         if ( changedValue ) {
@@ -63,44 +58,42 @@ class StatsInput extends Component {
         this.setState( {
             changedValue: newValue,
         } );
-    }
+    };
 
-    render() {
-        let backgroundColor;
+    render = () => {
+        let colorClass;
 
         const { name } = this.props;
         const { defaultValue } = this.state;
         const renderValue = this.state.changedValue || defaultValue;
 
         if ( renderValue < 51 ) {
-            backgroundColor = "#E9573E";
+            colorClass = "red";
         } else if ( renderValue < 61 ) {
-            backgroundColor = "#E77E23";
+            colorClass = "yellow";
         } else if ( renderValue < 71 ) {
-            backgroundColor = "#F6BB43";
+            colorClass = "orange";
         } else if ( renderValue < 81 ) {
-            backgroundColor = "#8DC153";
+            colorClass = "light-green";
         } else {
-            backgroundColor = "#239454";
+            colorClass = "dark-green";
         }
-        const style = {
-            backgroundColor,
-        };
+
         return (
             <div className="stats-wrapper clearfix">
                 <input
+                    className={ colorClass }
                     type="number"
                     value={ renderValue }
                     min="1"
                     max="99"
-                    style={ style }
                     placeholder={ name }
                     onChange={ this.handleChange && this.handleChange }
                 />
-                <span>{ name }</span>
+                <span>{name}</span>
             </div>
         );
-    }
+    };
 }
 
 export default StatsInput;

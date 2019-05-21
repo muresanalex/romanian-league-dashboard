@@ -31,12 +31,6 @@ class Teams extends Component {
             image: "",
             showSpinner: !!props.id,
         };
-        this.handleSaveClick = this.handleSaveClick.bind( this );
-        this.handleNameChange = this.handleNameChange.bind( this );
-        this.handleCoachChange = this.handleCoachChange.bind( this );
-        this.handleStadiumChange = this.handleStadiumChange.bind( this );
-        this.handleDeleteClick = this.handleDeleteClick.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
@@ -47,7 +41,7 @@ class Teams extends Component {
             promises.push( getTeam( id ) );
         }
 
-        Promise.all( promises ).then( ( data ) => {
+        Promise.all( promises ).then( data => {
             const [ leagues, countries, team ] = data;
             let newState = {
                 id,
@@ -74,25 +68,25 @@ class Teams extends Component {
         } );
     }
 
-    handleNameChange( evt ) {
+    handleNameChange = evt => {
         this.setState( {
             teamName: evt.target.value,
         } );
-    }
+    };
 
-    handleCoachChange( evt ) {
+    handleCoachChange = evt => {
         this.setState( {
             coach: evt.target.value,
         } );
-    }
+    };
 
-    handleStadiumChange( evt ) {
+    handleStadiumChange = evt => {
         this.setState( {
             stadium: evt.target.value,
         } );
-    }
+    };
 
-    handleSaveClick() {
+    handleSaveClick = () => {
         const { teamName, stadium, countries, leagues, coach } = this.state;
         const { id } = this.props;
         const leagueId = getId( leagues, this.league.getValue() );
@@ -109,32 +103,31 @@ class Teams extends Component {
 
         if ( id ) {
             updateTeam( payload, id )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         } else {
             createTeam( payload )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleDeleteClick() {
+    handleDeleteClick = () => {
         const { id } = this.props;
 
         if ( id ) {
-            deleteTeam( { _id: id } )
-                .then( ( response ) => this.handleResponse( response ) );
+            deleteTeam( { _id: id } ).then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleResponse( response ) {
+    handleResponse = response => {
         const { error } = response;
         if ( !error ) {
             this.props.history.push( "/teams" );
         } else {
             this.notification.showMessage( error.details[ 0 ].message );
         }
-    }
+    };
 
     render() {
         const {
@@ -152,18 +145,19 @@ class Teams extends Component {
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="team-container">
-                <NotificationCenter ref={ ( ref ) => {
-                    this.notification = ref;
-                } }
+                <NotificationCenter
+                    ref={ ref => {
+                        this.notification = ref;
+                    } }
                 />
-                { showSpinner && <div className="lds-dual-ring" /> }
-                { !showSpinner && (
+                {showSpinner && <div className="lds-dual-ring" />}
+                {!showSpinner && (
                     <div className="team-wrapper">
                         <div className="team-details-wrapper">
                             <div className="team-logo">
                                 <div className="logo-wrapper clearfix">
                                     <ImageUploader
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.image = ref;
                                         } }
                                         image={ image }
@@ -172,18 +166,16 @@ class Teams extends Component {
                                         className="button save-button"
                                         onClick={ this.handleSaveClick }
                                     >
-                                        { saveButtonText }
+                                        {saveButtonText}
                                     </button>
-                                    {
-                                        updatePage && (
-                                            <button
-                                                className="button delete-button"
-                                                onClick={ this.handleDeleteClick }
-                                            >
+                                    {updatePage && (
+                                        <button
+                                            className="button delete-button"
+                                            onClick={ this.handleDeleteClick }
+                                        >
                                             delete
-                                            </button>
-                                        )
-                                    }
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                             <div className="team-details">
@@ -192,7 +184,7 @@ class Teams extends Component {
                                     placeholder="name"
                                     className="team-name"
                                     onChange={ this.handleNameChange }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.name = ref;
                                     } }
                                     value={ teamName }
@@ -202,7 +194,7 @@ class Teams extends Component {
                                     placeholder="stadium"
                                     className="team-stadium"
                                     onChange={ this.handleStadiumChange }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.stadium = ref;
                                     } }
                                     value={ stadium }
@@ -212,7 +204,7 @@ class Teams extends Component {
                                     placeholder="coach"
                                     className="team-coach"
                                     onChange={ this.handleCoachChange }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.coach = ref;
                                     } }
                                     value={ coach }
@@ -221,7 +213,7 @@ class Teams extends Component {
                                     <Dropdown
                                         elements={ countries }
                                         label="country"
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.country = ref;
                                         } }
                                         value={ countryId }
@@ -229,7 +221,7 @@ class Teams extends Component {
                                     <Dropdown
                                         elements={ leagues }
                                         label="league"
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.league = ref;
                                         } }
                                         value={ leagueId }
@@ -237,19 +229,17 @@ class Teams extends Component {
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.id && (
-                                <Pagination
-                                    getResults={ getPlayers }
-                                    deleteItem={ removePlayerFromTeam }
-                                    path="/players"
-                                    filterBy="teamId"
-                                    id={ this.props.id }
-                                />
-                            )
-                        }
+                        {this.props.id && (
+                            <Pagination
+                                getResults={ getPlayers }
+                                deleteItem={ removePlayerFromTeam }
+                                path="/players"
+                                filterBy="teamId"
+                                id={ this.props.id }
+                            />
+                        )}
                     </div>
-                ) }
+                )}
             </div>
         );
     }

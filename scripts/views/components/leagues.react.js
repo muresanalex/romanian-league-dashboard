@@ -26,10 +26,6 @@ class Leagues extends Component {
             image: "",
             showSpinner: !!props.id,
         };
-        this.handleChange = this.handleChange.bind( this );
-        this.handleSaveClick = this.handleSaveClick.bind( this );
-        this.handleDeleteClick = this.handleDeleteClick.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
@@ -40,7 +36,7 @@ class Leagues extends Component {
             promises.push( getLeague( id ) );
         }
 
-        Promise.all( promises ).then( ( data ) => {
+        Promise.all( promises ).then( data => {
             const [ countries, league ] = data;
             let newState = {
                 countries: countries.data,
@@ -63,13 +59,13 @@ class Leagues extends Component {
         } );
     }
 
-    handleChange( evt ) {
+    handleChange = evt => {
         this.setState( {
             leagueName: evt.target.value,
         } );
-    }
+    };
 
-    handleSaveClick() {
+    handleSaveClick = () => {
         const { leagueName, countries, updatePage } = this.state;
         const { id } = this.props;
         const countryId = getId( countries, this.country.getValue() );
@@ -82,48 +78,48 @@ class Leagues extends Component {
 
         if ( updatePage ) {
             updateLeague( payload, id )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         } else {
             createLeague( payload )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleDeleteClick() {
+    handleDeleteClick = () => {
         const { id } = this.props;
         if ( id ) {
-            deleteLeague( { _id: id } )
-                .then( ( response ) => this.handleResponse( response ) );
+            deleteLeague( { _id: id } ).then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleResponse( response ) {
+    handleResponse = response => {
         const { error } = response;
         if ( !error ) {
             this.props.history.push( "/leagues" );
         } else {
             this.notification.showMessage( error.details[ 0 ].message );
         }
-    }
+    };
 
     render() {
         const { countries, updatePage, leagueName, countryId, showSpinner, image } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="league-container">
-                <NotificationCenter ref={ ( ref ) => {
-                    this.notification = ref;
-                } }
+                <NotificationCenter
+                    ref={ ref => {
+                        this.notification = ref;
+                    } }
                 />
-                { showSpinner && <div className="lds-dual-ring" /> }
-                { !showSpinner && (
+                {showSpinner && <div className="lds-dual-ring" />}
+                {!showSpinner && (
                     <div className="league-wrapper">
                         <div className="league-details-wrapper">
                             <div className="league-logo">
                                 <ImageUploader
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.image = ref;
                                     } }
                                     image={ image }
@@ -132,18 +128,16 @@ class Leagues extends Component {
                                     className="button save-button"
                                     onClick={ this.handleSaveClick }
                                 >
-                                    { saveButtonText }
+                                    {saveButtonText}
                                 </button>
-                                {
-                                    updatePage && (
-                                        <button
-                                            className="button delete-button"
-                                            onClick={ this.handleDeleteClick }
-                                        >
+                                {updatePage && (
+                                    <button
+                                        className="button delete-button"
+                                        onClick={ this.handleDeleteClick }
+                                    >
                                         delete
-                                        </button>
-                                    )
-                                }
+                                    </button>
+                                )}
                             </div>
                             <div className="league-details">
                                 <input
@@ -151,7 +145,7 @@ class Leagues extends Component {
                                     placeholder="name"
                                     className="league-name"
                                     onChange={ this.handleChange }
-                                    ref={ ( ref ) => {
+                                    ref={ ref => {
                                         this.leagueName = ref;
                                     } }
                                     value={ leagueName }
@@ -160,7 +154,7 @@ class Leagues extends Component {
                                     <Dropdown
                                         elements={ countries }
                                         label="country"
-                                        ref={ ( ref ) => {
+                                        ref={ ref => {
                                             this.country = ref;
                                         } }
                                         value={ countryId }
@@ -168,19 +162,17 @@ class Leagues extends Component {
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.id && (
-                                <Pagination
-                                    getResults={ getTeams }
-                                    deleteItem={ removeTeamFromLeague }
-                                    path="/teams"
-                                    filterBy="leagueId"
-                                    id={ this.props.id }
-                                />
-                            )
-                        }
+                        {this.props.id && (
+                            <Pagination
+                                getResults={ getTeams }
+                                deleteItem={ removeTeamFromLeague }
+                                path="/teams"
+                                filterBy="leagueId"
+                                id={ this.props.id }
+                            />
+                        )}
                     </div>
-                ) }
+                )}
             </div>
         );
     }

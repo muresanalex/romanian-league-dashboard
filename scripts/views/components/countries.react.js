@@ -18,16 +18,12 @@ class Countries extends Component {
             showSpinner: !!props.id,
             image: "",
         };
-        this.handleChange = this.handleChange.bind( this );
-        this.handleSaveClick = this.handleSaveClick.bind( this );
-        this.handleDeleteClick = this.handleDeleteClick.bind( this );
-        this.handleResponse = this.handleResponse.bind( this );
     }
 
     componentWillMount() {
         const { id } = this.props;
         if ( id ) {
-            getCountry( id ).then( ( country ) => {
+            getCountry( id ).then( country => {
                 this.setState( {
                     country,
                     updatePage: true,
@@ -39,43 +35,42 @@ class Countries extends Component {
         }
     }
 
-    handleChange( evt ) {
+    handleChange = evt => {
         this.setState( {
             countryName: evt.target.value,
         } );
-    }
+    };
 
-    handleSaveClick() {
+    handleSaveClick = () => {
         const { countryName, updatePage, country } = this.state;
         const image = this.image.getResult();
 
         if ( updatePage ) {
             updateCountry( { name: countryName, image }, country._id )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         } else {
             createCountry( { name: countryName, image } )
-                .then( ( res ) => res.json() )
-                .then( ( response ) => this.handleResponse( response ) );
+                .then( res => res.json() )
+                .then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleDeleteClick() {
+    handleDeleteClick = () => {
         const { id } = this.props;
         if ( id ) {
-            deleteCountry( { _id: id } )
-                .then( ( response ) => this.handleResponse( response ) );
+            deleteCountry( { _id: id } ).then( response => this.handleResponse( response ) );
         }
-    }
+    };
 
-    handleResponse( response ) {
+    handleResponse = response => {
         const { error } = response;
         if ( !error ) {
             this.props.history.push( "/countries" );
         } else {
             this.notification.showMessage( error.details[ 0 ].message );
         }
-    }
+    };
 
     render() {
         const { countryName, showSpinner, image } = this.state;
@@ -83,39 +78,36 @@ class Countries extends Component {
         const saveButtonText = id ? "update" : "save";
         return (
             <div className="country-container">
-                <NotificationCenter ref={ ( ref ) => {
-                    this.notification = ref;
-                } }
+                <NotificationCenter
+                    ref={ ref => {
+                        this.notification = ref;
+                    } }
                 />
-                { showSpinner && <div className="lds-dual-ring" /> }
-                { !showSpinner && (
+                {showSpinner && <div className="lds-dual-ring" />}
+                {!showSpinner && (
                     <div>
                         <div className="flag-wrapper">
                             <ImageUploader
-                                ref={ ( ref ) => {
+                                ref={ ref => {
                                     this.image = ref;
                                 } }
                                 image={ image }
                             />
-                            <button
-                                className="button save-button"
-                                onClick={ this.handleSaveClick }
-                            >
-                                { saveButtonText }
+                            <button className="button save-button" onClick={ this.handleSaveClick }>
+                                {saveButtonText}
                             </button>
-                            {
-                                id && (
-                                    <button
-                                        className="button delete-button"
-                                        onClick={ this.handleDeleteClick }
-                                    >
-                                        delete
-                                    </button> )
-                            }
+                            {id && (
+                                <button
+                                    className="button delete-button"
+                                    onClick={ this.handleDeleteClick }
+                                >
+                                    delete
+                                </button>
+                            )}
                         </div>
                         <div className="country-details">
                             <input
-                                ref={ ( name ) => {
+                                ref={ name => {
                                     this.name = name;
                                 } }
                                 type="text"
@@ -126,7 +118,7 @@ class Countries extends Component {
                             />
                         </div>
                     </div>
-                ) }
+                )}
             </div>
         );
     }

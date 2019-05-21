@@ -10,40 +10,34 @@ class Pagination extends Component {
             currentPage: 1,
             showSpinner: true,
         };
-        this.buildResults = this.buildResults.bind( this );
-        this.buildItem = this.buildItem.bind( this );
-        this.buildNumberOfPages = this.buildNumberOfPages.bind( this );
     }
 
     componentWillMount() {
         const { currentPage } = this.state;
         const { getResults, id } = this.props;
         const query = id ? `?id=${ id }&page=${ currentPage }` : `?page=${ currentPage }`;
-        getResults( query )
-            .then( ( result ) => {
-                this.setState( { result: result.data, numberOfPages: result.numberOfPages, showSpinner: false } );
+        getResults( query ).then( result => {
+            this.setState( {
+                result: result.data,
+                numberOfPages: result.numberOfPages,
+                showSpinner: false,
             } );
+        } );
     }
 
-    buildResults() {
+    buildResults = () => {
         const { result } = this.state;
 
         if ( result.length === 0 ) {
-            return (
-                <div className="no-result">No results!</div>
-            );
+            return <div className="no-result">No results!</div>;
         }
 
         const items = result.map( this.buildItem );
 
-        return (
-            <div className="results-container">
-                { items }
-            </div>
-        );
-    }
+        return <div className="results-container">{items}</div>;
+    };
 
-    buildItem( item ) {
+    buildItem = item => {
         const { path } = this.props;
         const { _id } = item;
         let { name } = item;
@@ -52,16 +46,12 @@ class Pagination extends Component {
         }
 
         return (
-            <button
-                key={ _id }
-                className="result-item"
-                onClick={ this.handleItemClick( _id ) }
-            >
-                { name }
+            <button key={ _id } className="result-item" onClick={ this.handleItemClick( _id ) }>
+                {name}
                 <span
                     className="delete-item"
                     onClick={ this.handleDeleteClick( item ) }
-                    ref={ ( ref ) => {
+                    ref={ ref => {
                         this[ _id ] = ref;
                     } }
                 >
@@ -69,30 +59,32 @@ class Pagination extends Component {
                 </span>
             </button>
         );
-    }
+    };
 
-    handleItemClick( id ) {
-        return ( evt ) => {
-            const { path } = this.props;
-            if ( evt.target === this[ id ] ) {
-                return;
-            }
-            this.props.history.push( `${ path }/${ id }` );
-        };
-    }
+    handleItemClick = id => evt => {
+        const { path } = this.props;
+        if ( evt.target === this[ id ] ) {
+            return;
+        }
+        this.props.history.push( `${ path }/${ id }` );
+    };
 
-    handleDeleteClick( item ) {
-        return ( ) => {
-            const { deleteItem, getResults } = this.props;
-            const query = this.props.id ? `?id=${ this.props.id }&page=${ 1 }` : `?page=${ 1 }`;
-            this.setState( { showSpinner: true } );
-            deleteItem( item ).then( ( ) => {
-                getResults( query ).then( ( result ) => this.setState( { result: result.data, numberOfPages: result.numberOfPages, currentPage: 1, showSpinner: false } ) );
-            } );
-        };
-    }
+    handleDeleteClick = item => () => {
+        const { deleteItem, getResults } = this.props;
+        const query = this.props.id ? `?id=${ this.props.id }&page=${ 1 }` : `?page=${ 1 }`;
+        this.setState( { showSpinner: true } );
+        deleteItem( item ).then( () => {
+            getResults( query ).then( result =>
+                this.setState( {
+                    result: result.data,
+                    numberOfPages: result.numberOfPages,
+                    currentPage: 1,
+                    showSpinner: false,
+                } ) );
+        } );
+    };
 
-    buildNumberOfPages() {
+    buildNumberOfPages = () => {
         const { numberOfPages, currentPage } = this.state;
         const buttons = [];
         const prevPage = currentPage - 1;
@@ -109,12 +101,8 @@ class Pagination extends Component {
         for ( let i = firstPage; i <= lastPage; i += 1 ) {
             const activeClass = i === currentPage ? "active" : "";
             const button = (
-                <button
-                    className={ activeClass }
-                    key={ i }
-                    onClick={ this.handlePageClick( i ) }
-                >
-                    { i }
+                <button className={ activeClass } key={ i } onClick={ this.handlePageClick( i ) }>
+                    {i}
                 </button>
             );
             buttons.push( button );
@@ -145,28 +133,29 @@ class Pagination extends Component {
             );
             buttons.push( rightDots );
         }
-        return buttons.map( ( item ) => item );
-    }
+        return buttons.map( item => item );
+    };
 
-    handlePageClick( position ) {
-        return () => {
-            const { getResults } = this.props;
-            const { currentPage } = this.state;
+    handlePageClick = position => () => {
+        const { getResults } = this.props;
+        const { currentPage } = this.state;
 
-            if ( currentPage === position ) {
-                return;
-            }
+        if ( currentPage === position ) {
+            return;
+        }
 
-            const query = this.props.id ? `?id=${ this.props.id }&page=${ position }` : `?page=${ position }`;
-            this.setState( { showSpinner: true } );
-            getResults( query ).then( ( result ) => this.setState( {
+        const query = this.props.id
+            ? `?id=${ this.props.id }&page=${ position }`
+            : `?page=${ position }`;
+        this.setState( { showSpinner: true } );
+        getResults( query ).then( result =>
+            this.setState( {
                 result: result.data,
                 numberOfPages: result.numberOfPages,
                 currentPage: position,
                 showSpinner: false,
             } ) );
-        };
-    }
+    };
 
     render() {
         const { showSpinner, numberOfPages } = this.state;
@@ -176,12 +165,10 @@ class Pagination extends Component {
         return (
             <div className="pagination-wrapper">
                 <div className="pagination-container">
-                    { showSpinner && <div className="lds-dual-ring" /> }
-                    { !showSpinner && results }
+                    {showSpinner && <div className="lds-dual-ring" />}
+                    {!showSpinner && results}
                 </div>
-                {
-                    pages && <div className="number-of-pages">{ pages }</div>
-                }
+                {pages && <div className="number-of-pages">{pages}</div>}
             </div>
         );
     }
