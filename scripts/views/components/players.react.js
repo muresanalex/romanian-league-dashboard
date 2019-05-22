@@ -154,6 +154,11 @@ class Players extends Component {
         const details = {};
         const { value } = evt.target;
         details[ item ] = isNaN( value ) ? value : parseInt( value, 10 );
+        if ( item === "firstName" ) {
+            details.fullName = `${ details.firstName } ${ this.state.playerDetails.lastName }`;
+        } else if ( item === "lastName" ) {
+            details.fullName = `${ this.state.playerDetails.firstName } ${ details.lastName }`;
+        }
         this.setState( {
             playerDetails: Object.assign( {}, this.state.playerDetails, details ),
         } );
@@ -279,6 +284,7 @@ class Players extends Component {
             updatePage,
             showSpinner,
         } = this.state;
+        console.log( "playerDetails: ", playerDetails );
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="player-container grid-container">

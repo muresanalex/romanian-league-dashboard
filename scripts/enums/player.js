@@ -35,6 +35,9 @@ const defaultPlayerDetails = {
     volleys: 50,
     position: "GK",
     image: "",
+    firstName: "",
+    lastName: "",
+    fullName: "",
 };
 const defaultAttackingStats = [ "crossing", "finishing", "headingAcc", "shortPassing", "volleys" ];
 const defaultSkillStats = [ "dribbling", "curve", "fkAccuracy", "longPassing", "ballControl" ];

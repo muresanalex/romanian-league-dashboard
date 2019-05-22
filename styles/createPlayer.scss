@@ -54,6 +54,10 @@
         .buttons-section {
             float: left;
             width: 100%;
+
+            input {
+                margin: 10px;
+            }
         }
 
         .player-height,
