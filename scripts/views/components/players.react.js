@@ -4,6 +4,7 @@ import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import StatsInput from "./statsInput.react";
 import NotificationCenter from "./notificationCenter.react";
+import ImportStats from "./importStats.react";
 import Dictionary from "../../helpers/dictionary";
 import Overall from "./overall.react";
 import computeOverallValue from "../../helpers/computeOverallValue";
@@ -48,7 +49,6 @@ class Players extends Component {
     }
 
     componentWillMount() {
-        const { playerDetails } = this.state;
         const { id } = this.props;
         const promises = [ getTeams(), getCountries() ];
 
@@ -71,8 +71,6 @@ class Players extends Component {
                     playerDetails: player,
                 };
                 newState = Object.assign( {}, newState, playerState );
-            } else {
-                newState = Object.assign( {}, newState, playerDetails );
             }
             this.setState( newState );
         } );
@@ -123,6 +121,11 @@ class Players extends Component {
         values.image = this.image.getResult();
 
         return Object.assign( {}, playerDetails, values );
+    };
+
+    setPlayerStats = stats => {
+        const statsKeys = Object.keys( stats );
+        statsKeys.forEach( key => this.handleStatChange( key, stats[ key ] ) );
     };
 
     handleSaveClick = () => {
@@ -277,7 +280,6 @@ class Players extends Component {
             showSpinner,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
-
         return (
             <div className="player-container grid-container">
                 <NotificationCenter
@@ -427,6 +429,7 @@ class Players extends Component {
                                         delete
                                     </button>
                                 )}
+                                <ImportStats setPlayerStats={ this.setPlayerStats } />
                             </div>
                         </div>
                         <div className="stats col-4">

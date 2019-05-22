@@ -10,15 +10,23 @@ class StatsInput extends Component {
     }
 
     componentWillMount() {
-        const { value, name } = this.props;
-        const { changedValue } = this.state;
+        this.setValue( this.props );
+    }
 
-        if ( value && !changedValue ) {
-            this.setState( {
-                changedValue: value[ name ],
-            } );
+    componentWillReceiveProps( nextProps ) {
+        const { name } = this.props;
+        if ( this.props.value[ name ] !== nextProps.value[ name ] ) {
+            this.setValue( nextProps );
         }
     }
+
+    setValue = props => {
+        const { value, name } = props;
+
+        this.setState( {
+            changedValue: value[ name ],
+        } );
+    };
 
     getValue = () => {
         const { changedValue, defaultValue } = this.state;
@@ -70,9 +78,9 @@ class StatsInput extends Component {
         if ( renderValue < 51 ) {
             colorClass = "red";
         } else if ( renderValue < 61 ) {
-            colorClass = "yellow";
-        } else if ( renderValue < 71 ) {
             colorClass = "orange";
+        } else if ( renderValue < 71 ) {
+            colorClass = "yellow";
         } else if ( renderValue < 81 ) {
             colorClass = "light-green";
         } else {
