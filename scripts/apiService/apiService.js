@@ -61,7 +61,8 @@ function getCountries( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/countries${ queryString }` )
         .then( response => response.json() )
-        .then( data => data );
+        .then( data => data )
+        .catch( err => Promise.reject( err ) );
 }
 
 function getPlayer( id ) {
