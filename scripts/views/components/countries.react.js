@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
 import NotificationCenter from "./notificationCenter.react";
+import Dropdown from "../components/dropdown.react";
+import { continents } from "../../enums/countries";
 import {
     createCountry,
     getCountry,
@@ -17,6 +19,7 @@ class Countries extends Component {
             updatePage: false,
             showSpinner: !!props.id,
             image: "",
+            continent: continents[ 0 ],
         };
     }
 
@@ -30,6 +33,7 @@ class Countries extends Component {
                     countryName: country.name,
                     showSpinner: false,
                     image: country.image,
+                    continent: country.continent,
                 } );
             } );
         }
@@ -44,13 +48,14 @@ class Countries extends Component {
     handleSaveClick = () => {
         const { countryName, updatePage, country } = this.state;
         const image = this.image.getResult();
+        const continent = this.continent.getValue();
 
         if ( updatePage ) {
-            updateCountry( { name: countryName, image }, country._id )
+            updateCountry( { name: countryName, image, continent }, country._id )
                 .then( res => res.json() )
                 .then( response => this.handleResponse( response ) );
         } else {
-            createCountry( { name: countryName, image } )
+            createCountry( { name: countryName, image, continent } )
                 .then( res => res.json() )
                 .then( response => this.handleResponse( response ) );
         }
@@ -72,8 +77,10 @@ class Countries extends Component {
         }
     };
 
+    buildContinents = continent => <option key={ continent }>{continent}</option>;
+
     render() {
-        const { countryName, showSpinner, image } = this.state;
+        const { countryName, showSpinner, image, continent } = this.state;
         const { id } = this.props;
         const saveButtonText = id ? "update" : "save";
         return (
@@ -115,6 +122,14 @@ class Countries extends Component {
                                 className="country-name"
                                 onChange={ this.handleChange }
                                 value={ countryName }
+                            />
+                            <Dropdown
+                                elements={ continents }
+                                label="continent"
+                                ref={ ref => {
+                                    this.continent = ref;
+                                } }
+                                value={ continent }
                             />
                         </div>
                     </div>

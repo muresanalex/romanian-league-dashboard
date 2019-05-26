@@ -10,12 +10,21 @@
     .country-details {
         float: left;
         margin: 10px;
+        width: 250px;
 
         .country-name {
             width: 200px;
             height: 34px;
             margin: 10px;
             padding-left: 5px;
+        }
+
+        .dropdown-container {
+            margin-left: 10px;
+
+            select {
+                width: 100%;
+            }
         }
     }
 }
