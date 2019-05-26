@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:4000/api";
+const baseUrl = process.env.BASE_API_URL;
 const corsHeaders = {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -12,7 +12,7 @@ function createPlayer( payload ) {
     } );
 }
 
-function createTeam ( payload ) {
+function createTeam( payload ) {
     return fetch( `${ baseUrl }/teams`, {
         method: "POST",
         headers: corsHeaders,
@@ -20,7 +20,7 @@ function createTeam ( payload ) {
     } );
 }
 
-function createLeague ( payload ) {
+function createLeague( payload ) {
     return fetch( `${ baseUrl }/leagues`, {
         method: "POST",
         headers: corsHeaders,
@@ -28,7 +28,7 @@ function createLeague ( payload ) {
     } );
 }
 
-function createCountry ( payload ) {
+function createCountry( payload ) {
     return fetch( `${ baseUrl }/countries`, {
         method: "POST",
         headers: corsHeaders,
@@ -39,53 +39,53 @@ function createCountry ( payload ) {
 function getPlayers( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/players${ queryString }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 function getTeams( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/teams${ queryString }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 function getLeagues( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/leagues${ queryString }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 function getCountries( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/countries${ queryString }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 function getPlayer( id ) {
     return fetch( `${ baseUrl }/players/${ id }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data.player );
+        .then( response => response.json() )
+        .then( data => data.player );
 }
 
 function getTeam( id ) {
     return fetch( `${ baseUrl }/teams/${ id }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data.team );
+        .then( response => response.json() )
+        .then( data => data.team );
 }
 
 function getLeague( id ) {
     return fetch( `${ baseUrl }/leagues/${ id }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data.league );
+        .then( response => response.json() )
+        .then( data => data.league );
 }
 
 function getCountry( id ) {
     return fetch( `${ baseUrl }/countries/${ id }` )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data.country );
+        .then( response => response.json() )
+        .then( data => data.country );
 }
 
 function updatePlayer( payload, id ) {
@@ -122,25 +122,25 @@ function updateCountry( payload, id ) {
 
 function deletePlayer( { _id } ) {
     return fetch( `${ baseUrl }/players/${ _id }`, { method: "DELETE" } )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 function deleteTeam( { _id } ) {
     return fetch( `${ baseUrl }/teams/${ _id }`, { method: "DELETE" } )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 function deleteLeague( { _id } ) {
-    return fetch( `${ baseUrl }/leagues/${ _id }`, { method: "DELETE" } )
-        .then( ( response ) => response.json() );
+    return fetch( `${ baseUrl }/leagues/${ _id }`, { method: "DELETE" } ).then( response =>
+        response.json() );
 }
 
 function deleteCountry( { _id } ) {
     return fetch( `${ baseUrl }/countries/${ _id }`, { method: "DELETE" } )
-        .then( ( response ) => response.json() )
-        .then( ( data ) => data );
+        .then( response => response.json() )
+        .then( data => data );
 }
 
 // special requests
