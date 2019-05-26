@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import ImageUploader from "./imageUploader.react";
 import Dropdown from "./dropdown.react";
 import NotificationCenter from "./notificationCenter.react";
+import ColorPicker from "./colorPicker.react";
 import Pagination from "./pagination.react";
 import { getId } from "../../helpers/helpers";
 import {
@@ -29,6 +30,8 @@ class Teams extends Component {
             countryId: "",
             leagueId: "",
             image: "",
+            firstColor: "#ffffff",
+            secondColor: "#ffffff",
             showSpinner: !!props.id,
         };
     }
@@ -60,6 +63,8 @@ class Teams extends Component {
                     countryId: team.countryId,
                     leagueId: team.leagueId,
                     image: team.image,
+                    firstColor: team.firstColor,
+                    secondColor: team.secondColor,
                 };
                 newState = Object.assign( {}, newState, teamState );
             }
@@ -86,11 +91,26 @@ class Teams extends Component {
         } );
     };
 
+    handleColorChange = color => evt => {
+        const { value } = evt.target;
+        if ( color === "firstColor" ) {
+            this.setState( {
+                firstColor: value,
+            } );
+        } else {
+            this.setState( {
+                secondColor: value,
+            } );
+        }
+    };
+
     handleSaveClick = () => {
         const { teamName, stadium, countries, leagues, coach } = this.state;
         const { id } = this.props;
         const leagueId = getId( leagues, this.league.getValue() );
         const countryId = getId( countries, this.country.getValue() );
+        const firstColor = this.firstColor.getValue();
+        const secondColor = this.secondColor.getValue();
         const image = this.image.getResult();
         const payload = {
             name: teamName,
@@ -99,6 +119,8 @@ class Teams extends Component {
             leagueId,
             countryId,
             image,
+            firstColor,
+            secondColor,
         };
 
         if ( id ) {
@@ -225,6 +247,20 @@ class Teams extends Component {
                                             this.league = ref;
                                         } }
                                         value={ leagueId }
+                                    />
+                                    <ColorPicker
+                                        ref={ ref => {
+                                            this.firstColor = ref;
+                                        } }
+                                        handleColorChange={ this.handleColorChange( "firstColor" ) }
+                                        value={ this.state.firstColor }
+                                    />
+                                    <ColorPicker
+                                        ref={ ref => {
+                                            this.secondColor = ref;
+                                        } }
+                                        handleColorChange={ this.handleColorChange( "secondColor" ) }
+                                        value={ this.state.secondColor }
                                     />
                                 </div>
                             </div>

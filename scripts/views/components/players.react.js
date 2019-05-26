@@ -284,7 +284,6 @@ class Players extends Component {
             updatePage,
             showSpinner,
         } = this.state;
-        console.log( "playerDetails: ", playerDetails );
         const saveButtonText = updatePage ? "update" : "save";
         return (
             <div className="player-container grid-container">
