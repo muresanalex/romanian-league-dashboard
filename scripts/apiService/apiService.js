@@ -59,32 +59,35 @@ function getLeagues( query ) {
 
 function getCountries( query ) {
     const queryString = query || "";
-    return fetch( `${ baseUrl }/countries${ queryString }` )
-        .then( response => response.json() )
-        .then( data => data )
-        .catch( err => Promise.reject( err ) );
+    console.log( "baseUrl: ", baseUrl );
+    return fetch( `${ baseUrl }/countries${ queryString }`, { headers: corsHeaders } )
+        .then( response => {
+            console.log( response );
+            return response.json();
+        } )
+        .then( data => data );
 }
 
 function getPlayer( id ) {
-    return fetch( `${ baseUrl }/players/${ id }` )
+    return fetch( `${ baseUrl }/players/${ id }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data.player );
 }
 
 function getTeam( id ) {
-    return fetch( `${ baseUrl }/teams/${ id }` )
+    return fetch( `${ baseUrl }/teams/${ id }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data.team );
 }
 
 function getLeague( id ) {
-    return fetch( `${ baseUrl }/leagues/${ id }` )
+    return fetch( `${ baseUrl }/leagues/${ id }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data.league );
 }
 
 function getCountry( id ) {
-    return fetch( `${ baseUrl }/countries/${ id }` )
+    return fetch( `${ baseUrl }/countries/${ id }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data.country );
 }

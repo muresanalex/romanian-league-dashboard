@@ -20,7 +20,7 @@ app.get( "/*", ( req, res ) => {
     } );
 } );
 
-app.listen( port, ( err ) => {
+app.listen( port, err => {
     if ( err ) {
         console.log( err );
     } else {
