@@ -51,8 +51,6 @@ class Dropdown extends Component {
         const { selectedValue } = this.state;
         const { elements, label, small } = this.props;
         const options = elements ? elements.map( createElements ) : "";
-        const style =
-            label === "country" || label === "team" || label === "league" ? { width: "150px" } : {};
         const smallClass = small ? "small" : "";
 
         return (
@@ -61,7 +59,6 @@ class Dropdown extends Component {
                 <select
                     onChange={ this.handleChange }
                     value={ selectedValue }
-                    style={ style }
                     ref={ ref => {
                         this.option = ref;
                     } }

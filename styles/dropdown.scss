@@ -1,27 +1,25 @@
 .dropdown-container {
     position: relative;
-    border: 1px solid rgb(160, 160, 160);
     margin: 10px 0;
     width: 200px;
-    padding: 15px;
     float: left;
 
     &.small {
-        width: 100px;
+        width: 63px;
+        margin: 10px 5px 0 0;
     }
-    
+
     span {
         position: absolute;
-        top: -7px;
-        left: 15px;
-        font-size: 13px;
+        top: -8px;
+        font-size: 12px;
         background-color: white;
         color: dimgrey;
     }
 
     select {
-        width: 60px;
-        height: 30px;
+        width: 100%;
+        height: 34px;
         margin-right: 5px;
         background-color: white;
     }

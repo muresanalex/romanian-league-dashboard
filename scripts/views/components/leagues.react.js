@@ -150,16 +150,14 @@ class Leagues extends Component {
                                     } }
                                     value={ leagueName }
                                 />
-                                <div className="dropdown-section">
-                                    <Dropdown
-                                        elements={ countries }
-                                        label="country"
-                                        ref={ ref => {
-                                            this.country = ref;
-                                        } }
-                                        value={ countryId }
-                                    />
-                                </div>
+                                <Dropdown
+                                    elements={ countries }
+                                    label="country"
+                                    ref={ ref => {
+                                        this.country = ref;
+                                    } }
+                                    value={ countryId }
+                                />
                             </div>
                         </div>
                         {this.props.id && (
