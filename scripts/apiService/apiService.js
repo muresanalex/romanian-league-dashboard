@@ -2,6 +2,7 @@ const baseUrl = process.env.BASE_API_URL;
 const corsHeaders = {
     Accept: "application/json",
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
 };
 
 function createPlayer( payload ) {
@@ -38,33 +39,29 @@ function createCountry( payload ) {
 
 function getPlayers( query ) {
     const queryString = query || "";
-    return fetch( `${ baseUrl }/players${ queryString }` )
+    return fetch( `${ baseUrl }/players${ queryString }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
 
 function getTeams( query ) {
     const queryString = query || "";
-    return fetch( `${ baseUrl }/teams${ queryString }` )
+    return fetch( `${ baseUrl }/teams${ queryString }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
 
 function getLeagues( query ) {
     const queryString = query || "";
-    return fetch( `${ baseUrl }/leagues${ queryString }` )
+    return fetch( `${ baseUrl }/leagues${ queryString }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
 
 function getCountries( query ) {
     const queryString = query || "";
-    console.log( "baseUrl: ", baseUrl );
     return fetch( `${ baseUrl }/countries${ queryString }`, { headers: corsHeaders } )
-        .then( response => {
-            console.log( response );
-            return response.json();
-        } )
+        .then( response => response.json() )
         .then( data => data );
 }
 
@@ -125,24 +122,23 @@ function updateCountry( payload, id ) {
 }
 
 function deletePlayer( { _id } ) {
-    return fetch( `${ baseUrl }/players/${ _id }`, { method: "DELETE" } )
+    return fetch( `${ baseUrl }/players/${ _id }`, { method: "DELETE", headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
 
 function deleteTeam( { _id } ) {
-    return fetch( `${ baseUrl }/teams/${ _id }`, { method: "DELETE" } )
+    return fetch( `${ baseUrl }/teams/${ _id }`, { method: "DELETE", headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
 
 function deleteLeague( { _id } ) {
-    return fetch( `${ baseUrl }/leagues/${ _id }`, { method: "DELETE" } ).then( response =>
-        response.json() );
+    return fetch( `${ baseUrl }/leagues/${ _id }`, { method: "DELETE", headers: corsHeaders } ).then( response => response.json() );
 }
 
 function deleteCountry( { _id } ) {
-    return fetch( `${ baseUrl }/countries/${ _id }`, { method: "DELETE" } )
+    return fetch( `${ baseUrl }/countries/${ _id }`, { method: "DELETE", headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
