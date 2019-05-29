@@ -37,6 +37,14 @@ function createCountry( payload ) {
     } );
 }
 
+function createFormation( payload ) {
+    return fetch( `${ baseUrl }/formations`, {
+        method: "POST",
+        headers: corsHeaders,
+        body: JSON.stringify( payload ),
+    } );
+}
+
 function getPlayers( query ) {
     const queryString = query || "";
     return fetch( `${ baseUrl }/players${ queryString }`, { headers: corsHeaders } )
@@ -65,6 +73,13 @@ function getCountries( query ) {
         .then( data => data );
 }
 
+function getFormations( query ) {
+    const queryString = query || "";
+    return fetch( `${ baseUrl }/formations${ queryString }`, { headers: corsHeaders } )
+        .then( response => response.json() )
+        .then( data => data );
+}
+
 function getPlayer( id ) {
     return fetch( `${ baseUrl }/players/${ id }`, { headers: corsHeaders } )
         .then( response => response.json() )
@@ -87,6 +102,12 @@ function getCountry( id ) {
     return fetch( `${ baseUrl }/countries/${ id }`, { headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data.country );
+}
+
+function getFormation( id ) {
+    return fetch( `${ baseUrl }/formations/${ id }`, { headers: corsHeaders } )
+        .then( response => response.json() )
+        .then( data => data.formation );
 }
 
 function updatePlayer( payload, id ) {
@@ -121,6 +142,14 @@ function updateCountry( payload, id ) {
     } );
 }
 
+function updateFormation( payload, id ) {
+    return fetch( `${ baseUrl }/formations/${ id }`, {
+        method: "PUT",
+        headers: corsHeaders,
+        body: JSON.stringify( payload ),
+    } );
+}
+
 function deletePlayer( { _id } ) {
     return fetch( `${ baseUrl }/players/${ _id }`, { method: "DELETE", headers: corsHeaders } )
         .then( response => response.json() )
@@ -139,6 +168,12 @@ function deleteLeague( { _id } ) {
 
 function deleteCountry( { _id } ) {
     return fetch( `${ baseUrl }/countries/${ _id }`, { method: "DELETE", headers: corsHeaders } )
+        .then( response => response.json() )
+        .then( data => data );
+}
+
+function deleteFormation( { _id } ) {
+    return fetch( `${ baseUrl }/formations/${ _id }`, { method: "DELETE", headers: corsHeaders } )
         .then( response => response.json() )
         .then( data => data );
 }
@@ -162,22 +197,27 @@ export {
     createTeam,
     createCountry,
     createLeague,
+    createFormation,
     getPlayers,
     getTeams,
     getLeagues,
     getCountries,
+    getFormations,
     getPlayer,
     getTeam,
     getLeague,
     getCountry,
+    getFormation,
     updatePlayer,
     updateTeam,
     updateLeague,
     updateCountry,
+    updateFormation,
     deletePlayer,
     deleteTeam,
     deleteCountry,
     deleteLeague,
+    deleteFormation,
     removeTeamFromLeague,
     removePlayerFromTeam,
 };

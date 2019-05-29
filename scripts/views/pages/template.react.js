@@ -10,6 +10,8 @@ import TeamsList from "../components/teamsList.react";
 import Players from "../components/players.react";
 import PlayersList from "../components/playersList.react";
 import UpdateItem from "../components/updateItem.react";
+import Formations from "../components/formations.react";
+import FormationsList from "../components/formationsList.react";
 import Home from "./home.react";
 import Login from "./login.react";
 import SignUp from "./signUp.react";
@@ -33,6 +35,9 @@ const Template = () => (
             <Route exact path="/players" component={ PlayersList } />
             <Route exact path="/players/new-player" component={ Players } />
             <Route exact path="/players/:_id" component={ UpdateItem } />
+            <Route exact path="/formations" component={ FormationsList } />
+            <Route exact path="/formations/new-formation" component={ Formations } />
+            <Route exact path="/formations/:_id" component={ UpdateItem } />
         </Switch>
     </div>
 );

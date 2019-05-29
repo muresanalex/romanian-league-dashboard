@@ -4,9 +4,10 @@ import Teams from "./teams.react";
 import Players from "./players.react";
 import Leagues from "./leagues.react";
 import Countries from "./countries.react";
+import Formations from "./formations.react";
 
 class UpdateItem extends Component {
-    constructor( ) {
+    constructor() {
         super();
         this.state = {
             id: "",
@@ -49,6 +50,8 @@ class UpdateItem extends Component {
             return <Leagues id={ id } />;
         } else if ( type === "countries" ) {
             return <Countries id={ id } />;
+        } else if ( type === "formations" ) {
+            return <Formations id={ id } />;
         }
         return false;
     }
@@ -63,6 +66,8 @@ function getType( pathname ) {
         return "leagues";
     } else if ( pathname.indexOf( "/countries/" ) > -1 ) {
         return "countries";
+    } else if ( pathname.indexOf( "/formations/" ) > -1 ) {
+        return "formations";
     }
 
     return "";

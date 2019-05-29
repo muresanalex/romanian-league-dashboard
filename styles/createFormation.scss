@@ -1,0 +1,38 @@
+.formation-container {
+    padding: 20px 0 0 50px;
+
+    input {
+        height: 40px;
+        width: 450px;
+        margin-bottom: 20px;
+        padding-left: 10px;
+    }
+
+    button {
+        margin-left: 0;
+    }
+
+    .formation-wrapper {
+        width: 450px;
+        height: 700px;
+        border: 1px solid dimgray;
+        margin-bottom: 20px;
+        .row {
+            height: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            button {
+                width: 80px;
+                height: 80px;
+
+                background: transparent;
+
+                &.selected {
+                    border: 2px solid green;
+                }
+            }
+        }
+    }
+}

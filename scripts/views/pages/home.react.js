@@ -15,6 +15,7 @@ class Home extends Component {
                         <button onClick={ this.handleClick( "/teams" ) }>Teams</button>
                         <button onClick={ this.handleClick( "/leagues" ) }>Leagues</button>
                         <button onClick={ this.handleClick( "/countries" ) }>Countries</button>
+                        <button onClick={ this.handleClick( "/formations" ) }>Formations</button>
                     </div>
                 </div>
             </div>

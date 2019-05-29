@@ -63,6 +63,19 @@ class Navbar extends Component {
                         },
                     ],
                 },
+                {
+                    label: "Formations",
+                    children: [
+                        {
+                            label: "Create Formation",
+                            slug: "/formations/new-formation",
+                        },
+                        {
+                            label: "Formations List",
+                            slug: "/formations",
+                        },
+                    ],
+                },
             ],
         };
     }
