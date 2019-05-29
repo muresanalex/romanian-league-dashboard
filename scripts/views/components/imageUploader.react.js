@@ -48,11 +48,9 @@ class ImageViewer extends Component {
                     <img className={ imageClassName } src={ result } alt="preview" />
                 </div>
                 <input type="file" onChange={ this.previewFile } />
-                {result && (
-                    <button className="remove-image" onClick={ this.removeImage }>
-                        Remove file
-                    </button>
-                )}
+                <button className="remove-image" onClick={ this.removeImage }>
+                    Remove file
+                </button>
             </div>
         );
     }
