@@ -24,6 +24,12 @@ class Dropdown extends Component {
         }
     }
 
+    componentWillReceiveProps( nextProps ) {
+        if ( this.props.value !== nextProps.value ) {
+            this.setState( { selectedValue: nextProps.value } );
+        }
+    }
+
     getValue = () => {
         const { options, selectedIndex } = this.option;
         const value = options[ selectedIndex ].text;
