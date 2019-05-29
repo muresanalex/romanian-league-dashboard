@@ -30,7 +30,8 @@
                 background: transparent;
 
                 &.selected {
-                    border: 2px solid green;
+                    background: rgb(27, 167, 129);
+                    color: white;
                 }
             }
         }
