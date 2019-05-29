@@ -551,6 +551,7 @@ class Players extends Component {
                                             this.potential = ref;
                                         } }
                                         name="potential"
+                                        handleStatChange={ this.handleStatChange }
                                     />
                                     <Dropdown
                                         value={ playerDetails.internationalReputation }
