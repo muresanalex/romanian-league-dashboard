@@ -62,7 +62,7 @@ class FirstEleven extends Component {
                         this[ pos ] = ref;
                     } }
                     disabled={ !isPositionActive }
-                    value={ this.state.selectedPlayers[ pos ] }
+                    value={ this.state.selectedPlayers[ pos ] || pos }
                 >
                     <option>{pos}</option>
                     {this.state.players.map( this.buildPlayerDropdown ).sort( ( option1, option2 ) => {
@@ -82,6 +82,7 @@ class FirstEleven extends Component {
         const selectedFormation = this.state.availableFormations.filter( formation => formation.name === formationName )[ 0 ];
         this.setState( {
             formation: selectedFormation,
+            selectedPlayers: {},
         } );
     };
 
