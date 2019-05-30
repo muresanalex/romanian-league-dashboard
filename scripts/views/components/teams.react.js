@@ -16,6 +16,7 @@ import {
     removePlayerFromTeam,
     getPlayers,
 } from "../../apiService/apiService";
+import FirstEleven from "./firstEleven.react";
 
 class Teams extends Component {
     constructor( props ) {
@@ -30,6 +31,8 @@ class Teams extends Component {
             countryId: "",
             leagueId: "",
             image: "",
+            formation: "",
+            firstEleven: {},
             firstColor: "#ffffff",
             secondColor: "#ffffff",
             showSpinner: !!props.id,
@@ -65,6 +68,8 @@ class Teams extends Component {
                     image: team.image,
                     firstColor: team.firstColor,
                     secondColor: team.secondColor,
+                    formation: team.formation,
+                    firstEleven: team.firstEleven,
                 };
                 newState = Object.assign( {}, newState, teamState );
             }
@@ -112,6 +117,8 @@ class Teams extends Component {
         const firstColor = this.firstColor.getValue();
         const secondColor = this.secondColor.getValue();
         const image = this.image.getResult();
+        const formation = this.firstEleven.getSelectedFormation();
+        const selectedPlayers = this.firstEleven.getSelectedPlayers();
         const payload = {
             name: teamName,
             stadium,
@@ -121,6 +128,8 @@ class Teams extends Component {
             image,
             firstColor,
             secondColor,
+            formation: formation._id,
+            firstEleven: selectedPlayers,
         };
 
         if ( id ) {
@@ -163,6 +172,8 @@ class Teams extends Component {
             updatePage,
             showSpinner,
             image,
+            formation,
+            firstEleven,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
         return (
@@ -264,6 +275,14 @@ class Teams extends Component {
                                     />
                                 </div>
                             </div>
+                            <FirstEleven
+                                ref={ ref => {
+                                    this.firstEleven = ref;
+                                } }
+                                getPlayers={ getPlayers }
+                                formation={ formation }
+                                firstEleven={ firstEleven }
+                            />
                         </div>
                         {this.props.id && (
                             <Pagination

@@ -48,6 +48,8 @@ class Dropdown extends Component {
             if ( this.props.label === "position" ) {
                 props.push( this.props.label );
                 props.push( value );
+            } else if ( this.props.label === "formation" ) {
+                props.push( options[ selectedIndex ].value );
             }
             this.props.handleStatChange( ...props );
         }
