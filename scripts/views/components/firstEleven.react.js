@@ -31,7 +31,7 @@ class FirstEleven extends Component {
 
     buildPlayerDropdown = player => (
         <option value={ player._id } key={ player._id }>
-            {player.fullName}
+            {`${ player.position } - ${ player.fullName }`}
         </option>
     );
 
@@ -65,7 +65,15 @@ class FirstEleven extends Component {
                     value={ this.state.selectedPlayers[ pos ] }
                 >
                     <option>{pos}</option>
-                    {this.state.players.map( this.buildPlayerDropdown )}
+                    {this.state.players.map( this.buildPlayerDropdown ).sort( ( option1, option2 ) => {
+                        if ( option1.props.children < option2.props.children ) {
+                            return -1;
+                        }
+                        if ( option1.props.children > option2.props.children ) {
+                            return 1;
+                        }
+                        return 0;
+                    } )}
                 </select>
             );
         } );
