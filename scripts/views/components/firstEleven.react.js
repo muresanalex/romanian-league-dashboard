@@ -7,8 +7,9 @@ class FirstEleven extends Component {
     state = { players: [], availableFormations: [], formation: {}, selectedPlayers: {} };
 
     componentWillMount() {
+        const query = this.props.id ? `?id=${ this.props.id }` : "";
         getFormations().then( results => this.setState( { availableFormations: results.data } ) );
-        getPlayers().then( results => this.setState( { players: results.data } ) );
+        getPlayers( query ).then( results => this.setState( { players: results.data } ) );
     }
 
     componentDidMount() {

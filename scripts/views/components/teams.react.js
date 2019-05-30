@@ -282,6 +282,7 @@ class Teams extends Component {
                                 getPlayers={ getPlayers }
                                 formation={ formation }
                                 firstEleven={ firstEleven }
+                                id={ this.props.id }
                             />
                         </div>
                         {this.props.id && (
