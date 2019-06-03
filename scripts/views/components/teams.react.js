@@ -5,6 +5,7 @@ import Dropdown from "./dropdown.react";
 import NotificationCenter from "./notificationCenter.react";
 import ColorPicker from "./colorPicker.react";
 import Pagination from "./pagination.react";
+import PlayersDropdown from "./playersDropdown.react";
 import { getId } from "../../helpers/helpers";
 import {
     getLeagues,
@@ -27,12 +28,19 @@ class Teams extends Component {
             countries: [],
             leagues: [],
             teams: [],
+            players: [],
             id: "",
             teamName: "",
             stadium: "",
             coach: "",
             countryId: "",
             leagueId: "",
+            captainId: "",
+            shortFKId: "",
+            longFKId: "",
+            leftCornerId: "",
+            rightCornerId: "",
+            penaltiesId: "",
             rivalTeamId: "",
             image: "",
             formation: "",
@@ -45,19 +53,21 @@ class Teams extends Component {
 
     componentWillMount() {
         const { id } = this.props;
-        const promises = [ getLeagues(), getCountries(), getTeams() ];
+        const query = id ? `?id=${ this.props.id }` : "";
+        const promises = [ getLeagues(), getCountries(), getTeams(), getPlayers( query ) ];
 
         if ( id ) {
             promises.push( getTeam( id ) );
         }
 
         Promise.all( promises ).then( data => {
-            const [ leagues, countries, teams, team ] = data;
+            const [ leagues, countries, teams, players, team ] = data;
             let newState = {
                 id,
                 leagues: leagues.data,
                 countries: countries.data,
                 teams: teams.data,
+                players: players.data,
                 showSpinner: false,
             };
 
@@ -76,6 +86,12 @@ class Teams extends Component {
                     secondColor: team.secondColor,
                     formation: team.formation,
                     firstEleven: team.firstEleven,
+                    captainId: team.captainId,
+                    shortFKId: team.shortFKId,
+                    longFKId: team.longFKId,
+                    leftCornerId: team.leftCornerId,
+                    rightCornerId: team.rightCornerId,
+                    penaltiesId: team.penaltiesId,
                 };
                 newState = Object.assign( {}, newState, teamState );
             }
@@ -126,6 +142,12 @@ class Teams extends Component {
         const image = this.image.getResult();
         const formation = this.firstEleven.getSelectedFormation();
         const selectedPlayers = this.firstEleven.getSelectedPlayers();
+        const captainId = this.captain.getValue();
+        const shortFKId = this.shortFK.getValue();
+        const longFKId = this.longFK.getValue();
+        const leftCornerId = this.leftCorner.getValue();
+        const rightCornerId = this.rightCorner.getValue();
+        const penaltiesId = this.penalties.getValue();
         const payload = {
             name: teamName,
             stadium,
@@ -138,6 +160,12 @@ class Teams extends Component {
             secondColor,
             formation: formation._id,
             firstEleven: selectedPlayers,
+            captainId,
+            shortFKId,
+            longFKId,
+            leftCornerId,
+            rightCornerId,
+            penaltiesId,
         };
 
         if ( id ) {
@@ -185,7 +213,15 @@ class Teams extends Component {
             image,
             formation,
             firstEleven,
+            players,
+            captainId,
+            shortFKId,
+            longFKId,
+            leftCornerId,
+            rightCornerId,
+            penaltiesId,
         } = this.state;
+
         const saveButtonText = updatePage ? "update" : "save";
         const otherTeams = teams.filter( team => team._id !== id );
         return (
@@ -294,6 +330,56 @@ class Teams extends Component {
                                         value={ this.state.secondColor }
                                     />
                                 </div>
+                            </div>
+                            <div className="team-player-details">
+                                <PlayersDropdown
+                                    players={ players }
+                                    label="captain"
+                                    ref={ ref => {
+                                        this.captain = ref;
+                                    } }
+                                    value={ captainId }
+                                />
+                                <PlayersDropdown
+                                    players={ players }
+                                    label="short FK"
+                                    ref={ ref => {
+                                        this.shortFK = ref;
+                                    } }
+                                    value={ shortFKId }
+                                />
+                                <PlayersDropdown
+                                    players={ players }
+                                    label="long FK"
+                                    ref={ ref => {
+                                        this.longFK = ref;
+                                    } }
+                                    value={ longFKId }
+                                />
+                                <PlayersDropdown
+                                    players={ players }
+                                    label="left corner"
+                                    ref={ ref => {
+                                        this.leftCorner = ref;
+                                    } }
+                                    value={ leftCornerId }
+                                />
+                                <PlayersDropdown
+                                    players={ players }
+                                    label="right corner"
+                                    ref={ ref => {
+                                        this.rightCorner = ref;
+                                    } }
+                                    value={ rightCornerId }
+                                />
+                                <PlayersDropdown
+                                    players={ players }
+                                    label="penalties"
+                                    ref={ ref => {
+                                        this.penalties = ref;
+                                    } }
+                                    value={ penaltiesId }
+                                />
                             </div>
                             <FirstEleven
                                 ref={ ref => {

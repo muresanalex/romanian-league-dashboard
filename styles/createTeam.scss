@@ -76,7 +76,7 @@
         .team-name,
         .team-coach,
         .team-stadium {
-            width: 200px;
+            width: 180px;
             height: 34px;
             margin: 10px;
             padding-left: 5px;
@@ -84,8 +84,14 @@
         }
 
         .dropdown-section {
-            width: 200px;
+            width: 180px;
             margin-left: 10px;
         }
+    }
+
+    .team-player-details {
+        float: left;
+        margin: 10px;
+        max-width: 200px;
     }
 }
