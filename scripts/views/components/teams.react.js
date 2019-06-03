@@ -15,6 +15,7 @@ import {
     updateTeam,
     removePlayerFromTeam,
     getPlayers,
+    getTeams,
 } from "../../apiService/apiService";
 import FirstEleven from "./firstEleven.react";
 
@@ -25,11 +26,14 @@ class Teams extends Component {
             updatePage: false,
             countries: [],
             leagues: [],
+            teams: [],
+            id: "",
             teamName: "",
             stadium: "",
             coach: "",
             countryId: "",
             leagueId: "",
+            rivalTeamId: "",
             image: "",
             formation: "",
             firstEleven: {},
@@ -41,18 +45,19 @@ class Teams extends Component {
 
     componentWillMount() {
         const { id } = this.props;
-        const promises = [ getLeagues(), getCountries() ];
+        const promises = [ getLeagues(), getCountries(), getTeams() ];
 
         if ( id ) {
             promises.push( getTeam( id ) );
         }
 
         Promise.all( promises ).then( data => {
-            const [ leagues, countries, team ] = data;
+            const [ leagues, countries, teams, team ] = data;
             let newState = {
                 id,
                 leagues: leagues.data,
                 countries: countries.data,
+                teams: teams.data,
                 showSpinner: false,
             };
 
@@ -65,6 +70,7 @@ class Teams extends Component {
                     coach: team.coach,
                     countryId: team.countryId,
                     leagueId: team.leagueId,
+                    rivalTeamId: team.rivalTeamId,
                     image: team.image,
                     firstColor: team.firstColor,
                     secondColor: team.secondColor,
@@ -110,10 +116,11 @@ class Teams extends Component {
     };
 
     handleSaveClick = () => {
-        const { teamName, stadium, countries, leagues, coach } = this.state;
+        const { teamName, stadium, countries, leagues, teams, coach } = this.state;
         const { id } = this.props;
         const leagueId = getId( leagues, this.league.getValue() );
         const countryId = getId( countries, this.country.getValue() );
+        const rivalTeamId = getId( teams, this.rivalTeam.getValue() );
         const firstColor = this.firstColor.getValue();
         const secondColor = this.secondColor.getValue();
         const image = this.image.getResult();
@@ -125,6 +132,7 @@ class Teams extends Component {
             coach,
             leagueId,
             countryId,
+            rivalTeamId,
             image,
             firstColor,
             secondColor,
@@ -162,13 +170,16 @@ class Teams extends Component {
 
     render() {
         const {
+            id,
             countries,
             leagues,
             stadium,
+            teams,
             coach,
             teamName,
             leagueId,
             countryId,
+            rivalTeamId,
             updatePage,
             showSpinner,
             image,
@@ -176,6 +187,7 @@ class Teams extends Component {
             firstEleven,
         } = this.state;
         const saveButtonText = updatePage ? "update" : "save";
+        const otherTeams = teams.filter( team => team._id !== id );
         return (
             <div className="team-container">
                 <NotificationCenter
@@ -258,6 +270,14 @@ class Teams extends Component {
                                             this.league = ref;
                                         } }
                                         value={ leagueId }
+                                    />
+                                    <Dropdown
+                                        elements={ otherTeams }
+                                        label="rival team"
+                                        ref={ ref => {
+                                            this.rivalTeam = ref;
+                                        } }
+                                        value={ rivalTeamId }
                                     />
                                     <ColorPicker
                                         ref={ ref => {
